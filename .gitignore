@@ -16,10 +16,17 @@
 [Rr]elease/
 [Bb]in/
 [Oo]bj/
+[Oo]utput/
 
 # MSTest test Results
 [Tt]est[Rr]esult*/
 [Bb]uild[Ll]og.*
+*.tlog/
+
+*.idb
+*.exe
+depedent/
+
 
 *_i.c
 *_p.c
