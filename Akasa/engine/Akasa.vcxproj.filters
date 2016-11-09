@@ -14,5 +14,13 @@
     <ClInclude Include="include\AkaCompileConfig.h">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="include\AkaTypes.h">
+      <Filter>include</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="akasa\main.cpp">
+      <Filter>akasa</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
