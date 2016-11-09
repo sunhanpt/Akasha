@@ -145,6 +145,7 @@
   <ItemGroup>
     <ClInclude Include="include\AkaCompileConfig.h" />
     <ClInclude Include="include\AkaTypes.h" />
+    <ClInclude Include="include\IReferenceCounted.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="akasa\main.cpp" />
