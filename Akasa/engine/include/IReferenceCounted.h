@@ -4,7 +4,7 @@
 #include "akaTypes.h"
 
 
-namespace irr
+namespace aka
 {
 	class IReferenceCounted
 	{
