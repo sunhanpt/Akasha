@@ -106,7 +106,7 @@ namespace aka
 	typedef double				f64;
 
 
-} // end namespace irr
+} // end namespace aka
 
 
 #include <wchar.h>
@@ -160,7 +160,7 @@ namespace aka
 #define _IRR_TEXT(X) X
 #endif
 
-} // end namespace irr
+} // end namespace aka
 
   //! define a break macro for debugging.
 #if defined(_DEBUG)

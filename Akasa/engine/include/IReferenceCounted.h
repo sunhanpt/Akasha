@@ -14,6 +14,7 @@ namespace aka
 		IReferenceCounted()
 			: DebugName(0), ReferenceCounter(1)
 		{
+		}
 
 		//! Destructor.
 		virtual ~IReferenceCounted()

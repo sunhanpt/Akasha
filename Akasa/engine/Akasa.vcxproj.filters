@@ -9,6 +9,9 @@
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
+    <Filter Include="akasa\aka">
+      <UniqueIdentifier>{c00d8d94-a70d-467e-846c-0c2ecb379da6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\AkaCompileConfig.h">
@@ -23,10 +26,19 @@
     <ClInclude Include="include\ILogger.h">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="akasa\ALogger.h">
+      <Filter>akasa\aka</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IEventReceiver.h">
+      <Filter>include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="akasa\main.cpp">
       <Filter>akasa</Filter>
+    </ClCompile>
+    <ClCompile Include="akasa\ALogger.cpp">
+      <Filter>akasa\aka</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

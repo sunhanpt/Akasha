@@ -30,5 +30,19 @@
 #undef __AKA_HAS_S64
 #endif
 
+//! Defines an override macro, to protect virtual functions from typos and other mismatches
+/** Usage in a derived class:
+virtual void somefunc() _IRR_OVERRIDE_;
+*/
+#if ( ((__GNUC__ > 4 ) || ((__GNUC__ == 4 ) && (__GNUC_MINOR__ >= 7))) && (defined(__GXX_EXPERIMENTAL_CXX0X) || __cplusplus >= 201103L) )
+#define _AKA_OVERRIDE_ override
+#elif (_MSC_VER >= 1600 ) /* supported since MSVC 2010 */
+#define _AKA_OVERRIDE_ override
+#elif (__clang_major__ >= 3)
+#define _AKA_OVERRIDE_ override
+#else
+#define _AKA_OVERRIDE_
+#endif
+
 
 #endif

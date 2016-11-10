@@ -71,6 +71,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
+    <IncludePath>include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -143,12 +144,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="akasa\ALogger.h" />
     <ClInclude Include="include\AkaCompileConfig.h" />
     <ClInclude Include="include\AkaTypes.h" />
+    <ClInclude Include="include\IEventReceiver.h" />
     <ClInclude Include="include\ILogger.h" />
     <ClInclude Include="include\IReferenceCounted.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="akasa\ALogger.cpp" />
     <ClCompile Include="akasa\main.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
