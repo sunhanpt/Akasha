@@ -89,7 +89,7 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;AKASA_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -145,15 +145,23 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="akasa\ALogger.h" />
+    <ClInclude Include="akasa\ATimer.h" />
+    <ClInclude Include="akasa\os.h" />
+    <ClInclude Include="include\AkaAllocator.h" />
     <ClInclude Include="include\AkaCompileConfig.h" />
+    <ClInclude Include="include\AkaMath.h" />
+    <ClInclude Include="include\AkaString.h" />
     <ClInclude Include="include\AkaTypes.h" />
     <ClInclude Include="include\IEventReceiver.h" />
     <ClInclude Include="include\ILogger.h" />
     <ClInclude Include="include\IReferenceCounted.h" />
+    <ClInclude Include="include\ITimer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="akasa\ALogger.cpp" />
     <ClCompile Include="akasa\main.cpp" />
+    <ClCompile Include="akasa\os.cpp" />
+    <ClCompile Include="akasa\utf8.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

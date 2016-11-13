@@ -2,6 +2,9 @@
 #define __I_ALOGGER_H_INCLUDED__
 
 #include "ILogger.h"
+#include "os.h"
+#include "AkaString.h"
+
 
 namespace aka
 {

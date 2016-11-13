@@ -139,9 +139,9 @@ typedef unsigned short wchar_t;
 #endif // wchar is not defined
 #endif // microsoft compiler
 #else
-#define swprintf_irr swprintf
-#define snprintf_irr snprintf
-#endif // _IRR_WINDOWS_API_
+#define swprintf_aka swprintf
+#define snprintf_aka snprintf
+#endif // _AKA_WINDOWS_API_
 
 namespace aka
 {
@@ -211,8 +211,8 @@ namespace aka
 #endif
 
   // memory debugging
-#if defined(_DEBUG) && defined(IRRLICHT_EXPORTS) && defined(_MSC_VER) && \
-	(_MSC_VER > 1299) && !defined(_IRR_DONT_DO_MEMORY_DEBUGGING_HERE) && !defined(_WIN32_WCE)
+#if defined(_DEBUG) && defined(AKASA_EXPORTS) && defined(_MSC_VER) && \
+	(_MSC_VER > 1299) && !defined(_AKA_DONT_DO_MEMORY_DEBUGGING_HERE) && !defined(_WIN32_WCE)
 
 #define CRTDBG_MAP_ALLOC
 #define _CRTDBG_MAP_ALLOC

@@ -4,7 +4,7 @@
 
 
 //! Uncomment this line to compile with the SDL device
-#define _AKA_COMPILE_WITH_SDL_DEVICE_
+//#define _AKA_COMPILE_WITH_SDL_DEVICE_
 #ifdef NO_AKA_COMPILE_WITH_SDL_DEVICE_
 #undef _AKA_COMPILE_WITH_SDL_DEVICE_
 #endif
@@ -43,6 +43,18 @@ virtual void somefunc() _IRR_OVERRIDE_;
 #else
 #define _AKA_OVERRIDE_
 #endif
+
+// To build Akasa as a static library, you must define _AKA_STATIC_LIB_ in both the
+// Akasa build, *and* in the user application, before #including <akasa.h>
+#ifndef _AKA_STATIC_LIB_
+#ifdef AKASA_EXPORTS
+#define AKASA_API __declspec(dllexport)
+#else
+#define AKASA_API __declspec(dllimport)
+#endif // AKASA_EXPORTS
+#else
+#define AKASA_API
+#endif // _AKA_STATIC_LIB_
 
 
 #endif

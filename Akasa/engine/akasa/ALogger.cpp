@@ -1,10 +1,12 @@
 #include "ALogger.h"
-
+#include "os.h"
 namespace aka
 {
-	ALogger::ALogger()
+	ALogger::ALogger(): m_logLevel(ELL_INFORMATION)
 	{
-
+#if _DEBUG
+		setDebugName("ALogger");
+#endif
 	}
 
 	ALogger::~ALogger()
@@ -22,9 +24,14 @@ namespace aka
 		m_logLevel = ll;
 	}
 
+	// print log. 总入口
 	void ALogger::Log(const c8 * text, ELOG_LEVEL ll /* = ELL_INFORMATION */)
 	{
-
+		if (ll < m_logLevel) {
+			return;
+		}
+		os::Printer::Print(text);
+		// 添加其他操作（如，可以支持输出到指定的recieve）
 	}
 
 	void ALogger::Log(const wchar_t * text, ELOG_LEVEL ll /* = ELL_INFORMATION */)

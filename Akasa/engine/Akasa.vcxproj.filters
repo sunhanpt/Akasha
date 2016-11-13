@@ -12,6 +12,9 @@
     <Filter Include="akasa\aka">
       <UniqueIdentifier>{c00d8d94-a70d-467e-846c-0c2ecb379da6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="include\core">
+      <UniqueIdentifier>{a6320226-66b1-4873-8855-207015fab821}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\AkaCompileConfig.h">
@@ -32,12 +35,36 @@
     <ClInclude Include="include\IEventReceiver.h">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="akasa\os.h">
+      <Filter>akasa\aka</Filter>
+    </ClInclude>
+    <ClInclude Include="include\AkaString.h">
+      <Filter>include\core</Filter>
+    </ClInclude>
+    <ClInclude Include="include\AkaAllocator.h">
+      <Filter>include\core</Filter>
+    </ClInclude>
+    <ClInclude Include="include\AkaMath.h">
+      <Filter>include\core</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ITimer.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="akasa\ATimer.h">
+      <Filter>akasa\aka</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="akasa\main.cpp">
       <Filter>akasa</Filter>
     </ClCompile>
     <ClCompile Include="akasa\ALogger.cpp">
+      <Filter>akasa\aka</Filter>
+    </ClCompile>
+    <ClCompile Include="akasa\os.cpp">
+      <Filter>akasa\aka</Filter>
+    </ClCompile>
+    <ClCompile Include="akasa\utf8.cpp">
       <Filter>akasa\aka</Filter>
     </ClCompile>
   </ItemGroup>
