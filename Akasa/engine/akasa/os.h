@@ -5,6 +5,7 @@
 
 #include "akaTypes.h"
 #include "ILogger.h"
+#include "ITimer.h"
 
 namespace aka
 {

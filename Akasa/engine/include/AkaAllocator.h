@@ -1,7 +1,7 @@
 // allocator
 
-#ifndef __I_ILOGGER_H_INCLUDED__
-#define __I_ILOGGER_H_INCLUDED__
+#ifndef __AKA_ALLOCATOR_H_INCLUDED__
+#define __AKA_ALLOCATOR_H_INCLUDED__
 #include <new>
 #include <memory.h>
 
@@ -49,7 +49,7 @@ namespace core
 		{
 			return operator new(cnt);
 		}
-		virtual void* internal_delete(void * ptr)
+		virtual void internal_delete(void * ptr)
 		{
 			operator delete(ptr);
 		}
