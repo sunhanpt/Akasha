@@ -4,6 +4,9 @@
 #include "ILogger.h"
 #include "os.h"
 #include "AkaString.h"
+#include <fstream>
+
+using namespace std;
 
 
 namespace aka
@@ -34,6 +37,7 @@ namespace aka
 
 	private:
 		ELOG_LEVEL m_logLevel;
+		
 	};
 }
 

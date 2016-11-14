@@ -36,15 +36,31 @@ namespace aka
 
 	void ALogger::Log(const wchar_t * text, ELOG_LEVEL ll /* = ELL_INFORMATION */)
 	{
-
+		if (ll < m_logLevel) {
+			return;
+		}
+		core::stringc s = text;
+		Log(s.c_str(), ll);
 	}
 	void ALogger::Log(const c8 * text, const c8 * hint, ELOG_LEVEL ll /* = ELL_INFORMATION */)
 	{
-
+		if (ll < m_logLevel) {
+			return;
+		}
+		core::stringc s = text;
+		s += ": ";
+		s += hint;
+		Log(s.c_str(), ll);
 	}
 	void ALogger::Log(const wchar_t * text, const wchar_t * hint, ELOG_LEVEL ll /* = ELL_INFORMATION */)
 	{
-
+		if (ll < m_logLevel) {
+			return;
+		}
+		core::stringc s = text;
+		s += ": ";
+		s += hint;
+		Log(s.c_str(), ll);
 	}
 }
 
