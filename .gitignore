@@ -111,3 +111,4 @@ UpgradeLog*.htm
 *.db
 *.db
 Akasa/Akasa.VC.VC.opendb
+*.db
