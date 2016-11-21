@@ -155,8 +155,11 @@
     <ClInclude Include="include\AkaTypes.h" />
     <ClInclude Include="include\IEventReceiver.h" />
     <ClInclude Include="include\ILogger.h" />
+    <ClInclude Include="include\IReadFile.h" />
     <ClInclude Include="include\IReferenceCounted.h" />
     <ClInclude Include="include\ITimer.h" />
+    <ClInclude Include="include\IWriteFile.h" />
+    <ClInclude Include="include\path.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="akasa\ALogger.cpp" />

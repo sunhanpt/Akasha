@@ -15,6 +15,9 @@
     <Filter Include="akasha\aka">
       <UniqueIdentifier>{c00d8d94-a70d-467e-846c-0c2ecb379da6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="include\io">
+      <UniqueIdentifier>{740757e0-6135-492b-b848-bbc0b5831af1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\AkaCompileConfig.h">
@@ -52,6 +55,15 @@
     </ClInclude>
     <ClInclude Include="akasa\ATimer.h">
       <Filter>akasha\aka</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IReadFile.h">
+      <Filter>include\io</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IWriteFile.h">
+      <Filter>include\io</Filter>
+    </ClInclude>
+    <ClInclude Include="include\path.h">
+      <Filter>include\io</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
