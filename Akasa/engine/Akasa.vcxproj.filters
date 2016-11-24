@@ -18,6 +18,9 @@
     <Filter Include="include\io">
       <UniqueIdentifier>{740757e0-6135-492b-b848-bbc0b5831af1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="akasha\io">
+      <UniqueIdentifier>{19bf0a8b-db7e-45ee-913c-2984d0e481e5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\AkaCompileConfig.h">
@@ -65,6 +68,9 @@
     <ClInclude Include="include\path.h">
       <Filter>include\io</Filter>
     </ClInclude>
+    <ClInclude Include="akasa\AWriterFile.h">
+      <Filter>akasha\io</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="akasa\main.cpp">
@@ -78,6 +84,9 @@
     </ClCompile>
     <ClCompile Include="akasa\utf8.cpp">
       <Filter>akasha\aka</Filter>
+    </ClCompile>
+    <ClCompile Include="akasa\AWriterFile.cpp">
+      <Filter>akasha\io</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

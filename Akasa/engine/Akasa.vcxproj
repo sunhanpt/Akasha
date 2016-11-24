@@ -147,6 +147,7 @@
   <ItemGroup>
     <ClInclude Include="akasa\ALogger.h" />
     <ClInclude Include="akasa\ATimer.h" />
+    <ClInclude Include="akasa\AWriterFile.h" />
     <ClInclude Include="akasa\os.h" />
     <ClInclude Include="include\AkaAllocator.h" />
     <ClInclude Include="include\AkaCompileConfig.h" />
@@ -163,6 +164,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="akasa\ALogger.cpp" />
+    <ClCompile Include="akasa\AWriterFile.cpp" />
     <ClCompile Include="akasa\main.cpp" />
     <ClCompile Include="akasa\os.cpp" />
     <ClCompile Include="akasa\utf8.cpp" />
