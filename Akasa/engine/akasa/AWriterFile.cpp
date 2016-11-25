@@ -4,9 +4,63 @@ namespace aka
 {
 namespace io
 {
-	AWriteFile::AWriteFile(const io::path & fileName, bool append)
-	{
+
+AWriteFile::AWriteFile(const io::path & fileName, bool append)
+{
+#ifdef _DEBUG
+	this->setDebugName("AWriteFile");
+#endif
+	if (append) {
+		FOUT = new ofstream(fileName.c_str(),ios::app);
 	}
+	else {
+		FOUT = new ofstream(fileName.c_str());
+	}
+}
+
+AWriteFile::~AWriteFile()
+{
+	FOUT->close();
+	delete FOUT;
+	FOUT = nullptr;
+}
+
+bool AWriteFile::Write(const void * buffer)
+{
+	if (FOUT->is_open()) {
+		(*FOUT) << buffer;
+		if (FOUT->fail() == false) {
+			return true;
+		}
+	}
+	return false;
+}
+
+bool AWriteFile::Write(const void* buffer, u32 sizeToWrite)
+{
+	if (FOUT->is_open()) {
+		FOUT->write((char *)buffer, sizeToWrite);
+		if (FOUT->fail() == false) {
+			return true;
+		}
+	}
+	return false;
+}
+
+bool AWriteFile::Seek(long finalPos, bool relativeMovement /* = false */)
+{
+	if (relativeMovement) {
+		FOUT->seekp(finalPos, ios::cur);
+	}
+	else {
+		FOUT->seekp(finalPos, ios::beg);
+	}
+	if (FOUT->fail() == false) {
+		return true;
+	}
+	return false;
+}
+
 }
 }
 

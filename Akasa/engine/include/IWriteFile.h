@@ -13,8 +13,10 @@ namespace aka
 		public:
 			IWriteFile() {};
 			virtual						~IWriteFile() {};
+			// 写buffer
+			virtual bool				Write(const void* buffer) = 0;
 			// 写bytes到文件，sizeToWrite表示buffer的byte长度
-			virtual s32					Write(const void* buffer, u32 sizeToWrite) = 0;		
+			virtual bool				Write(const void* buffer, u32 sizeToWrite) = 0;		
 			// Seek到文件的某个地方，finalPos表示位置， relativeMovement为true表示相对于现在的位置，否则表示距离文件开始的位置
 			virtual	bool				Seek(long finalPos, bool relativeMovement = false) = 0;
 			// 返回现在的位置，bytes的个数
