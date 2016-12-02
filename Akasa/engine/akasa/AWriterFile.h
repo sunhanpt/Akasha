@@ -34,7 +34,8 @@ namespace io
 	protected:
 
 	private:
-		ofstream * FOUT;
+		ofstream FOUT;
+		io::path m_fileName;
 	};
 
 }
