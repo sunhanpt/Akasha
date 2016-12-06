@@ -24,7 +24,9 @@ namespace aka
 			// 返回文件的名称(包括路径)
 			virtual const path& GetFileName() const = 0;
 			// 刷新文件缓存
-			virtual bool Flush() = 0;
+			virtual void Flush() = 0;
+			// 关闭文件
+			virtual void Close() = 0;
 		};
 	}
 }

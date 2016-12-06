@@ -27,7 +27,7 @@ AWriteFile::~AWriteFile()
 bool AWriteFile::Write(const void * buffer)
 {
 	if (FOUT.is_open()) {
-		FOUT << buffer;
+		FOUT << (char *)buffer;
 		if (FOUT.fail() == false) {
 			return true;
 		}
@@ -71,6 +71,16 @@ long AWriteFile::GetPos()
 const path & AWriteFile::GetFileName() const
 {
 	return m_fileName;
+}
+
+void AWriteFile::Flush()
+{
+	FOUT.flush();
+}
+
+void AWriteFile::Close()
+{
+	FOUT.close();
 }
 
 

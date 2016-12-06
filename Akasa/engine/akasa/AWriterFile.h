@@ -30,7 +30,9 @@ namespace io
 		// 返回文件的名称(包括路径)
 		virtual const path& GetFileName() const;
 		// 刷新文件缓存
-		virtual bool Flush();
+		virtual void Flush();
+		// 关闭文件
+		virtual void Close();
 	protected:
 
 	private:

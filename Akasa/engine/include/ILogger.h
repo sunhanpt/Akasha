@@ -40,6 +40,12 @@ namespace aka
 
 		// 将text文案，打进日志，hint是附加信息最终文案格式为(text:hint)
 		virtual void Log(const wchar_t * text, const wchar_t * hint, ELOG_LEVEL ll = ELL_INFORMATION) = 0;
+
+		// 将日志写到哪个文件
+		virtual void OpenLogFile(const c8 * strFile, ELOG_LEVEL ll = ELL_INFORMATION) = 0;
+
+		// 将日志关闭
+		virtual void CloseLogFile() = 0;
 	};
 
 } // end namespace aka
