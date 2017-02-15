@@ -21,10 +21,10 @@ namespace aka
 			virtual bool					Seek(u32 finalPos, bool relativeMovement = false) = 0;
 
 			// 返回文件大小
-			virtual u32						GetSize() = 0;
+			virtual const u32				GetSize() = 0;
 
 			// 返回当前位置
-			virtual u32						GetPos() = 0;
+			virtual const u32				GetPos() = 0;
 
 			// 
 			virtual path&					GetFileName() = 0;
