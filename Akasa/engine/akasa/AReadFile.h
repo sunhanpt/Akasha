@@ -4,7 +4,7 @@
 #include "IReadFile.h"
 #include "os.h"
 #include "AkaString.h"
-#include <fstream>
+#include <stdio.h>
 
 using namespace std;
 
@@ -15,6 +15,12 @@ namespace io
 {
 	class AReadFile: public virtual IReadFile
 	{
+
+	public:
+		AReadFile(const io::path& fileName);
+
+		~AReadFile();
+
 		// 读取sizeToRead大小的数据(bytes)到buffer，返回值表示读取的长度
 		virtual s32						Read(void* buffer, u32 sizeToRead) _AKA_OVERRIDE_;
 
@@ -22,13 +28,21 @@ namespace io
 		virtual bool					Seek(u32 finalPos, bool relativeMovement = false) _AKA_OVERRIDE_;
 
 		// 返回文件大小
-		virtual u32						GetSize() _AKA_OVERRIDE_;
+
+		virtual const u32				GetSize() _AKA_OVERRIDE_;
 
 		// 返回当前位置
-		virtual u32						GetPos() _AKA_OVERRIDE_;
+		virtual const u32				GetPos() _AKA_OVERRIDE_;
 
 		// 
 		virtual path&					GetFileName() _AKA_OVERRIDE_;
+
+	private:
+		void openFile();
+
+		FILE * Fin;
+		io::path m_fileName;
+		int m_fileSize;
 	};
 
 }
