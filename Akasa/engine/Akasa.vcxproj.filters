@@ -71,6 +71,9 @@
     <ClInclude Include="akasa\AWriterFile.h">
       <Filter>akasha\io</Filter>
     </ClInclude>
+    <ClInclude Include="akasa\AReadFile.h">
+      <Filter>akasha\io</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="akasa\main.cpp">
@@ -86,6 +89,9 @@
       <Filter>akasha\aka</Filter>
     </ClCompile>
     <ClCompile Include="akasa\AWriterFile.cpp">
+      <Filter>akasha\io</Filter>
+    </ClCompile>
+    <ClCompile Include="akasa\AReadFile.cpp">
       <Filter>akasha\io</Filter>
     </ClCompile>
   </ItemGroup>
