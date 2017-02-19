@@ -22,12 +22,18 @@ AReadFile::~AReadFile()
 //////////////////////////////////* override method *////////////////////////////////////////
 s32	AReadFile::Read(void* buffer, u32 sizeToRead)
 {
-
+	if (!IsOpen()) {
+		return 0;
+	}
+	fread_s(buffer, sizeToRead, 1, sizeToRead, Fin);
 }
 
-bool AReadFile::Seek(u32 finalPos, bool relativeMovement = false)
+bool AReadFile::Seek(u32 finalPos, bool relativeMovement)
 {
-
+	if (!IsOpen()) {
+		return false;
+	}
+	return  fseek(Fin, finalPos, relativeMovement? SEEK_CUR: SEEK_SET) == 0;
 }
 
 const u32 AReadFile::GetSize()
@@ -37,12 +43,12 @@ const u32 AReadFile::GetSize()
 
 const u32	AReadFile::GetPos()
 {
-	ftell(Fin);
+	return ftell(Fin);
 }
 
 path& AReadFile::GetFileName()
 {
-
+	return m_fileName;
 }
 
 ///////////////////////////////////* private method *///////////////////////////////////////

@@ -37,6 +37,8 @@ namespace io
 		// 
 		virtual path&					GetFileName() _AKA_OVERRIDE_;
 
+		bool							IsOpen() const { return Fin != nullptr; }
+
 	private:
 		void openFile();
 
