@@ -25,7 +25,7 @@ s32	AReadFile::Read(void* buffer, u32 sizeToRead)
 	if (!IsOpen()) {
 		return 0;
 	}
-	fread_s(buffer, sizeToRead, 1, sizeToRead, Fin);
+	return fread_s(buffer, sizeToRead, 1, sizeToRead, Fin);
 }
 
 bool AReadFile::Seek(u32 finalPos, bool relativeMovement)

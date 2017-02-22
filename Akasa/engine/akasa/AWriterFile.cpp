@@ -65,7 +65,7 @@ long AWriteFile::GetPos()
 	if (!FOUT.is_open()) {
 		return 0;
 	}
-	return FOUT.tellp();
+	return (long)FOUT.tellp();
 }
 
 const path & AWriteFile::GetFileName() const
