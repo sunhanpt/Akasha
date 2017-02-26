@@ -21,6 +21,9 @@
     <Filter Include="akasha\io">
       <UniqueIdentifier>{19bf0a8b-db7e-45ee-913c-2984d0e481e5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="include\scene">
+      <UniqueIdentifier>{e08aea2d-0273-4a83-9a5a-5047e744fc63}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\AkaCompileConfig.h">
@@ -73,6 +76,42 @@
     </ClInclude>
     <ClInclude Include="akasa\AReadFile.h">
       <Filter>akasha\io</Filter>
+    </ClInclude>
+    <ClInclude Include="include\dimension2d.h">
+      <Filter>include\core</Filter>
+    </ClInclude>
+    <ClInclude Include="include\vector3d.h">
+      <Filter>include\core</Filter>
+    </ClInclude>
+    <ClInclude Include="include\vector2d.h">
+      <Filter>include\core</Filter>
+    </ClInclude>
+    <ClInclude Include="include\line2d.h">
+      <Filter>include\core</Filter>
+    </ClInclude>
+    <ClInclude Include="include\line3d.h">
+      <Filter>include\core</Filter>
+    </ClInclude>
+    <ClInclude Include="include\matrix4.h">
+      <Filter>include\core</Filter>
+    </ClInclude>
+    <ClInclude Include="include\plane3d.h">
+      <Filter>include\core</Filter>
+    </ClInclude>
+    <ClInclude Include="include\aabbox3d.h">
+      <Filter>include\core</Filter>
+    </ClInclude>
+    <ClInclude Include="include\rect.h">
+      <Filter>include\core</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ISceneManager.h">
+      <Filter>include\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ISceneNode.h">
+      <Filter>include\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IAttributeExchangingObject.h">
+      <Filter>include\scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

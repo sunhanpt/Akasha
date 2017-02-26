@@ -150,18 +150,30 @@
     <ClInclude Include="akasa\ATimer.h" />
     <ClInclude Include="akasa\AWriterFile.h" />
     <ClInclude Include="akasa\os.h" />
+    <ClInclude Include="include\aabbox3d.h" />
     <ClInclude Include="include\AkaAllocator.h" />
     <ClInclude Include="include\AkaCompileConfig.h" />
     <ClInclude Include="include\AkaMath.h" />
     <ClInclude Include="include\AkaString.h" />
     <ClInclude Include="include\AkaTypes.h" />
+    <ClInclude Include="include\dimension2d.h" />
+    <ClInclude Include="include\IAttributeExchangingObject.h" />
     <ClInclude Include="include\IEventReceiver.h" />
     <ClInclude Include="include\ILogger.h" />
     <ClInclude Include="include\IReadFile.h" />
     <ClInclude Include="include\IReferenceCounted.h" />
+    <ClInclude Include="include\ISceneManager.h" />
+    <ClInclude Include="include\ISceneNode.h" />
     <ClInclude Include="include\ITimer.h" />
     <ClInclude Include="include\IWriteFile.h" />
+    <ClInclude Include="include\line2d.h" />
+    <ClInclude Include="include\line3d.h" />
+    <ClInclude Include="include\matrix4.h" />
     <ClInclude Include="include\path.h" />
+    <ClInclude Include="include\plane3d.h" />
+    <ClInclude Include="include\rect.h" />
+    <ClInclude Include="include\vector3d.h" />
+    <ClInclude Include="include\vector2d.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="akasa\ALogger.cpp" />
