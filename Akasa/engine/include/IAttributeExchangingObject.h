@@ -5,7 +5,7 @@
 
 namespace aka
 {
-namespace scene
+namespace io
 {
 
 class IAttributeExchangingObject: public IReferenceCounted

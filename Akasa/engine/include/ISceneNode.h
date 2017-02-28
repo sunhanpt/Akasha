@@ -8,8 +8,11 @@ namespace aka
 namespace scene
 {
 
-class ISceneNode : public IAttributeExchangingObject
+class ISceneNode : public io::IAttributeExchangingObject
 {
+	ISceneNode() = default;
+	virtual	~ISceneNode() = default;
+
 
 };
 	
