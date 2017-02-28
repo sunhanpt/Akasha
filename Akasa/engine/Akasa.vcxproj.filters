@@ -111,7 +111,7 @@
       <Filter>include\scene</Filter>
     </ClInclude>
     <ClInclude Include="include\IAttributeExchangingObject.h">
-      <Filter>include\scene</Filter>
+      <Filter>include\io</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
