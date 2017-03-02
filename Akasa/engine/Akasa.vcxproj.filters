@@ -113,6 +113,12 @@
     <ClInclude Include="include\IAttributeExchangingObject.h">
       <Filter>include\io</Filter>
     </ClInclude>
+    <ClInclude Include="include\IObject.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\AkaUtils.h">
+      <Filter>include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="akasa\main.cpp">

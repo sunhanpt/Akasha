@@ -156,6 +156,8 @@
     <ClInclude Include="include\AkaMath.h" />
     <ClInclude Include="include\AkaString.h" />
     <ClInclude Include="include\AkaTypes.h" />
+    <ClInclude Include="include\AkaUtils.h" />
+    <ClInclude Include="include\IObject.h" />
     <ClInclude Include="include\dimension2d.h" />
     <ClInclude Include="include\IAttributeExchangingObject.h" />
     <ClInclude Include="include\IEventReceiver.h" />
