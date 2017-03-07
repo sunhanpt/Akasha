@@ -64,6 +64,20 @@ namespace aka
 				return core::stringw(getPath());
 			}
 
+			//! Get the file path of the fullPath
+			const path getDirect()
+			{
+
+			}
+			const path getExtension()
+			{
+
+			}
+			const path getName()
+			{
+
+			}
+
 		protected:
 			// convert the given path string to a name string.
 			path PathToName(const path& p) const
