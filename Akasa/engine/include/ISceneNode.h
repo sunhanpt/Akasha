@@ -5,6 +5,8 @@
 
 #include "matrix4.h"
 #include "AkaString.h"
+#include "ECullingTypes.h"
+#include "EDebugSceneTypes.h"
 
 #include "IAttributeExchangingObject.h"
 
@@ -24,11 +26,13 @@ public:
 		const core::vector3df& rotation = core::vector3df(0.0f, 0.0f, 0.0f),
 		const core::vector3df& scale = core::vector3df(1.0f, 1.0f, 1.0f))
 		: m_relativeTranslation(position), m_relativeRotation(rotation), m_relativeScale(scale),
-		m_parent(0), m_sceneManager(mgr), m_ID(id)/*,
+		m_parent(0), m_sceneManager(mgr), m_ID(id),
 		m_automaticCullingState(EAC_BOX), m_debugDataVisible(EDS_OFF),
-		m_isVisible(true), m_isDebugObject(false)*/
+		m_isVisible(true), m_isDebugObject(false)
 	{
-
+		if (m_parent) {
+			m_parent->addChild(this);
+		}
 	}
 
 	ISceneNode() {}
@@ -37,7 +41,7 @@ public:
 	virtual void OnRegisterSceneNode() { /*TODO: 注册node到场景，需要遍历子节点，注册到相应的render管线中*/ }
 	virtual void OnAnimate(u32 timeMs) {/*TODO: animate，需要遍历子节点*/ } 
 	virtual void render() = 0;// render the node
-
+	virtual void addChild(ISceneNode * childNode) = 0;
 
 private:
 	//! node parent
@@ -67,7 +71,7 @@ private:
 	//! ID
 	s32							m_ID;
 
-	//! Automatic culling state
+	//! culling type
 	u32							m_automaticCullingState;
 
 	//! Flag if debug data should be drawn, such as Bounding Boxes.
