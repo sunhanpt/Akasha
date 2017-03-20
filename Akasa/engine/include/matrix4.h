@@ -54,14 +54,21 @@ public:
 
 	CMatrix4<T>& operator= (const T v);
 
-	CMatrix4<T> operator+ (const CMatrix4<T>& other);
+	CMatrix4<T> operator+ (const CMatrix4<T>& other) const;
 	CMatrix4<T>& operator+= (const CMatrix4<T>& other);
 
-	CMatrix4<T> operator- (const CMatrix4<T>& other);
+	CMatrix4<T> operator- (const CMatrix4<T>& other) const;
 	CMatrix4<T>& operator-= (const CMatrix4<T>& other);
 
 
-	CMatrix4<T>& operator *(CMatrix4<T>& other);
+	CMatrix4<T> operator *(CMatrix4<T>& other) const;
+	CMatrix4<T>& operator *=(CMatrix4<T>& other);
+
+	CMatrix4<T> operator *(T v) const;
+	CMatrix4<T>& operator *=(T v);
+
+	CMatrix4<T> operator /(T v) const;
+	CMatrix4<T>& operator /=(T v);
 
 	CMatrix4<T>& makeIndentity();
 
@@ -88,6 +95,7 @@ inline CMatrix4<T>::CMatrix4(CMatrix4<T>& other, eConstructor eType)
 	switch (eType)
 	{
 	case aka::core::EM4CONST_NOTHING:
+		memset(m, 0, sizeof(T) * 16);
 		break;
 	case aka::core::EM4CONST_COPY:
 		*this = other;
@@ -131,9 +139,105 @@ inline CMatrix4<T>& CMatrix4<T>::operator=(const T v)
 }
 
 template<class T>
-inline CMatrix4<T>& CMatrix4<T>::operator*(CMatrix4<T>& other)
+inline CMatrix4<T> CMatrix4<T>::operator+(const CMatrix4<T>& other) const
 {
-	// TODO: 在此处插入 return 语句
+	CMatrix4<T> t();
+	for (int i = 0; i < 16; i++) {
+		t.m[i] = this->m[i] + other.m[i];
+	}
+	 
+}
+
+template<class T>
+inline CMatrix4<T>& CMatrix4<T>::operator+=(const CMatrix4<T>& other)
+{
+	for (int i = 0; i < 16; i++) {
+		this->m[i] += other.m[i];
+	}
+	return *this;
+}
+
+template<class T>
+inline CMatrix4<T> CMatrix4<T>::operator-(const CMatrix4<T>& other)
+{
+	CMatrix4<T> t();
+	for (int i = 0; i < 16; i++) {
+		t.m[i] = this->m[i] - other.m[i];
+	}
+}
+
+template<class T>
+inline CMatrix4<T> CMatrix4<T>::operator-(const CMatrix4<T>& other) const
+{
+	return CMatrix4<T>();
+}
+
+template<class T>
+inline CMatrix4<T>& CMatrix4<T>::operator-=(const CMatrix4<T>& other)
+{
+	for (int i = 0; i < 16; i++) {
+		this->m[i] -= other.m[i];
+	}
+	return *this;
+}
+
+template<class T>
+inline CMatrix4<T> CMatrix4<T>::operator*(CMatrix4<T>& other) const
+{
+	CMatrix4<T> t(EM4CONST_NOTHING);
+	for (int i = 0; i < 4; i++) {
+		for (int j = 0; j < 4; j++) {
+			for (int k = 0; k < 4; ++) {
+				t(i, j) += this->(i, k) * other(k,j);
+			}
+		}
+	}
+	return t;
+}
+
+template<class T>
+inline CMatrix4<T>& CMatrix4<T>::operator*=(CMatrix4<T>& other)
+{
+	*this = *this * other;
+	return *this;
+}
+
+template<class T>
+inline CMatrix4<T> CMatrix4<T>::operator*(T v) const
+{
+	return CMatrix4<T> t(EM4CONST_NOTHING);
+	for (int i = 0; i < 16; i++) {
+		t.m[i] = this->m[i] * v;
+	}
+	return t;
+}
+
+template<class T>
+inline CMatrix4<T>& CMatrix4<T>::operator*=(T v)
+{
+	for (int i = 0; i < 16; i++) {
+		this->m[i] *= v;
+	}
+	return *this;
+}
+
+template<class T>
+inline CMatrix4<T> CMatrix4<T>::operator/(T v) const
+{
+	CMatrix4<T> t(EM4CONST_NOTHING);
+	for (int i = 0; i < 16; i++) {
+		t.m[i] = this->m[i] / v;
+	}
+	return t;
+}
+
+template<class T>
+inline CMatrix4<T>& CMatrix4<T>::operator/=(T v)
+{
+	for (int i = 0; i < 16; i++){
+		this->m[i] /= v;
+	}
+	return *this;
 }
 
 template<class T>

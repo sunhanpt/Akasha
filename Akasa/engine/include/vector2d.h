@@ -11,7 +11,7 @@ namespace core
 {
 
 template<class T>
-class vector2d
+struct vector2d
 {
 
 };
