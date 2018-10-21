@@ -1,0 +1,143 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="include">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="include\core">
+      <UniqueIdentifier>{a6320226-66b1-4873-8855-207015fab821}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="akasha">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="akasha\aka">
+      <UniqueIdentifier>{c00d8d94-a70d-467e-846c-0c2ecb379da6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\io">
+      <UniqueIdentifier>{740757e0-6135-492b-b848-bbc0b5831af1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="akasha\io">
+      <UniqueIdentifier>{19bf0a8b-db7e-45ee-913c-2984d0e481e5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\scene">
+      <UniqueIdentifier>{e08aea2d-0273-4a83-9a5a-5047e744fc63}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\AkaCompileConfig.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\AkaTypes.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IReferenceCounted.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ILogger.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="akasa\ALogger.h">
+      <Filter>akasha\aka</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IEventReceiver.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="akasa\os.h">
+      <Filter>akasha\aka</Filter>
+    </ClInclude>
+    <ClInclude Include="include\AkaString.h">
+      <Filter>include\core</Filter>
+    </ClInclude>
+    <ClInclude Include="include\AkaAllocator.h">
+      <Filter>include\core</Filter>
+    </ClInclude>
+    <ClInclude Include="include\AkaMath.h">
+      <Filter>include\core</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ITimer.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="akasa\ATimer.h">
+      <Filter>akasha\aka</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IReadFile.h">
+      <Filter>include\io</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IWriteFile.h">
+      <Filter>include\io</Filter>
+    </ClInclude>
+    <ClInclude Include="include\path.h">
+      <Filter>include\io</Filter>
+    </ClInclude>
+    <ClInclude Include="akasa\AWriterFile.h">
+      <Filter>akasha\io</Filter>
+    </ClInclude>
+    <ClInclude Include="akasa\AReadFile.h">
+      <Filter>akasha\io</Filter>
+    </ClInclude>
+    <ClInclude Include="include\dimension2d.h">
+      <Filter>include\core</Filter>
+    </ClInclude>
+    <ClInclude Include="include\vector3d.h">
+      <Filter>include\core</Filter>
+    </ClInclude>
+    <ClInclude Include="include\vector2d.h">
+      <Filter>include\core</Filter>
+    </ClInclude>
+    <ClInclude Include="include\line2d.h">
+      <Filter>include\core</Filter>
+    </ClInclude>
+    <ClInclude Include="include\line3d.h">
+      <Filter>include\core</Filter>
+    </ClInclude>
+    <ClInclude Include="include\matrix4.h">
+      <Filter>include\core</Filter>
+    </ClInclude>
+    <ClInclude Include="include\plane3d.h">
+      <Filter>include\core</Filter>
+    </ClInclude>
+    <ClInclude Include="include\aabbox3d.h">
+      <Filter>include\core</Filter>
+    </ClInclude>
+    <ClInclude Include="include\rect.h">
+      <Filter>include\core</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ISceneManager.h">
+      <Filter>include\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ISceneNode.h">
+      <Filter>include\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IAttributeExchangingObject.h">
+      <Filter>include\io</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IObject.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\AkaUtils.h">
+      <Filter>include</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="akasa\main.cpp">
+      <Filter>akasha</Filter>
+    </ClCompile>
+    <ClCompile Include="akasa\ALogger.cpp">
+      <Filter>akasha\aka</Filter>
+    </ClCompile>
+    <ClCompile Include="akasa\os.cpp">
+      <Filter>akasha\aka</Filter>
+    </ClCompile>
+    <ClCompile Include="akasa\utf8.cpp">
+      <Filter>akasha\aka</Filter>
+    </ClCompile>
+    <ClCompile Include="akasa\AWriterFile.cpp">
+      <Filter>akasha\io</Filter>
+    </ClCompile>
+    <ClCompile Include="akasa\AReadFile.cpp">
+      <Filter>akasha\io</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
