@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="Source.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Shader">
+      <UniqueIdentifier>{0ee04635-a510-4800-8ed5-9f58e35d3471}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source">
+      <UniqueIdentifier>{a94c16c7-90e8-4334-84dc-4fa8cfd8ea82}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Core">
+      <UniqueIdentifier>{f088ddf3-3427-44cd-9bf8-7e1a59f6c318}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Core\public">
+      <UniqueIdentifier>{24561c2c-f313-4ff8-9d24-5a250f413266}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Core\private">
+      <UniqueIdentifier>{3157c090-4d04-4519-86a9-d684e9814f56}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Engine">
+      <UniqueIdentifier>{c11ed01f-bc01-4faa-9b63-db3dd7abe801}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\D3D11RHI">
+      <UniqueIdentifier>{049da77f-bf62-4fcf-8430-5e41746550f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Renderer">
+      <UniqueIdentifier>{4e90560b-365f-4586-9cab-88a01d53de34}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\System">
+      <UniqueIdentifier>{8948c1f1-9df3-496e-8766-c410ddb91918}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\ShaderCore">
+      <UniqueIdentifier>{7c87ee49-55a5-4c76-8d48-4815cd82ff8c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\RHI">
+      <UniqueIdentifier>{f9870bdc-2762-4026-87ed-fc77abd9fa57}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Utility">
+      <UniqueIdentifier>{4bc58864-7421-42d0-8a40-7d0358fddcd9}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
