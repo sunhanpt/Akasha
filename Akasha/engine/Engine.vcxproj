@@ -26,8 +26,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\CoreDefines.h" />
+    <ClInclude Include="include\CriticalSection.h" />
     <ClInclude Include="include\RHIResources.h" />
+    <ClInclude Include="include\ScopeLock.h" />
     <ClInclude Include="include\ThreadSafeCounter.h" />
+    <ClInclude Include="include\ThreadSafeQueue.h" />
+    <ClInclude Include="include\ThreadSafeStack.h" />
     <ClInclude Include="include\TypeDefines.h" />
     <ClInclude Include="source\stdafx.h" />
   </ItemGroup>

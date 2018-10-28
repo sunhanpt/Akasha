@@ -16,12 +16,6 @@
     <Filter Include="Source\Core">
       <UniqueIdentifier>{f088ddf3-3427-44cd-9bf8-7e1a59f6c318}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Core\public">
-      <UniqueIdentifier>{24561c2c-f313-4ff8-9d24-5a250f413266}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Core\private">
-      <UniqueIdentifier>{3157c090-4d04-4519-86a9-d684e9814f56}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Engine">
       <UniqueIdentifier>{c11ed01f-bc01-4faa-9b63-db3dd7abe801}</UniqueIdentifier>
     </Filter>
@@ -64,6 +58,15 @@
     <Filter Include="Source\HAL\Private">
       <UniqueIdentifier>{070fc3fe-e7b1-49da-9b8b-4e3a7deced63}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Core\Public">
+      <UniqueIdentifier>{24561c2c-f313-4ff8-9d24-5a250f413266}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Core\Private">
+      <UniqueIdentifier>{3157c090-4d04-4519-86a9-d684e9814f56}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Core\Public\Containers">
+      <UniqueIdentifier>{e9597ae6-cec6-4bb5-bbd9-7abddcc7e352}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\stdafx.h">
@@ -79,6 +82,18 @@
       <Filter>Source\Common\Public</Filter>
     </ClInclude>
     <ClInclude Include="include\ThreadSafeCounter.h">
+      <Filter>Source\HAL\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ThreadSafeQueue.h">
+      <Filter>Source\Core\Public\Containers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ThreadSafeStack.h">
+      <Filter>Source\Core\Public\Containers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CriticalSection.h">
+      <Filter>Source\HAL\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ScopeLock.h">
       <Filter>Source\HAL\Public</Filter>
     </ClInclude>
   </ItemGroup>
