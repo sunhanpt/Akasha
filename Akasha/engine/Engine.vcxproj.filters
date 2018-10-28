@@ -2,6 +2,9 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="Source.cpp" />
+    <ClCompile Include="source\stdafx.cpp">
+      <Filter>Source\Common\Private</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Shader">
@@ -28,9 +31,6 @@
     <Filter Include="Source\Renderer">
       <UniqueIdentifier>{4e90560b-365f-4586-9cab-88a01d53de34}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\System">
-      <UniqueIdentifier>{8948c1f1-9df3-496e-8766-c410ddb91918}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\ShaderCore">
       <UniqueIdentifier>{7c87ee49-55a5-4c76-8d48-4815cd82ff8c}</UniqueIdentifier>
     </Filter>
@@ -40,5 +40,46 @@
     <Filter Include="Source\Utility">
       <UniqueIdentifier>{4bc58864-7421-42d0-8a40-7d0358fddcd9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Common">
+      <UniqueIdentifier>{3de7f831-5566-4343-a2c5-1d89d6a55a6c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Common\Private">
+      <UniqueIdentifier>{5fb83634-8be0-4ddb-b3ae-fd5d03863c93}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Common\Public">
+      <UniqueIdentifier>{eb11bf3f-e359-453b-9c5f-471f34a90796}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\RHI\Public">
+      <UniqueIdentifier>{cfcf4876-d16d-49ee-bd21-108d84563024}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\RHI\Private">
+      <UniqueIdentifier>{39677752-f428-481a-b9e3-9659429449a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\HAL">
+      <UniqueIdentifier>{8948c1f1-9df3-496e-8766-c410ddb91918}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\HAL\Public">
+      <UniqueIdentifier>{c3ff5fb9-c523-40ce-8482-98e774b53dd5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\HAL\Private">
+      <UniqueIdentifier>{070fc3fe-e7b1-49da-9b8b-4e3a7deced63}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="source\stdafx.h">
+      <Filter>Source\Common\Private</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RHIResources.h">
+      <Filter>Source\RHI\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CoreDefines.h">
+      <Filter>Source\Common\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="include\TypeDefines.h">
+      <Filter>Source\Common\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ThreadSafeCounter.h">
+      <Filter>Source\HAL\Public</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
