@@ -26,7 +26,7 @@ public:
 		return m_Stack.empty();
 	}
 
-	void Push(T& value)
+	void Push(T value)
 	{
 		AScopeLock(&ThreadsCritical);
 		m_Stack.push(value);

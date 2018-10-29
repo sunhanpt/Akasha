@@ -28,17 +28,37 @@ public:
 
 	__forceinline uint32 Release() const
 	{
+		int32 NewValue = m_NumRefs.Decrement;
+		if (NewValue == 0)
+		{
+			if (!DeferDelete())
+			{
+				delete this;
+			}
+			else
+			{
+				if (_InterlockedCompareExchange(&m_MarkedForDelete, 1, 0) == 0) // 保证此resouce只被放到pending中一次。
+				{
+					s_PendingDeletes.Push(const_cast<ARHIResource*>(this));
+				}
+			}
+		}
 
+		assert(NewValue >= 0);
+		return uint32(NewValue);
 	}
 
 	__forceinline uint32 GetRefCount() const
 	{
-
+		int32 CurrentValue = m_NumRefs.GetValue();
+		assert(CurrentValue >= 0);
+		return uint32(CurrentValue);
 	}
 
 	void DoNoDeferDelete()
 	{
-
+		assert(!m_MarkedForDelete); // 没被排队删除
+		m_bDoNotDeferDelete = true;
 	}
 
 	void SetCommitted(bool bInCommitted)
@@ -52,7 +72,7 @@ public:
 	}
 
 	static void FlushPendingDeltes();
-	static bool ByPass();
+	//static bool ByPass();
 
 private:
 	mutable AThreadSafeCounter	m_NumRefs;
@@ -60,6 +80,11 @@ private:
 	bool						m_bDoNotDeferDelete;
 	bool						m_bCommitted;
 
-	static AThreadSafeStack<ARHIResource>	s_PendingDeletes;
+	static AThreadSafeStack<ARHIResource*>	s_PendingDeletes;
 	static ARHIResource*					s_CurrentlyDeleting;
+
+	__forceinline bool DeferDelete() const
+	{
+		return !m_bDoNotDeferDelete; // TODO: Add other conditions.
+	}
 };
