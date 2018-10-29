@@ -96,5 +96,8 @@
     <ClInclude Include="include\ScopeLock.h">
       <Filter>Source\HAL\Public</Filter>
     </ClInclude>
+    <ClInclude Include="source\RHI.h">
+      <Filter>Source\RHI\Private</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

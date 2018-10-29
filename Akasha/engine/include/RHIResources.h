@@ -63,16 +63,17 @@ public:
 
 	void SetCommitted(bool bInCommitted)
 	{
-
+		// 应该在render线程调用
+		m_bCommitted = bInCommitted;
 	}
 
 	bool IsCommitted() const
 	{
-
+		// 应该在render线程调用
+		return m_bCommitted;
 	}
 
 	static void FlushPendingDeltes();
-	//static bool ByPass();
 
 private:
 	mutable AThreadSafeCounter	m_NumRefs;

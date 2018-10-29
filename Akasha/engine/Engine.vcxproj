@@ -33,6 +33,7 @@
     <ClInclude Include="include\ThreadSafeQueue.h" />
     <ClInclude Include="include\ThreadSafeStack.h" />
     <ClInclude Include="include\TypeDefines.h" />
+    <ClInclude Include="source\RHI.h" />
     <ClInclude Include="source\stdafx.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
