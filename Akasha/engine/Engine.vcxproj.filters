@@ -5,6 +5,9 @@
     <ClCompile Include="source\stdafx.cpp">
       <Filter>Source\Common\Private</Filter>
     </ClCompile>
+    <ClCompile Include="source\Hash.cpp">
+      <Filter>Source\Core\Private\Misc</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Shader">
@@ -67,6 +70,12 @@
     <Filter Include="Source\Core\Public\Containers">
       <UniqueIdentifier>{e9597ae6-cec6-4bb5-bbd9-7abddcc7e352}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Core\Public\Misc">
+      <UniqueIdentifier>{c18f3bca-f29c-4c58-be90-f75bc63e604d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Core\Private\Misc">
+      <UniqueIdentifier>{27263c9e-8e85-4773-b06e-f5c0dfc6acba}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\stdafx.h">
@@ -98,6 +107,9 @@
     </ClInclude>
     <ClInclude Include="source\RHI.h">
       <Filter>Source\RHI\Private</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Hash.h">
+      <Filter>Source\Core\Public\Misc</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

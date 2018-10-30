@@ -20,8 +20,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <UndefineAllPreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</UndefineAllPreprocessorDefinitions>
     </ClCompile>
+    <ClCompile Include="source\Hash.cpp" />
     <ClCompile Include="source\stdafx.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -29,6 +31,7 @@
     <ClInclude Include="include\CriticalSection.h" />
     <ClInclude Include="include\RHIResources.h" />
     <ClInclude Include="include\ScopeLock.h" />
+    <ClInclude Include="include\Hash.h" />
     <ClInclude Include="include\ThreadSafeCounter.h" />
     <ClInclude Include="include\ThreadSafeQueue.h" />
     <ClInclude Include="include\ThreadSafeStack.h" />

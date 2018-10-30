@@ -1,8 +1,11 @@
+#pragma once
+
 #include "TypeDefines.h"
 #include "CoreDefines.h"
 #include "ThreadSafeCounter.h"
 #include <cassert>
 #include "ThreadSafeStack.h"
+#include "Hash.h"
 
 class AKADLL_API ARHIResource
 {
@@ -89,3 +92,25 @@ private:
 		return !m_bDoNotDeferDelete; // TODO: Add other conditions.
 	}
 };
+
+
+class ARHIShader : public ARHIResource
+{
+public:
+	ARHIShader(bool InbDoNotDeferDelete = false) : ARHIResource(InbDoNotDeferDelete) {}
+
+#if _DEBUG
+	std::string m_ShaderName;
+#endif
+
+private:
+	AHash m_Hash;
+};
+
+
+class ARHIVertexShader : public ARHIResource {};
+class ARHIHullShader : public ARHIResource {};
+class ARHIDomainShader : public ARHIResource {};
+class ARHIPixelShader : public ARHIResource {};
+class ARHIGeometryShader : public ARHIResource {};
+class ARHIComputerShader : public ARHIResource {};

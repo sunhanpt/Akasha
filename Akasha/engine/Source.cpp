@@ -1,7 +1,8 @@
-#include "stdafx.h"
+
 #include <iostream>
 #include "ThreadSafeStack.h"
 #include "ThreadSafeQueue.h"
+#include "Hash.h"
 
 using namespace std;
 
