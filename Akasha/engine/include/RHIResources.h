@@ -6,6 +6,7 @@
 #include <cassert>
 #include "ThreadSafeStack.h"
 #include "Hash.h"
+#include "PixelFormat.h"
 
 class AKADLL_API ARHIResource
 {
@@ -114,3 +115,48 @@ class ARHIDomainShader : public ARHIResource {};
 class ARHIPixelShader : public ARHIResource {};
 class ARHIGeometryShader : public ARHIResource {};
 class ARHIComputerShader : public ARHIResource {};
+
+class ARHIIndexBuffer : public ARHIResource
+{
+public:
+	ARHIIndexBuffer(uint32 InStride, uint32 InSize, uint32 InUsage)
+		: m_Stride(InStride)
+		, m_Size(InSize)
+		, m_Usage(InUsage)
+	{
+	}
+
+	uint32 GetStride() const { return m_Stride; }
+	uint32 GetSize() const { return m_Size; }
+	uint32 GetUsage() const { return m_Usage; }
+
+private:
+	uint32 m_Stride;
+	uint32 m_Size;
+	uint32 m_Usage;
+};
+
+class ARHIVertexBuffer : public ARHIResource
+{
+public:
+	ARHIVertexBuffer(uint32 InSize, uint32 InUsage)
+		: m_Size(InSize)
+		, m_Usage(InUsage)
+	{}
+private:
+	uint32 m_Size;
+	uint32 m_Usage;
+};
+
+class ARHITexture : public ARHIResource
+{
+public:
+	ARHITexture(uint32 InNumMips, uint32 InNumSamples, EPixelFormat InFormat, uint32 InFlags) 
+	{}
+private:
+	uint32 m_NumMips;
+	uint32 m_NumSamples;
+	EPixelFormat m_Format;
+	uint32 m_Flags;
+	std::string m_TextureName;
+};

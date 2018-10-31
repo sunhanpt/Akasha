@@ -8,6 +8,9 @@
     <ClCompile Include="source\Hash.cpp">
       <Filter>Source\Core\Private\Misc</Filter>
     </ClCompile>
+    <ClCompile Include="source\RHI.cpp">
+      <Filter>Source\RHI\Private</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Shader">
@@ -76,6 +79,18 @@
     <Filter Include="Source\Core\Private\Misc">
       <UniqueIdentifier>{27263c9e-8e85-4773-b06e-f5c0dfc6acba}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Engine\Public">
+      <UniqueIdentifier>{35eee815-1f73-4f65-be9a-546eb7eedcb3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Core\Public\Math">
+      <UniqueIdentifier>{50ae665b-037d-4278-9ea8-31d8c4b359ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\System">
+      <UniqueIdentifier>{81d5551f-73ec-4dfa-a9d0-82d06ab9eb47}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\System\Windows">
+      <UniqueIdentifier>{eb2fb8c8-ac80-47ea-b682-bb5861da501b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\stdafx.h">
@@ -105,11 +120,23 @@
     <ClInclude Include="include\ScopeLock.h">
       <Filter>Source\HAL\Public</Filter>
     </ClInclude>
-    <ClInclude Include="source\RHI.h">
-      <Filter>Source\RHI\Private</Filter>
-    </ClInclude>
     <ClInclude Include="include\Hash.h">
       <Filter>Source\Core\Public\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="include\PixelFormat.h">
+      <Filter>Source\Engine\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RHI.h">
+      <Filter>Source\RHI\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Float16.h">
+      <Filter>Source\Core\Public\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Float32.h">
+      <Filter>Source\Core\Public\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MathUtility.h">
+      <Filter>Source\Core\Public\Math</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

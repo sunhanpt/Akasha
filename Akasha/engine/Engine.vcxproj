@@ -29,6 +29,11 @@
   <ItemGroup>
     <ClInclude Include="include\CoreDefines.h" />
     <ClInclude Include="include\CriticalSection.h" />
+    <ClInclude Include="include\Float16.h" />
+    <ClInclude Include="include\Float32.h" />
+    <ClInclude Include="include\MathUtility.h" />
+    <ClInclude Include="include\PixelFormat.h" />
+    <ClInclude Include="include\RHI.h" />
     <ClInclude Include="include\RHIResources.h" />
     <ClInclude Include="include\ScopeLock.h" />
     <ClInclude Include="include\Hash.h" />
@@ -36,7 +41,9 @@
     <ClInclude Include="include\ThreadSafeQueue.h" />
     <ClInclude Include="include\ThreadSafeStack.h" />
     <ClInclude Include="include\TypeDefines.h" />
-    <ClInclude Include="source\RHI.h" />
+    <ClCompile Include="source\RHI.cpp">
+      <FileType>CppHeader</FileType>
+    </ClCompile>
     <ClInclude Include="source\stdafx.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
