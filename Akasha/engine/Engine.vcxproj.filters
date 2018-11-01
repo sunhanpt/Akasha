@@ -11,6 +11,15 @@
     <ClCompile Include="source\RHI.cpp">
       <Filter>Source\RHI\Private</Filter>
     </ClCompile>
+    <ClCompile Include="source\Color.cpp">
+      <Filter>Source\Core\Private\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="source\MathUtility.cpp">
+      <Filter>Source\Core\Private\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="source\UnrealMath.cpp">
+      <Filter>Source\Core\Private\Math</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Shader">
@@ -91,6 +100,9 @@
     <Filter Include="Source\System\Windows">
       <UniqueIdentifier>{eb2fb8c8-ac80-47ea-b682-bb5861da501b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Core\Private\Math">
+      <UniqueIdentifier>{7a4f3709-9feb-4539-a49e-101e98c34c4d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\stdafx.h">
@@ -136,6 +148,69 @@
       <Filter>Source\Core\Public\Math</Filter>
     </ClInclude>
     <ClInclude Include="include\MathUtility.h">
+      <Filter>Source\Core\Public\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Color.h">
+      <Filter>Source\Core\Public\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Vector.h">
+      <Filter>Source\Core\Public\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IntPoint.h">
+      <Filter>Source\Core\Public\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IntVector.h">
+      <Filter>Source\Core\Public\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Vector2D.h">
+      <Filter>Source\Core\Public\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Vector2DHalf.h">
+      <Filter>Source\Core\Public\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Vector4.h">
+      <Filter>Source\Core\Public\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IntRect.h">
+      <Filter>Source\Core\Public\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Matrix.h">
+      <Filter>Source\Core\Public\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="include\OrthoMatrix.h">
+      <Filter>Source\Core\Public\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="include\PackedVector.h">
+      <Filter>Source\Core\Public\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="include\PerspectiveMatrix.h">
+      <Filter>Source\Core\Public\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Plane.h">
+      <Filter>Source\Core\Public\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Quat.h">
+      <Filter>Source\Core\Public\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Range.h">
+      <Filter>Source\Core\Public\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RangeBound.h">
+      <Filter>Source\Core\Public\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RangeSet.h">
+      <Filter>Source\Core\Public\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RotationMatrix.h">
+      <Filter>Source\Core\Public\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RotationTranslationMatrix.h">
+      <Filter>Source\Core\Public\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Rotator.h">
+      <Filter>Source\Core\Public\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ScaleMatrix.h">
       <Filter>Source\Core\Public\Math</Filter>
     </ClInclude>
   </ItemGroup>

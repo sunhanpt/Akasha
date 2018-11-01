@@ -23,18 +23,38 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <UndefineAllPreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</UndefineAllPreprocessorDefinitions>
     </ClCompile>
+    <ClCompile Include="source\Color.cpp" />
     <ClCompile Include="source\Hash.cpp" />
+    <ClCompile Include="source\MathUtility.cpp" />
     <ClCompile Include="source\stdafx.cpp" />
+    <ClCompile Include="source\UnrealMath.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\Color.h" />
     <ClInclude Include="include\CoreDefines.h" />
     <ClInclude Include="include\CriticalSection.h" />
     <ClInclude Include="include\Float16.h" />
     <ClInclude Include="include\Float32.h" />
+    <ClInclude Include="include\IntPoint.h" />
+    <ClInclude Include="include\IntRect.h" />
+    <ClInclude Include="include\IntVector.h" />
     <ClInclude Include="include\MathUtility.h" />
+    <ClInclude Include="include\Matrix.h" />
+    <ClInclude Include="include\OrthoMatrix.h" />
+    <ClInclude Include="include\PackedVector.h" />
+    <ClInclude Include="include\PerspectiveMatrix.h" />
     <ClInclude Include="include\PixelFormat.h" />
+    <ClInclude Include="include\Plane.h" />
+    <ClInclude Include="include\Quat.h" />
+    <ClInclude Include="include\Range.h" />
+    <ClInclude Include="include\RangeBound.h" />
+    <ClInclude Include="include\RangeSet.h" />
     <ClInclude Include="include\RHI.h" />
     <ClInclude Include="include\RHIResources.h" />
+    <ClInclude Include="include\RotationMatrix.h" />
+    <ClInclude Include="include\RotationTranslationMatrix.h" />
+    <ClInclude Include="include\Rotator.h" />
+    <ClInclude Include="include\ScaleMatrix.h" />
     <ClInclude Include="include\ScopeLock.h" />
     <ClInclude Include="include\Hash.h" />
     <ClInclude Include="include\ThreadSafeCounter.h" />
@@ -44,6 +64,10 @@
     <ClCompile Include="source\RHI.cpp">
       <FileType>CppHeader</FileType>
     </ClCompile>
+    <ClInclude Include="include\Vector.h" />
+    <ClInclude Include="include\Vector2D.h" />
+    <ClInclude Include="include\Vector2DHalf.h" />
+    <ClInclude Include="include\Vector4.h" />
     <ClInclude Include="source\stdafx.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
