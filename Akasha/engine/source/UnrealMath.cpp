@@ -2,7 +2,17 @@
 #include "TypeDefines.h"
 #include "MathUtility.h"
 #include "IntPoint.h"
-
+#include "Vector.h"
+#include "UnrealMathSSE.h"
+#include "Rotator.h"
+#include "IntVector.h"
+#include "Quat.h"
+#include "RotationMatrix.h"
+#include "RotationAboutPointMatrix.h"
+#include "QuatRotationTranslationMatrix.h"
+#include "Box.h"
+#include "Color.h"
+#include "Plane.h"
 /*-----------------------------------------------------------------------------
 Globals
 -----------------------------------------------------------------------------*/
@@ -35,122 +45,7 @@ CORE_API const FIntPoint FIntPoint::NoneValue(INDEX_NONE, INDEX_NONE);
 CORE_API const FIntVector FIntVector::ZeroValue(0, 0, 0);
 CORE_API const FIntVector FIntVector::NoneValue(INDEX_NONE, INDEX_NONE, INDEX_NONE);
 
-/** FVectors NetSerialize without quantization. Use the FVectors_NetQuantize etc (NetSerialization.h) instead. */
-bool FVector::NetSerialize(FArchive& Ar, class UPackageMap* Map, bool& bOutSuccess)
-{
-	Ar << X;
-	Ar << Y;
-	Ar << Z;
-	return true;
-}
 
-bool FVector2D::NetSerialize(FArchive& Ar, class UPackageMap* Map, bool& bOutSuccess)
-{
-	Ar << X;
-	Ar << Y;
-	return true;
-}
-
-bool FRotator::NetSerialize(FArchive& Ar, class UPackageMap* Map, bool& bOutSuccess)
-{
-	SerializeCompressedShort(Ar);
-	bOutSuccess = true;
-	return true;
-}
-
-void FRotator::SerializeCompressed(FArchive& Ar)
-{
-	uint8 BytePitch = FRotator::CompressAxisToByte(Pitch);
-	uint8 ByteYaw = FRotator::CompressAxisToByte(Yaw);
-	uint8 ByteRoll = FRotator::CompressAxisToByte(Roll);
-
-	uint8 B = (BytePitch != 0);
-	Ar.SerializeBits(&B, 1);
-	if (B)
-	{
-		Ar << BytePitch;
-	}
-	else
-	{
-		BytePitch = 0;
-	}
-
-	B = (ByteYaw != 0);
-	Ar.SerializeBits(&B, 1);
-	if (B)
-	{
-		Ar << ByteYaw;
-	}
-	else
-	{
-		ByteYaw = 0;
-	}
-
-	B = (ByteRoll != 0);
-	Ar.SerializeBits(&B, 1);
-	if (B)
-	{
-		Ar << ByteRoll;
-	}
-	else
-	{
-		ByteRoll = 0;
-	}
-
-	if (Ar.IsLoading())
-	{
-		Pitch = FRotator::DecompressAxisFromByte(BytePitch);
-		Yaw = FRotator::DecompressAxisFromByte(ByteYaw);
-		Roll = FRotator::DecompressAxisFromByte(ByteRoll);
-	}
-}
-
-void FRotator::SerializeCompressedShort(FArchive& Ar)
-{
-	uint16 ShortPitch = FRotator::CompressAxisToShort(Pitch);
-	uint16 ShortYaw = FRotator::CompressAxisToShort(Yaw);
-	uint16 ShortRoll = FRotator::CompressAxisToShort(Roll);
-
-	uint8 B = (ShortPitch != 0);
-	Ar.SerializeBits(&B, 1);
-	if (B)
-	{
-		Ar << ShortPitch;
-	}
-	else
-	{
-		ShortPitch = 0;
-	}
-
-	B = (ShortYaw != 0);
-	Ar.SerializeBits(&B, 1);
-	if (B)
-	{
-		Ar << ShortYaw;
-	}
-	else
-	{
-		ShortYaw = 0;
-	}
-
-	B = (ShortRoll != 0);
-	Ar.SerializeBits(&B, 1);
-	if (B)
-	{
-		Ar << ShortRoll;
-	}
-	else
-	{
-		ShortRoll = 0;
-	}
-
-	if (Ar.IsLoading())
-	{
-		Pitch = FRotator::DecompressAxisFromShort(ShortPitch);
-		Yaw = FRotator::DecompressAxisFromShort(ShortYaw);
-		Roll = FRotator::DecompressAxisFromShort(ShortRoll);
-	}
-}
 
 FRotator FVector::ToOrientationRotator() const
 {
@@ -165,13 +60,11 @@ FRotator FVector::ToOrientationRotator() const
 	// Find roll.
 	R.Roll = 0;
 
-#if ENABLE_NAN_DIAGNOSTIC
 	if (R.ContainsNaN())
 	{
-		logOrEnsureNanError(TEXT("FVector::Rotation(): Rotator result %s contains NaN! Input FVector = %s"), *R.ToString(), *this->ToString());
+		//logOrEnsureNanError(TEXT("FVector::Rotation(): Rotator result %s contains NaN! Input FVector = %s"), *R.ToString(), *this->ToString());
 		R = FRotator::ZeroRotator;
 	}
-#endif
 
 	return R;
 }
@@ -194,13 +87,11 @@ FRotator FVector4::ToOrientationRotator() const
 	// Find roll.
 	R.Roll = 0;
 
-#if ENABLE_NAN_DIAGNOSTIC
 	if (R.ContainsNaN())
 	{
-		logOrEnsureNanError(TEXT("FVector4::Rotation(): Rotator result %s contains NaN! Input FVector4 = %s"), *R.ToString(), *this->ToString());
+		//logOrEnsureNanError(TEXT("FVector4::Rotation(): Rotator result %s contains NaN! Input FVector4 = %s"), *R.ToString(), *this->ToString());
 		R = FRotator::ZeroRotator;
 	}
-#endif
 
 	return R;
 }
@@ -303,8 +194,8 @@ FVector FMath::ClosestPointOnInfiniteLine(const FVector& LineStart, const FVecto
 void FVector::CreateOrthonormalBasis(FVector& XAxis, FVector& YAxis, FVector& ZAxis)
 {
 	// Project the X and Y axes onto the plane perpendicular to the Z axis.
-	XAxis -= (XAxis | ZAxis) / (ZAxis | ZAxis) * ZAxis;
-	YAxis -= (YAxis | ZAxis) / (ZAxis | ZAxis) * ZAxis;
+	XAxis = XAxis - (XAxis | ZAxis) / (ZAxis | ZAxis) * ZAxis;
+	YAxis = YAxis - (YAxis | ZAxis) / (ZAxis | ZAxis) * ZAxis;
 
 	// If the X axis was parallel to the Z axis, choose a vector which is orthogonal to the Y and Z axes.
 	if (XAxis.SizeSquared() < DELTA*DELTA)
@@ -335,7 +226,6 @@ void FVector::UnwindEuler()
 FRotator::FRotator(const FQuat& Quat)
 {
 	*this = Quat.Rotator();
-	DiagnosticCheckNaN();
 }
 
 
@@ -358,11 +248,6 @@ FRotator FRotator::GetInverse() const
 
 FQuat FRotator::Quaternion() const
 {
-	SCOPE_CYCLE_COUNTER(STAT_MathConvertRotatorToQuat);
-
-	DiagnosticCheckNaN();
-
-#if PLATFORM_ENABLE_VECTORINTRINSICS
 	const VectorRegister Angles = MakeVectorRegister(Pitch, Yaw, Roll, 0.0f);
 	const VectorRegister HalfAngles = VectorMultiply(Angles, GlobalVectorConstants::DEG_TO_RAD_HALF);
 
@@ -392,27 +277,6 @@ FQuat FRotator::Quaternion() const
 	FQuat RotationQuat;
 	const VectorRegister Result = VectorAdd(LeftTerm, RightTerm);
 	VectorStoreAligned(Result, &RotationQuat);
-#else
-	const float DEG_TO_RAD = PI / (180.f);
-	const float DIVIDE_BY_2 = DEG_TO_RAD / 2.f;
-	float SP, SY, SR;
-	float CP, CY, CR;
-
-	FMath::SinCos(&SP, &CP, Pitch*DIVIDE_BY_2);
-	FMath::SinCos(&SY, &CY, Yaw*DIVIDE_BY_2);
-	FMath::SinCos(&SR, &CR, Roll*DIVIDE_BY_2);
-
-	FQuat RotationQuat;
-	RotationQuat.X = CR*SP*SY - SR*CP*CY;
-	RotationQuat.Y = -CR*SP*CY - SR*CP*SY;
-	RotationQuat.Z = CR*CP*SY - SR*SP*CY;
-	RotationQuat.W = CR*CP*CY + SR*SP*SY;
-#endif // PLATFORM_ENABLE_VECTORINTRINSICS
-
-#if ENABLE_NAN_DIAGNOSTIC || DO_CHECK
-	// Very large inputs can cause NaN's. Want to catch this here
-	ensureMsgf(!RotationQuat.ContainsNaN(), TEXT("Invalid input to FRotator::Quaternion - generated NaN output: %s"), *RotationQuat.ToString());
-#endif
 
 	return RotationQuat;
 }
@@ -473,7 +337,6 @@ FRotator FMatrix::Rotator() const
 	const FVector		SYAxis = FRotationMatrix(Rotator).GetScaledAxis(EAxis::Y);
 	Rotator.Roll = FMath::Atan2(ZAxis | SYAxis, YAxis | SYAxis) * 180.f / PI;
 
-	Rotator.DiagnosticCheckNaN();
 	return Rotator;
 }
 
@@ -488,22 +351,6 @@ const FMatrix FMatrix::Identity(FPlane(1, 0, 0, 0), FPlane(0, 1, 0, 0), FPlane(0
 
 CORE_API const FQuat FQuat::Identity(0, 0, 0, 1);
 
-FString FMatrix::ToString() const
-{
-	FString Output;
-
-	Output += FString::Printf(TEXT("[%g %g %g %g] "), M[0][0], M[0][1], M[0][2], M[0][3]);
-	Output += FString::Printf(TEXT("[%g %g %g %g] "), M[1][0], M[1][1], M[1][2], M[1][3]);
-	Output += FString::Printf(TEXT("[%g %g %g %g] "), M[2][0], M[2][1], M[2][2], M[2][3]);
-	Output += FString::Printf(TEXT("[%g %g %g %g] "), M[3][0], M[3][1], M[3][2], M[3][3]);
-
-	return Output;
-}
-
-void FMatrix::DebugPrint() const
-{
-	UE_LOG(LogUnrealMath, Log, TEXT("%s"), *ToString());
-}
 
 uint32 FMatrix::ComputeHash() const
 {
@@ -524,9 +371,6 @@ uint32 FMatrix::ComputeHash() const
 
 FRotator FQuat::Rotator() const
 {
-	SCOPE_CYCLE_COUNTER(STAT_MathConvertQuatToRotator);
-
-	DiagnosticCheckNaN();
 	const float SingularityTest = Z*X - W*Y;
 	const float YawY = 2.f*(W*Z + X*Y);
 	const float YawX = (1.f - 2.f*(FMath::Square(Y) + FMath::Square(Z)));
@@ -561,13 +405,6 @@ FRotator FQuat::Rotator() const
 		RotatorFromQuat.Roll = FMath::Atan2(-2.f*(W*X + Y*Z), (1.f - 2.f*(FMath::Square(X) + FMath::Square(Y)))) * RAD_TO_DEG;
 	}
 
-#if ENABLE_NAN_DIAGNOSTIC
-	if (RotatorFromQuat.ContainsNaN())
-	{
-		logOrEnsureNanError(TEXT("FQuat::Rotator(): Rotator result %s contains NaN! Quat = %s, YawY = %.9f, YawX = %.9f"), *RotatorFromQuat.ToString(), *this->ToString(), YawY, YawX);
-		RotatorFromQuat = FRotator::ZeroRotator;
-	}
-#endif
 
 	return RotatorFromQuat;
 }
@@ -761,57 +598,6 @@ FVector FQuat::Euler() const
 	return Rotator().Euler();
 }
 
-bool FQuat::NetSerialize(FArchive& Ar, class UPackageMap*, bool& bOutSuccess)
-{
-	FQuat &Q = *this;
-
-	if (Ar.IsSaving())
-	{
-		// Make sure we have a non null SquareSum. It shouldn't happen with a quaternion, but better be safe.
-		if (Q.SizeSquared() <= SMALL_NUMBER)
-		{
-			Q = FQuat::Identity;
-		}
-		else
-		{
-			// All transmitted quaternions *MUST BE* unit quaternions, in which case we can deduce the value of W.
-			Q.Normalize();
-			// force W component to be non-negative
-			if (Q.W < 0.f)
-			{
-				Q.X *= -1.f;
-				Q.Y *= -1.f;
-				Q.Z *= -1.f;
-				Q.W *= -1.f;
-			}
-		}
-	}
-
-	Ar << Q.X << Q.Y << Q.Z;
-	if (Ar.IsLoading())
-	{
-		const float XYZMagSquared = (Q.X*Q.X + Q.Y*Q.Y + Q.Z*Q.Z);
-		const float WSquared = 1.0f - XYZMagSquared;
-		// If mag of (X,Y,Z) <= 1.0, then we calculate W to make magnitude of Q 1.0
-		if (WSquared >= 0.f)
-		{
-			Q.W = FMath::Sqrt(WSquared);
-		}
-		// If mag of (X,Y,Z) > 1.0, we set W to zero, and then renormalize 
-		else
-		{
-			Q.W = 0.f;
-
-			const float XYZInvMag = FMath::InvSqrt(XYZMagSquared);
-			Q.X *= XYZInvMag;
-			Q.Y *= XYZInvMag;
-			Q.Z *= XYZInvMag;
-		}
-	}
-
-	bOutSuccess = true;
-	return true;
-}
 
 
 //
@@ -819,7 +605,7 @@ bool FQuat::NetSerialize(FArchive& Ar, class UPackageMap*, bool& bOutSuccess)
 // http://lolengine.net/blog/2014/02/24/quaternion-from-two-vectors-final
 // http://www.euclideanspace.com/maths/algebra/vectors/angleBetween/index.htm
 //
-FORCEINLINE_DEBUGGABLE FQuat FindBetween_Helper(const FVector& A, const FVector& B, float NormAB)
+FORCEINLINE FQuat FindBetween_Helper(const FVector& A, const FVector& B, float NormAB)
 {
 	float W = NormAB + FVector::DotProduct(A, B);
 	FQuat Result;
@@ -1057,7 +843,7 @@ bool FMath::LineExtentBoxIntersection(const FBox& inBox,
 	}
 }
 
-float FVector::EvaluateBezier(const FVector* ControlPoints, int32 NumPoints, TArray<FVector>& OutPoints)
+float FVector::EvaluateBezier(const FVector* ControlPoints, int32 NumPoints, std::vector<FVector>& OutPoints)
 {
 	check(ControlPoints);
 	check(NumPoints >= 2);
@@ -1087,7 +873,7 @@ float FVector::EvaluateBezier(const FVector* ControlPoints, int32 NumPoints, TAr
 	float Length = 0.f;
 
 	FVector OldPos = P0;
-	OutPoints.Add(P0);	// first point on the curve is always P0.
+	OutPoints.push_back(P0);	// first point on the curve is always P0.
 
 	for (int32 i = 1; i < NumPoints; ++i)
 	{
@@ -1101,14 +887,14 @@ float FVector::EvaluateBezier(const FVector* ControlPoints, int32 NumPoints, TAr
 		Length += FVector::Dist(S, OldPos);
 		OldPos = S;
 
-		OutPoints.Add(S);
+		OutPoints.push_back(S);
 	}
 
 	// Return path length as experienced in sequence (linear interpolation between points).
 	return Length;
 }
 
-float FLinearColor::EvaluateBezier(const FLinearColor* ControlPoints, int32 NumPoints, TArray<FLinearColor>& OutPoints)
+float FLinearColor::EvaluateBezier(const FLinearColor* ControlPoints, int32 NumPoints, std::vector<FLinearColor>& OutPoints)
 {
 	check(ControlPoints);
 	check(NumPoints >= 2);
@@ -1138,7 +924,7 @@ float FLinearColor::EvaluateBezier(const FLinearColor* ControlPoints, int32 NumP
 	float Length = 0.f;
 
 	FLinearColor OldPos = P0;
-	OutPoints.Add(P0);	// first point on the curve is always P0.
+	OutPoints.push_back(P0);	// first point on the curve is always P0.
 
 	for (int32 i = 1; i < NumPoints; ++i)
 	{
@@ -1152,7 +938,7 @@ float FLinearColor::EvaluateBezier(const FLinearColor* ControlPoints, int32 NumP
 		Length += FLinearColor::Dist(S, OldPos);
 		OldPos = S;
 
-		OutPoints.Add(S);
+		OutPoints.push_back(S);
 	}
 
 	// Return path length as experienced in sequence (linear interpolation between points).
@@ -1296,109 +1082,6 @@ static void FindBounds(float& OutMin, float& OutMax, float Start, float StartLea
 			}
 		}
 	}
-}
-
-void CORE_API CurveFloatFindIntervalBounds(const FInterpCurvePoint<float>& Start, const FInterpCurvePoint<float>& End, float& CurrentMin, float& CurrentMax)
-{
-	const bool bIsCurve = Start.IsCurveKey();
-
-	float OutMin, OutMax;
-
-	FindBounds(OutMin, OutMax, Start.OutVal, Start.LeaveTangent, Start.InVal, End.OutVal, End.ArriveTangent, End.InVal, bIsCurve);
-
-	CurrentMin = FMath::Min(CurrentMin, OutMin);
-	CurrentMax = FMath::Max(CurrentMax, OutMax);
-}
-
-void CORE_API CurveVector2DFindIntervalBounds(const FInterpCurvePoint<FVector2D>& Start, const FInterpCurvePoint<FVector2D>& End, FVector2D& CurrentMin, FVector2D& CurrentMax)
-{
-	const bool bIsCurve = Start.IsCurveKey();
-
-	float OutMin, OutMax;
-
-	FindBounds(OutMin, OutMax, Start.OutVal.X, Start.LeaveTangent.X, Start.InVal, End.OutVal.X, End.ArriveTangent.X, End.InVal, bIsCurve);
-	CurrentMin.X = FMath::Min(CurrentMin.X, OutMin);
-	CurrentMax.X = FMath::Max(CurrentMax.X, OutMax);
-
-	FindBounds(OutMin, OutMax, Start.OutVal.Y, Start.LeaveTangent.Y, Start.InVal, End.OutVal.Y, End.ArriveTangent.Y, End.InVal, bIsCurve);
-	CurrentMin.Y = FMath::Min(CurrentMin.Y, OutMin);
-	CurrentMax.Y = FMath::Max(CurrentMax.Y, OutMax);
-}
-
-void CORE_API CurveVectorFindIntervalBounds(const FInterpCurvePoint<FVector>& Start, const FInterpCurvePoint<FVector>& End, FVector& CurrentMin, FVector& CurrentMax)
-{
-	const bool bIsCurve = Start.IsCurveKey();
-
-	float OutMin, OutMax;
-
-	FindBounds(OutMin, OutMax, Start.OutVal.X, Start.LeaveTangent.X, Start.InVal, End.OutVal.X, End.ArriveTangent.X, End.InVal, bIsCurve);
-	CurrentMin.X = FMath::Min(CurrentMin.X, OutMin);
-	CurrentMax.X = FMath::Max(CurrentMax.X, OutMax);
-
-	FindBounds(OutMin, OutMax, Start.OutVal.Y, Start.LeaveTangent.Y, Start.InVal, End.OutVal.Y, End.ArriveTangent.Y, End.InVal, bIsCurve);
-	CurrentMin.Y = FMath::Min(CurrentMin.Y, OutMin);
-	CurrentMax.Y = FMath::Max(CurrentMax.Y, OutMax);
-
-	FindBounds(OutMin, OutMax, Start.OutVal.Z, Start.LeaveTangent.Z, Start.InVal, End.OutVal.Z, End.ArriveTangent.Z, End.InVal, bIsCurve);
-	CurrentMin.Z = FMath::Min(CurrentMin.Z, OutMin);
-	CurrentMax.Z = FMath::Max(CurrentMax.Z, OutMax);
-}
-
-void CORE_API CurveTwoVectorsFindIntervalBounds(const FInterpCurvePoint<FTwoVectors>& Start, const FInterpCurvePoint<FTwoVectors>& End, FTwoVectors& CurrentMin, FTwoVectors& CurrentMax)
-{
-	const bool bIsCurve = Start.IsCurveKey();
-
-	float OutMin;
-	float OutMax;
-
-	// Do the first curve
-	FindBounds(OutMin, OutMax, Start.OutVal.v1.X, Start.LeaveTangent.v1.X, Start.InVal, End.OutVal.v1.X, End.ArriveTangent.v1.X, End.InVal, bIsCurve);
-	CurrentMin.v1.X = FMath::Min(CurrentMin.v1.X, OutMin);
-	CurrentMax.v1.X = FMath::Max(CurrentMax.v1.X, OutMax);
-
-	FindBounds(OutMin, OutMax, Start.OutVal.v1.Y, Start.LeaveTangent.v1.Y, Start.InVal, End.OutVal.v1.Y, End.ArriveTangent.v1.Y, End.InVal, bIsCurve);
-	CurrentMin.v1.Y = FMath::Min(CurrentMin.v1.Y, OutMin);
-	CurrentMax.v1.Y = FMath::Max(CurrentMax.v1.Y, OutMax);
-
-	FindBounds(OutMin, OutMax, Start.OutVal.v1.Z, Start.LeaveTangent.v1.Z, Start.InVal, End.OutVal.v1.Z, End.ArriveTangent.v1.Z, End.InVal, bIsCurve);
-	CurrentMin.v1.Z = FMath::Min(CurrentMin.v1.Z, OutMin);
-	CurrentMax.v1.Z = FMath::Max(CurrentMax.v1.Z, OutMax);
-
-	// Do the second curve
-	FindBounds(OutMin, OutMax, Start.OutVal.v2.X, Start.LeaveTangent.v2.X, Start.InVal, End.OutVal.v2.X, End.ArriveTangent.v2.X, End.InVal, bIsCurve);
-	CurrentMin.v2.X = FMath::Min(CurrentMin.v2.X, OutMin);
-	CurrentMax.v2.X = FMath::Max(CurrentMax.v2.X, OutMax);
-
-	FindBounds(OutMin, OutMax, Start.OutVal.v2.Y, Start.LeaveTangent.v2.Y, Start.InVal, End.OutVal.v2.Y, End.ArriveTangent.v2.Y, End.InVal, bIsCurve);
-	CurrentMin.v2.Y = FMath::Min(CurrentMin.v2.Y, OutMin);
-	CurrentMax.v2.Y = FMath::Max(CurrentMax.v2.Y, OutMax);
-
-	FindBounds(OutMin, OutMax, Start.OutVal.v2.Z, Start.LeaveTangent.v2.Z, Start.InVal, End.OutVal.v2.Z, End.ArriveTangent.v2.Z, End.InVal, bIsCurve);
-	CurrentMin.v2.Z = FMath::Min(CurrentMin.v2.Z, OutMin);
-	CurrentMax.v2.Z = FMath::Max(CurrentMax.v2.Z, OutMax);
-}
-
-void CORE_API CurveLinearColorFindIntervalBounds(const FInterpCurvePoint<FLinearColor>& Start, const FInterpCurvePoint<FLinearColor>& End, FLinearColor& CurrentMin, FLinearColor& CurrentMax)
-{
-	const bool bIsCurve = Start.IsCurveKey();
-
-	float OutMin, OutMax;
-
-	FindBounds(OutMin, OutMax, Start.OutVal.R, Start.LeaveTangent.R, Start.InVal, End.OutVal.R, End.ArriveTangent.R, End.InVal, bIsCurve);
-	CurrentMin.R = FMath::Min(CurrentMin.R, OutMin);
-	CurrentMax.R = FMath::Max(CurrentMax.R, OutMax);
-
-	FindBounds(OutMin, OutMax, Start.OutVal.G, Start.LeaveTangent.G, Start.InVal, End.OutVal.G, End.ArriveTangent.G, End.InVal, bIsCurve);
-	CurrentMin.G = FMath::Min(CurrentMin.G, OutMin);
-	CurrentMax.G = FMath::Max(CurrentMax.G, OutMax);
-
-	FindBounds(OutMin, OutMax, Start.OutVal.B, Start.LeaveTangent.B, Start.InVal, End.OutVal.B, End.ArriveTangent.B, End.InVal, bIsCurve);
-	CurrentMin.B = FMath::Min(CurrentMin.B, OutMin);
-	CurrentMax.B = FMath::Max(CurrentMax.B, OutMax);
-
-	FindBounds(OutMin, OutMax, Start.OutVal.A, Start.LeaveTangent.A, Start.InVal, End.OutVal.A, End.ArriveTangent.A, End.InVal, bIsCurve);
-	CurrentMin.A = FMath::Min(CurrentMin.A, OutMin);
-	CurrentMax.A = FMath::Max(CurrentMax.A, OutMax);
 }
 
 CORE_API float FMath::PointDistToLine(const FVector &Point, const FVector &Direction, const FVector &Origin, FVector &OutClosestPoint)
@@ -1910,7 +1593,7 @@ FVector FMath::ClosestPointOnTriangleToPoint(const FVector& Point, const FVector
 	case 6: //110 point C
 		return C;
 	default:
-		UE_LOG(LogUnrealMath, Log, TEXT("Impossible result in FMath::ClosestPointOnTriangleToPoint"));
+		//UE_LOG(LogUnrealMath, Log, TEXT("Impossible result in FMath::ClosestPointOnTriangleToPoint"));
 		break;
 	}
 
@@ -2057,7 +1740,7 @@ FVector FMath::ClosestPointOnTetrahedronToPoint(const FVector& Point, const FVec
 	case 14: //1110 Point	B
 		return Pt2;
 	default: //impossible (1111)
-		UE_LOG(LogUnrealMath, Log, TEXT("FMath::ClosestPointOnTetrahedronToPoint() : impossible result"));
+		//UE_LOG(LogUnrealMath, Log, TEXT("FMath::ClosestPointOnTetrahedronToPoint() : impossible result"));
 		break;
 	}
 
@@ -2613,30 +2296,30 @@ struct FClusterMovedHereToMakeCompile
 	int32 ClusterSize;
 };
 
-void FVector::GenerateClusterCenters(TArray<FVector>& Clusters, const TArray<FVector>& Points, int32 NumIterations, int32 NumConnectionsToBeValid)
+void FVector::GenerateClusterCenters(std::vector<FVector>& Clusters, const std::vector<FVector>& Points, int32 NumIterations, int32 NumConnectionsToBeValid)
 {
 	// Check we have >0 points and clusters
-	if (Points.Num() == 0 || Clusters.Num() == 0)
+	if (Points.size() == 0 || Clusters.size() == 0)
 	{
 		return;
 	}
 
 	// Temp storage for each cluster that mirrors the order of the passed in Clusters array
-	TArray<FClusterMovedHereToMakeCompile> ClusterData;
-	ClusterData.AddZeroed(Clusters.Num());
+	std::vector<FClusterMovedHereToMakeCompile> ClusterData;
+	ClusterData.resize(Clusters.size());
 
 	// Then iterate
 	for (int32 ItCount = 0; ItCount<NumIterations; ItCount++)
 	{
 		// Classify each point - find closest cluster center
-		for (int32 i = 0; i<Points.Num(); i++)
+		for (int32 i = 0; i<Points.size(); i++)
 		{
 			const FVector& Pos = Points[i];
 
 			// Iterate over all clusters to find closes one
 			int32 NearestClusterIndex = INDEX_NONE;
 			float NearestClusterDistSqr = BIG_NUMBER;
-			for (int32 j = 0; j<Clusters.Num(); j++)
+			for (int32 j = 0; j<Clusters.size(); j++)
 			{
 				const float DistSqr = (Pos - Clusters[j]).SizeSquared();
 				if (DistSqr < NearestClusterDistSqr)
@@ -2654,7 +2337,7 @@ void FVector::GenerateClusterCenters(TArray<FVector>& Clusters, const TArray<FVe
 		}
 
 		// All points classified - update cluster center as average of membership
-		for (int32 i = 0; i<Clusters.Num(); i++)
+		for (int32 i = 0; i<Clusters.size(); i++)
 		{
 			if (ClusterData[i].ClusterSize > 0)
 			{
@@ -2664,11 +2347,11 @@ void FVector::GenerateClusterCenters(TArray<FVector>& Clusters, const TArray<FVe
 	}
 
 	// so now after we have possible cluster centers we want to remove the ones that are outliers and not part of the main cluster
-	for (int32 i = 0; i<ClusterData.Num(); i++)
+	for (std::vector<FClusterMovedHereToMakeCompile>::iterator it = ClusterData.begin(); it != ClusterData.end(); it++)
 	{
-		if (ClusterData[i].ClusterSize < NumConnectionsToBeValid)
+		if (it->ClusterSize < NumConnectionsToBeValid)
 		{
-			Clusters.RemoveAt(i);
+			Clusters.erase(it);
 		}
 	}
 }
@@ -2766,29 +2449,6 @@ double FMath::RoundHalfToZero(double F)
 	return (F < 0.0) ? FloorToDouble(F + 0.5) : CeilToDouble(F - 0.5);
 }
 
-FString FMath::FormatIntToHumanReadable(int32 Val)
-{
-	FString Src = *FString::Printf(TEXT("%i"), Val);
-	FString Dst;
-
-	if (Val > 999)
-	{
-		Dst = FString::Printf(TEXT(",%s"), *Src.Mid(Src.Len() - 3, 3));
-		Src = Src.Left(Src.Len() - 3);
-
-	}
-
-	if (Val > 999999)
-	{
-		Dst = FString::Printf(TEXT(",%s%s"), *Src.Mid(Src.Len() - 3, 3), *Dst);
-		Src = Src.Left(Src.Len() - 3);
-	}
-
-	Dst = Src + Dst;
-
-	return Dst;
-}
-
 bool FMath::MemoryTest(void* BaseAddress, uint32 NumBytes)
 {
 	volatile uint32* Ptr;
@@ -2812,7 +2472,7 @@ bool FMath::MemoryTest(void* BaseAddress, uint32 NumBytes)
 		{
 			if (*Ptr != TestWords[TestIndex])
 			{
-				FPlatformMisc::LowLevelOutputDebugStringf(TEXT("Failed memory test at 0x%08x, wrote: 0x%08x, read: 0x%08x\n"), Ptr, TestWords[TestIndex], *Ptr);
+				//FPlatformMisc::LowLevelOutputDebugStringf(TEXT("Failed memory test at 0x%08x, wrote: 0x%08x, read: 0x%08x\n"), Ptr, TestWords[TestIndex], *Ptr);
 				bSucceeded = false;
 			}
 			*Ptr = ~TestWords[TestIndex];
@@ -2826,7 +2486,7 @@ bool FMath::MemoryTest(void* BaseAddress, uint32 NumBytes)
 			Ptr--;
 			if (*Ptr != ~TestWords[TestIndex])
 			{
-				FPlatformMisc::LowLevelOutputDebugStringf(TEXT("Failed memory test at 0x%08x, wrote: 0x%08x, read: 0x%08x\n"), Ptr, ~TestWords[TestIndex], *Ptr);
+				//FPlatformMisc::LowLevelOutputDebugStringf(TEXT("Failed memory test at 0x%08x, wrote: 0x%08x, read: 0x%08x\n"), Ptr, ~TestWords[TestIndex], *Ptr);
 				bSucceeded = false;
 			}
 			*Ptr = TestWords[TestIndex];
@@ -2836,319 +2496,6 @@ bool FMath::MemoryTest(void* BaseAddress, uint32 NumBytes)
 	return bSucceeded;
 }
 
-/**
-* Converts a string to it's numeric equivalent, ignoring whitespace.
-* "123  45" - becomes 12,345
-*
-* @param	Value	The string to convert.
-* @return			The converted value.
-*/
-float Val(const FString& Value)
-{
-	float RetValue = 0;
-
-	for (int32 x = 0; x < Value.Len(); x++)
-	{
-		FString Char = Value.Mid(x, 1);
-
-		if (Char >= TEXT("0") && Char <= TEXT("9"))
-		{
-			RetValue *= 10;
-			RetValue += FCString::Atoi(*Char);
-		}
-		else
-		{
-			if (Char != TEXT(" "))
-			{
-				break;
-			}
-		}
-	}
-
-	return RetValue;
-}
-
-FString GrabChar(FString* pStr)
-{
-	FString GrabChar;
-	if (pStr->Len())
-	{
-		do
-		{
-			GrabChar = pStr->Left(1);
-			*pStr = pStr->Mid(1);
-		} while (GrabChar == TEXT(" "));
-	}
-	else
-	{
-		GrabChar = TEXT("");
-	}
-
-	return GrabChar;
-}
-
-bool SubEval(FString* pStr, float* pResult, int32 Prec)
-{
-	FString c;
-	float V, W, N;
-
-	V = W = N = 0.0f;
-
-	c = GrabChar(pStr);
-
-	if ((c >= TEXT("0") && c <= TEXT("9")) || c == TEXT("."))	// Number
-	{
-		V = 0;
-		while (c >= TEXT("0") && c <= TEXT("9"))
-		{
-			V = V * 10 + Val(c);
-			c = GrabChar(pStr);
-		}
-
-		if (c == TEXT("."))
-		{
-			N = 0.1f;
-			c = GrabChar(pStr);
-
-			while (c >= TEXT("0") && c <= TEXT("9"))
-			{
-				V = V + N * Val(c);
-				N = N / 10.0f;
-				c = GrabChar(pStr);
-			}
-		}
-	}
-	else if (c == TEXT("("))									// Opening parenthesis
-	{
-		if (!SubEval(pStr, &V, 0))
-		{
-			return 0;
-		}
-		c = GrabChar(pStr);
-	}
-	else if (c == TEXT("-"))									// Negation
-	{
-		if (!SubEval(pStr, &V, 1000))
-		{
-			return 0;
-		}
-		V = -V;
-		c = GrabChar(pStr);
-	}
-	else if (c == TEXT("+"))									// Positive
-	{
-		if (!SubEval(pStr, &V, 1000))
-		{
-			return 0;
-		}
-		c = GrabChar(pStr);
-	}
-	else if (c == TEXT("@"))									// Square root
-	{
-		if (!SubEval(pStr, &V, 1000))
-		{
-			return 0;
-		}
-
-		if (V < 0)
-		{
-			UE_LOG(LogUnrealMath, Log, TEXT("Expression Error : Can't take square root of negative number"));
-			return 0;
-		}
-		else
-		{
-			V = FMath::Sqrt(V);
-		}
-
-		c = GrabChar(pStr);
-	}
-	else														// Error
-	{
-		UE_LOG(LogUnrealMath, Log, TEXT("Expression Error : No value recognized"));
-		return 0;
-	}
-PrecLoop:
-	if (c == TEXT(""))
-	{
-		*pResult = V;
-		return 1;
-	}
-	else if (c == TEXT(")"))
-	{
-		*pStr = FString(TEXT(")")) + *pStr;
-		*pResult = V;
-		return 1;
-	}
-	else if (c == TEXT("+"))
-	{
-		if (Prec > 1)
-		{
-			*pResult = V;
-			*pStr = c + *pStr;
-			return 1;
-		}
-		else
-		{
-			if (SubEval(pStr, &W, 2))
-			{
-				V = V + W;
-				c = GrabChar(pStr);
-				goto PrecLoop;
-			}
-			else
-			{
-				return 0;
-			}
-		}
-	}
-	else if (c == TEXT("-"))
-	{
-		if (Prec > 1)
-		{
-			*pResult = V;
-			*pStr = c + *pStr;
-			return 1;
-		}
-		else
-		{
-			if (SubEval(pStr, &W, 2))
-			{
-				V = V - W;
-				c = GrabChar(pStr);
-				goto PrecLoop;
-			}
-			else
-			{
-				return 0;
-			}
-		}
-	}
-	else if (c == TEXT("/"))
-	{
-		if (Prec > 2)
-		{
-			*pResult = V;
-			*pStr = c + *pStr;
-			return 1;
-		}
-		else
-		{
-			if (SubEval(pStr, &W, 3))
-			{
-				if (W == 0)
-				{
-					UE_LOG(LogUnrealMath, Log, TEXT("Expression Error : Division by zero isn't allowed"));
-					return 0;
-				}
-				else
-				{
-					V = V / W;
-					c = GrabChar(pStr);
-					goto PrecLoop;
-				}
-			}
-			else
-			{
-				return 0;
-			}
-		}
-	}
-	else if (c == TEXT("%"))
-	{
-		if (Prec > 2)
-		{
-			*pResult = V;
-			*pStr = c + *pStr;
-			return 1;
-		}
-		else
-		{
-			if (SubEval(pStr, &W, 3))
-			{
-				if (W == 0)
-				{
-					UE_LOG(LogUnrealMath, Log, TEXT("Expression Error : Modulo zero isn't allowed"));
-					return 0;
-				}
-				else
-				{
-					V = (int32)V % (int32)W;
-					c = GrabChar(pStr);
-					goto PrecLoop;
-				}
-			}
-			else
-			{
-				return 0;
-			}
-		}
-	}
-	else if (c == TEXT("*"))
-	{
-		if (Prec > 3)
-		{
-			*pResult = V;
-			*pStr = c + *pStr;
-			return 1;
-		}
-		else
-		{
-			if (SubEval(pStr, &W, 4))
-			{
-				V = V * W;
-				c = GrabChar(pStr);
-				goto PrecLoop;
-			}
-			else
-			{
-				return 0;
-			}
-		}
-	}
-	else
-	{
-		UE_LOG(LogUnrealMath, Log, TEXT("Expression Error : Unrecognized Operator"));
-	}
-
-	*pResult = V;
-	return 1;
-}
-
-bool FMath::Eval(FString Str, float& OutValue)
-{
-	bool bResult = true;
-
-	// Check for a matching number of brackets right up front.
-	int32 Brackets = 0;
-	for (int32 x = 0; x < Str.Len(); x++)
-	{
-		if (Str.Mid(x, 1) == TEXT("("))
-		{
-			Brackets++;
-		}
-		if (Str.Mid(x, 1) == TEXT(")"))
-		{
-			Brackets--;
-		}
-	}
-
-	if (Brackets != 0)
-	{
-		UE_LOG(LogUnrealMath, Log, TEXT("Expression Error : Mismatched brackets"));
-		bResult = false;
-	}
-
-	else
-	{
-		if (!SubEval(&Str, &OutValue, 0))
-		{
-			UE_LOG(LogUnrealMath, Log, TEXT("Expression Error : Error in expression"));
-			bResult = false;
-		}
-	}
-
-	return bResult;
-}
 
 void FMath::WindRelativeAnglesDegrees(float InAngle0, float& InOutAngle1)
 {
@@ -3232,12 +2579,3 @@ void FMath::PolarToCartesian(const FVector2D InPolar, FVector2D& OutCart)
 	OutCart.Y = InPolar.X * Sin(InPolar.Y);
 }
 
-bool FRandomStream::ExportTextItem(FString& ValueStr, FRandomStream const& DefaultValue, class UObject* Parent, int32 PortFlags, class UObject* ExportRootScope) const
-{
-	if (0 != (PortFlags & EPropertyPortFlags::PPF_ExportCpp))
-	{
-		ValueStr += FString::Printf(TEXT("FRandomStream(%i)"), DefaultValue.GetInitialSeed());
-		return true;
-	}
-	return false;
-}

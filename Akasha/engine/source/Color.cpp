@@ -1,4 +1,6 @@
 #include "Color.h"
+#include "Vector.h"
+#include "Float16Color.h"
 
 // Common colors.
 const FLinearColor FLinearColor::White(1.f, 1.f, 1.f);
@@ -158,46 +160,6 @@ FLinearColor FLinearColor::Desaturate(float Desaturation) const
 {
 	float Lum = ComputeLuminance();
 	return FMath::Lerp(*this, FLinearColor(Lum, Lum, Lum, 0), Desaturation);
-}
-
-FColor FColor::FromHex(const FString& HexString)
-{
-	int32 StartIndex = (!HexString.IsEmpty() && HexString[0] == TCHAR('#')) ? 1 : 0;
-
-	if (HexString.Len() == 3 + StartIndex)
-	{
-		const int32 R = FParse::HexDigit(HexString[StartIndex++]);
-		const int32 G = FParse::HexDigit(HexString[StartIndex++]);
-		const int32 B = FParse::HexDigit(HexString[StartIndex]);
-
-		return FColor((R << 4) + R, (G << 4) + G, (B << 4) + B, 255);
-	}
-
-	if (HexString.Len() == 6 + StartIndex)
-	{
-		FColor Result;
-
-		Result.R = (FParse::HexDigit(HexString[StartIndex + 0]) << 4) + FParse::HexDigit(HexString[StartIndex + 1]);
-		Result.G = (FParse::HexDigit(HexString[StartIndex + 2]) << 4) + FParse::HexDigit(HexString[StartIndex + 3]);
-		Result.B = (FParse::HexDigit(HexString[StartIndex + 4]) << 4) + FParse::HexDigit(HexString[StartIndex + 5]);
-		Result.A = 255;
-
-		return Result;
-	}
-
-	if (HexString.Len() == 8 + StartIndex)
-	{
-		FColor Result;
-
-		Result.R = (FParse::HexDigit(HexString[StartIndex + 0]) << 4) + FParse::HexDigit(HexString[StartIndex + 1]);
-		Result.G = (FParse::HexDigit(HexString[StartIndex + 2]) << 4) + FParse::HexDigit(HexString[StartIndex + 3]);
-		Result.B = (FParse::HexDigit(HexString[StartIndex + 4]) << 4) + FParse::HexDigit(HexString[StartIndex + 5]);
-		Result.A = (FParse::HexDigit(HexString[StartIndex + 6]) << 4) + FParse::HexDigit(HexString[StartIndex + 7]);
-
-		return Result;
-	}
-
-	return FColor(ForceInitToZero);
 }
 
 // Convert from RGBE to float as outlined in Gregory Ward's Real Pixels article, Graphics Gems II, page 80.

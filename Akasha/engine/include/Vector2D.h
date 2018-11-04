@@ -1,8 +1,8 @@
 #pragma once
 #include "MathUtility.h"
 #include "IntPoint.h"
-#include "Vector.h"
-#include "Vector2D.h"
+
+struct FVector;
 
 /**
  * A vector in 2-D space composed of components (X, Y) with floating point precision.
@@ -18,10 +18,10 @@ struct FVector2D
 public:
 
 	/** Global 2D zero vector constant (0,0) */
-	static CORE_API const FVector2D ZeroVector;
+	static const FVector2D ZeroVector;
 
 	/** Global 2D unit vector constant (1,1) */
-	static CORE_API const FVector2D UnitVector;
+	static const FVector2D UnitVector;
 
 public:
 
@@ -49,7 +49,7 @@ public:
 	 *
 	 * @param V Vector to copy from.
 	 */
-	explicit FORCEINLINE FVector2D(const FVector& V);
+	FORCEINLINE FVector2D(const FVector& V);
 
 public:
 

@@ -2,9 +2,7 @@
 
 #pragma once
 
-#include "CoreTypes.h"
-#include "Math/Plane.h"
-#include "Math/Matrix.h"
+#include "Matrix.h"
 
 class FOrthoMatrix
 	: public FMatrix

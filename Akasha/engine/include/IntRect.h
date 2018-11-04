@@ -1,13 +1,7 @@
-// Copyright 1998-2018 Epic Games, Inc. All Rights Reserved.
-
 #pragma once
 
-#include "CoreTypes.h"
-#include "Math/UnrealMathUtility.h"
-#include "Containers/UnrealString.h"
-#include "Math/IntPoint.h"
-#include "Math/Vector2D.h"
-
+#include "IntPoint.h"
+#include "Vector2D.h"
 
 /**
  * Structure for integer rectangles in 2-d space.
@@ -255,13 +249,6 @@ public:
 	FIntPoint Size() const;
 
 	/**
-	 * Get a textual representation of this rectangle.
-	 *
-	 * @return A string describing the rectangle.
-	 */
-	FString ToString() const;
-
-	/**
 	 * Gets the width of the rectangle.
 	 *
 	 * @return The width of the rectangle.
@@ -294,19 +281,6 @@ public:
 	 */
 	static int32 Num();
 
-public:
-
-	/**
-	 * Serializes the Rectangle.
-	 *
-	 * @param Ar The archive to serialize into.
-	 * @param Rect The rectangle to serialize.
-	 * @return Reference to the Archive after serialization.
-	 */
-	friend FArchive& operator<<( FArchive& Ar, FIntRect& Rect )
-	{
-		return Ar << Rect.Min.X << Rect.Min.Y << Rect.Max.X << Rect.Max.Y;
-	}
 };
 
 
@@ -323,8 +297,8 @@ FORCEINLINE FIntRect FIntRect::Scale( float Fraction ) const
  *****************************************************************************/
 
 FORCEINLINE FIntRect::FIntRect()
-	: Min(ForceInit)
-	, Max(ForceInit)
+	: Min()
+	, Max()
 { }
 
 
@@ -536,13 +510,6 @@ FORCEINLINE FIntPoint FIntRect::Size() const
 {
 	return FIntPoint( Max.X-Min.X, Max.Y-Min.Y );
 }
-
-
-FORCEINLINE FString FIntRect::ToString() const
-{
-	return FString::Printf(TEXT("Min=(%s) Max=(%s)"), *Min.ToString(), *Max.ToString());
-}
-
 
 FORCEINLINE int32 FIntRect::Width() const
 {

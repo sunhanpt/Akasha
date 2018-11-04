@@ -2,10 +2,10 @@
 
 #pragma once
 
-#include "CoreTypes.h"
-#include "Math/NumericLimits.h"
-#include "Math/UnrealMathUtility.h"
-#include "Math/Color.h"
+#include "CoreDefines.h"
+#include "TypeDefines.h"
+#include "Color.h"
+#include <stdint.h>
 
 /** 
  * 3 component vector corresponding to DXGI_FORMAT_R11G11B10_FLOAT. 

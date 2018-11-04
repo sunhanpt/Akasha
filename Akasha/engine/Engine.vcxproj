@@ -30,27 +30,30 @@
     <ClCompile Include="source\UnrealMath.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\Axis.h" />
+    <ClInclude Include="include\Box.h" />
     <ClInclude Include="include\Color.h" />
     <ClInclude Include="include\CoreDefines.h" />
     <ClInclude Include="include\CriticalSection.h" />
     <ClInclude Include="include\Float16.h" />
+    <ClInclude Include="include\Float16Color.h" />
     <ClInclude Include="include\Float32.h" />
     <ClInclude Include="include\IntPoint.h" />
     <ClInclude Include="include\IntRect.h" />
     <ClInclude Include="include\IntVector.h" />
     <ClInclude Include="include\MathUtility.h" />
     <ClInclude Include="include\Matrix.h" />
+    <ClInclude Include="include\NumericLimits.h" />
     <ClInclude Include="include\OrthoMatrix.h" />
     <ClInclude Include="include\PackedVector.h" />
     <ClInclude Include="include\PerspectiveMatrix.h" />
     <ClInclude Include="include\PixelFormat.h" />
     <ClInclude Include="include\Plane.h" />
     <ClInclude Include="include\Quat.h" />
-    <ClInclude Include="include\Range.h" />
-    <ClInclude Include="include\RangeBound.h" />
-    <ClInclude Include="include\RangeSet.h" />
+    <ClInclude Include="include\QuatRotationTranslationMatrix.h" />
     <ClInclude Include="include\RHI.h" />
     <ClInclude Include="include\RHIResources.h" />
+    <ClInclude Include="include\RotationAboutPointMatrix.h" />
     <ClInclude Include="include\RotationMatrix.h" />
     <ClInclude Include="include\RotationTranslationMatrix.h" />
     <ClInclude Include="include\Rotator.h" />
@@ -64,6 +67,8 @@
     <ClCompile Include="source\RHI.cpp">
       <FileType>CppHeader</FileType>
     </ClCompile>
+    <ClInclude Include="include\UnrealMathSSE.h" />
+    <ClInclude Include="include\UnrealMathVectorConstants.h" />
     <ClInclude Include="include\Vector.h" />
     <ClInclude Include="include\Vector2D.h" />
     <ClInclude Include="include\Vector2DHalf.h" />

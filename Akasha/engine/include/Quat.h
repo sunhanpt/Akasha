@@ -1,16 +1,11 @@
-// Copyright 1998-2018 Epic Games, Inc. All Rights Reserved.
-
 #pragma once
 
-#include "CoreTypes.h"
-#include "Misc/AssertionMacros.h"
-#include "Math/UnrealMathUtility.h"
-#include "Containers/UnrealString.h"
-#include "Logging/LogMacros.h"
-#include "Math/Vector.h"
-#include "Math/VectorRegister.h"
-#include "Math/Rotator.h"
-#include "Math/Matrix.h"
+#include "Vector.h"
+#include "Vector4.h"
+#include "Matrix.h"
+#include "MathUtility.h"
+#include "Rotator.h"
+#include "UnrealMathSSE.h"
 
 class Error;
 
@@ -25,6 +20,7 @@ class Error;
  * Example: LocalToWorld = (LocalToWorld * DeltaRotation) will change rotation in local space by DeltaRotation.
  * Example: LocalToWorld = (DeltaRotation * LocalToWorld) will change rotation in world space by DeltaRotation.
  */
+
 MS_ALIGN(16) struct FQuat 
 {
 public:
@@ -56,7 +52,7 @@ public:
 	 *
 	 * @param EForceInit Force init enum: if equal to ForceInitToZero then W is 0, otherwise W = 1 (creating an identity transform)
 	 */
-	explicit FORCEINLINE FQuat(EForceInit);
+	explicit FORCEINLINE FQuat();
 
 	/**
 	 * Constructor.
@@ -98,15 +94,6 @@ public:
 	FQuat(FVector Axis, float AngleRad);
 
 public:
-
-#ifdef IMPLEMENT_ASSIGNMENT_OPERATOR_MANUALLY
-	/**
-	 * Copy another FQuat into this one
-	 *
-	 * @return reference to this FQuat
-	 */
-	FORCEINLINE FQuat& operator=(const FQuat& Other);
-#endif
 
 	/**
 	 * Gets the result of adding a Quaternion to this.
@@ -406,60 +393,12 @@ public:
 	FORCEINLINE float AngularDistance(const FQuat& Q) const;
 
 	/**
-	 * Serializes the vector compressed for e.g. network transmission.
-	 * @param Ar Archive to serialize to/ from.
-	 * @return false to allow the ordinary struct code to run (this never happens).
-	 */
-	CORE_API bool NetSerialize(FArchive& Ar, class UPackageMap* Map, bool& bOutSuccess);
-
-	/**
 	 * Utility to check if there are any non-finite values (NaN or Inf) in this Quat.
 	 *
 	 * @return true if there are any non-finite values in this Quaternion, otherwise false.
 	 */
 	bool ContainsNaN() const;
 
-	/**
-	 * Get a textual representation of the vector.
-	 *
-	 * @return Text describing the vector.
-	 */
-	FString ToString() const;
-
-	/**
-	 * Initialize this FQuat from a FString. 
-	 * The string is expected to contain X=, Y=, Z=, W=, otherwise 
-	 * this FQuat will have indeterminate (invalid) values.
-	 *
-	 * @param InSourceString FString containing the quaternion values.
-	 * @return true if the FQuat was initialized; false otherwise.
-	 */
-	bool InitFromString(const FString& InSourceString);
-
-public:
-
-#if ENABLE_NAN_DIAGNOSTIC
-	FORCEINLINE void DiagnosticCheckNaN() const
-	{
-		if (ContainsNaN())
-		{
-			logOrEnsureNanError(TEXT("FQuat contains NaN: %s"), *ToString());
-			*const_cast<FQuat*>(this) = FQuat::Identity;
-		}
-	}
-
-	FORCEINLINE void DiagnosticCheckNaN(const TCHAR* Message) const
-	{
-		if (ContainsNaN())
-		{
-			logOrEnsureNanError(TEXT("%s: FQuat contains NaN: %s"), Message, *ToString());
-			*const_cast<FQuat*>(this) = FQuat::Identity;
-		}
-	}
-#else
-	FORCEINLINE void DiagnosticCheckNaN() const {}
-	FORCEINLINE void DiagnosticCheckNaN(const TCHAR* Message) const {}
-#endif
 
 public:
 
@@ -555,27 +494,8 @@ public:
 	 */
 	static CORE_API void CalcTangents(const FQuat& PrevP, const FQuat& P, const FQuat& NextP, float Tension, FQuat& OutTan);
 
-public:
 
-	/**
-	 * Serializes the quaternion.
-	 *
-	 * @param Ar Reference to the serialization archive.
-	 * @param F Reference to the quaternion being serialized.
-	 * @return Reference to the Archive after serialization.
-	 */
-	friend FArchive& operator<<(FArchive& Ar, FQuat& F)
-	{
-		return Ar << F.X << F.Y << F.Z << F.W;
-	}
-
-	bool Serialize(FArchive& Ar)
-	{
-		Ar << *this;
-		return true;
-	}
-
-} GCC_ALIGN(16);
+};
 
 
 /* FQuat inline functions
@@ -591,16 +511,6 @@ inline FQuat::FQuat(const FMatrix& M)
 		*this = FQuat::Identity;
 		return;
 	}
-
-#if !(UE_BUILD_SHIPPING || UE_BUILD_TEST)
-	// Make sure the Rotation part of the Matrix is unit length.
-	// Changed to this (same as RemoveScaling) from RotDeterminant as using two different ways of checking unit length matrix caused inconsistency. 
-	if (!ensure((FMath::Abs(1.f - M.GetScaledAxis(EAxis::X).SizeSquared()) <= KINDA_SMALL_NUMBER) && (FMath::Abs(1.f - M.GetScaledAxis(EAxis::Y).SizeSquared()) <= KINDA_SMALL_NUMBER) && (FMath::Abs(1.f - M.GetScaledAxis(EAxis::Z).SizeSquared()) <= KINDA_SMALL_NUMBER)))
-	{
-		*this = FQuat::Identity;
-		return;
-	}
-#endif
 
 	//const MeReal *const t = (MeReal *) tm;
 	float	s;
@@ -650,8 +560,6 @@ inline FQuat::FQuat(const FMatrix& M)
 		this->Y = qt[1];
 		this->Z = qt[2];
 		this->W = qt[3];
-
-		DiagnosticCheckNaN();
 	}
 }
 
@@ -659,7 +567,6 @@ inline FQuat::FQuat(const FMatrix& M)
 FORCEINLINE FQuat::FQuat(const FRotator& R)
 {
 	*this = R.Quaternion();
-	DiagnosticCheckNaN();
 }
 
 
@@ -692,8 +599,8 @@ inline FMatrix FQuat::operator*(const FMatrix& M) const
 /* FQuat inline functions
  *****************************************************************************/
 
-FORCEINLINE FQuat::FQuat(EForceInit ZeroOrNot)
-	:	X(0), Y(0), Z(0), W(ZeroOrNot == ForceInitToZero ? 0.0f : 1.0f)
+FORCEINLINE FQuat::FQuat()
+	:	X(0), Y(0), Z(0), W(0.0f)
 { }
 
 
@@ -703,7 +610,6 @@ FORCEINLINE FQuat::FQuat(float InX, float InY, float InZ, float InW)
 	, Z(InZ)
 	, W(InW)
 {
-	DiagnosticCheckNaN();
 }
 
 
@@ -713,39 +619,6 @@ FORCEINLINE FQuat::FQuat(const FQuat& Q)
 	, Z(Q.Z)
 	, W(Q.W)
 { }
-
-
-FORCEINLINE FString FQuat::ToString() const
-{
-	return FString::Printf(TEXT("X=%.9f Y=%.9f Z=%.9f W=%.9f"), X, Y, Z, W);
-}
-
-inline bool FQuat::InitFromString(const FString& InSourceString)
-{
-	X = Y = Z = 0.f;
-	W = 1.f;
-
-	const bool bSuccess
-		=  FParse::Value(*InSourceString, TEXT("X="), X)
-		&& FParse::Value(*InSourceString, TEXT("Y="), Y)
-		&& FParse::Value(*InSourceString, TEXT("Z="), Z)
-		&& FParse::Value(*InSourceString, TEXT("W="), W);
-	DiagnosticCheckNaN();
-	return bSuccess;
-}
-
-#ifdef IMPLEMENT_ASSIGNMENT_OPERATOR_MANUALLY
-FORCEINLINE FQuat& FQuat::operator=(const FQuat& Other)
-{
-	this->X = Other.X;
-	this->Y = Other.Y;
-	this->Z = Other.Z;
-	this->W = Other.W;
-
-	return *this;
-}
-#endif
-
 
 FORCEINLINE FQuat::FQuat(FVector Axis, float AngleRad)
 {
@@ -757,8 +630,6 @@ FORCEINLINE FQuat::FQuat(FVector Axis, float AngleRad)
 	Y = s * Axis.Y;
 	Z = s * Axis.Z;
 	W = c;
-
-	DiagnosticCheckNaN();
 }
 
 
@@ -775,8 +646,6 @@ FORCEINLINE FQuat FQuat::operator+=(const FQuat& Q)
 	this->Z += Q.Z;
 	this->W += Q.W;
 
-	DiagnosticCheckNaN();
-
 	return *this;
 }
 
@@ -789,18 +658,9 @@ FORCEINLINE FQuat FQuat::operator-(const FQuat& Q) const
 
 FORCEINLINE bool FQuat::Equals(const FQuat& Q, float Tolerance) const
 {
-#if PLATFORM_ENABLE_VECTORINTRINSICS
-	const VectorRegister ToleranceV = VectorLoadFloat1(&Tolerance);
-	const VectorRegister A = VectorLoadAligned(this);
-	const VectorRegister B = VectorLoadAligned(&Q);
 
-	const VectorRegister RotationSub = VectorAbs(VectorSubtract(A, B));
-	const VectorRegister RotationAdd = VectorAbs(VectorAdd(A, B));
-	return !VectorAnyGreaterThan(RotationSub, ToleranceV) || !VectorAnyGreaterThan(RotationAdd, ToleranceV);
-#else
 	return (FMath::Abs(X - Q.X) <= Tolerance && FMath::Abs(Y - Q.Y) <= Tolerance && FMath::Abs(Z - Q.Z) <= Tolerance && FMath::Abs(W - Q.W) <= Tolerance)
 		|| (FMath::Abs(X + Q.X) <= Tolerance && FMath::Abs(Y + Q.Y) <= Tolerance && FMath::Abs(Z + Q.Z) <= Tolerance && FMath::Abs(W + Q.W) <= Tolerance);
-#endif // PLATFORM_ENABLE_VECTORINTRINSICS
 }
 
 FORCEINLINE bool FQuat::IsIdentity(float Tolerance) const
@@ -815,8 +675,6 @@ FORCEINLINE FQuat FQuat::operator-=(const FQuat& Q)
 	this->Z -= Q.Z;
 	this->W -= Q.W;
 
-	DiagnosticCheckNaN();
-
 	return *this;
 }
 
@@ -825,8 +683,6 @@ FORCEINLINE FQuat FQuat::operator*(const FQuat& Q) const
 {
 	FQuat Result;
 	VectorQuaternionMultiply(&Result, this, &Q);
-	
-	Result.DiagnosticCheckNaN();
 	
 	return Result;
 }
@@ -840,8 +696,6 @@ FORCEINLINE FQuat FQuat::operator*=(const FQuat& Q)
 	VectorQuaternionMultiply(&Result, &A, &B);
 	VectorStoreAligned(Result, this);
 
-	DiagnosticCheckNaN();
-
 	return *this; 
 }
 
@@ -852,8 +706,6 @@ FORCEINLINE FQuat FQuat::operator*=(const float Scale)
 	Y *= Scale;
 	Z *= Scale;
 	W *= Scale;
-
-	DiagnosticCheckNaN();
 
 	return *this;
 }
@@ -873,7 +725,6 @@ FORCEINLINE FQuat FQuat::operator/=(const float Scale)
 	Z *= Recip;
 	W *= Recip;
 
-	DiagnosticCheckNaN();
 
 	return *this;
 }
@@ -888,25 +739,13 @@ FORCEINLINE FQuat FQuat::operator/(const float Scale) const
 
 FORCEINLINE bool FQuat::operator==(const FQuat& Q) const
 {
-#if PLATFORM_ENABLE_VECTORINTRINSICS
-	const VectorRegister A = VectorLoadAligned(this);
-	const VectorRegister B = VectorLoadAligned(&Q);
-	return VectorMaskBits(VectorCompareEQ(A, B)) == 0x0F;
-#else
 	return X == Q.X && Y == Q.Y && Z == Q.Z && W == Q.W;
-#endif // PLATFORM_ENABLE_VECTORINTRINSICS
 }
 
 
 FORCEINLINE bool FQuat::operator!=(const FQuat& Q) const
 {
-#if PLATFORM_ENABLE_VECTORINTRINSICS
-	const VectorRegister A = VectorLoadAligned(this);
-	const VectorRegister B = VectorLoadAligned(&Q);
-	return VectorMaskBits(VectorCompareNE(A, B)) != 0x00;
-#else
 	return X != Q.X || Y != Q.Y || Z != Q.Z || W != Q.W;
-#endif // PLATFORM_ENABLE_VECTORINTRINSICS
 }
 
 
@@ -918,17 +757,6 @@ FORCEINLINE float FQuat::operator|(const FQuat& Q) const
 
 FORCEINLINE void FQuat::Normalize(float Tolerance)
 {
-#if PLATFORM_ENABLE_VECTORINTRINSICS
-	const VectorRegister Vector = VectorLoadAligned(this);
-
-	const VectorRegister SquareSum = VectorDot4(Vector, Vector);
-	const VectorRegister NonZeroMask = VectorCompareGE(SquareSum, VectorLoadFloat1(&Tolerance));
-	const VectorRegister InvLength = VectorReciprocalSqrtAccurate(SquareSum);
-	const VectorRegister NormalizedVector = VectorMultiply(InvLength, Vector);
-	VectorRegister Result = VectorSelect(NonZeroMask, NormalizedVector, GlobalVectorConstants::Float0001);
-
-	VectorStoreAligned(Result, this);
-#else
 	const float SquareSum = X * X + Y * Y + Z * Z + W * W;
 
 	if (SquareSum >= Tolerance)
@@ -944,7 +772,6 @@ FORCEINLINE void FQuat::Normalize(float Tolerance)
 	{
 		*this = FQuat::Identity;
 	}
-#endif // PLATFORM_ENABLE_VECTORINTRINSICS
 }
 
 
@@ -1008,13 +835,6 @@ float FQuat::AngularDistance(const FQuat& Q) const
 
 FORCEINLINE FVector FQuat::RotateVector(FVector V) const
 {	
-#if WITH_DIRECTXMATH
-	FVector Result;
-	VectorQuaternionVector3Rotate(&Result, &V, this);
-	return Result;
-
-#else
-
 	// http://people.csail.mit.edu/bkph/articles/Quaternions.pdf
 	// V' = V + 2w(Q x V) + (2Q x (Q x V))
 	// refactor:
@@ -1026,29 +846,22 @@ FORCEINLINE FVector FQuat::RotateVector(FVector V) const
 	const FVector T = 2.f * FVector::CrossProduct(Q, V);
 	const FVector Result = V + (W * T) + FVector::CrossProduct(Q, T);
 	return Result;
-#endif
 }
 
 FORCEINLINE FVector FQuat::UnrotateVector(FVector V) const
 {	
-#if WITH_DIRECTXMATH
-	FVector Result;
-	VectorQuaternionVector3InverseRotate(&Result, &V, this);
-	return Result;
-#else
 	//return Inverse().RotateVector(V);
 
 	const FVector Q(-X, -Y, -Z); // Inverse
 	const FVector T = 2.f * FVector::CrossProduct(Q, V);
 	const FVector Result = V + (W * T) + FVector::CrossProduct(Q, T);
 	return Result;
-#endif
 }
 
 
 FORCEINLINE FQuat FQuat::Inverse() const
 {
-	checkSlow(IsNormalized());
+	assert(IsNormalized());
 
 	return FQuat(-X, -Y, -Z, W);
 }
@@ -1156,19 +969,17 @@ FORCEINLINE bool FQuat::ContainsNaN() const
 }
 
 
-template<> struct TIsPODType<FQuat> { enum { Value = true }; };
-
 /* FMath inline functions
  *****************************************************************************/
 
 template<class U>
-FORCEINLINE_DEBUGGABLE FQuat FMath::Lerp( const FQuat& A, const FQuat& B, const U& Alpha)
+FORCEINLINE FQuat FMath::Lerp( const FQuat& A, const FQuat& B, const U& Alpha)
 {
 	return FQuat::Slerp(A, B, Alpha);
 }
 
 template<class U>
-FORCEINLINE_DEBUGGABLE FQuat FMath::BiLerp(const FQuat& P00, const FQuat& P10, const FQuat& P01, const FQuat& P11, float FracX, float FracY)
+FORCEINLINE FQuat FMath::BiLerp(const FQuat& P00, const FQuat& P10, const FQuat& P01, const FQuat& P11, float FracX, float FracY)
 {
 	FQuat Result;
 
@@ -1182,7 +993,7 @@ FORCEINLINE_DEBUGGABLE FQuat FMath::BiLerp(const FQuat& P00, const FQuat& P10, c
 }
 
 template<class U>
-FORCEINLINE_DEBUGGABLE FQuat FMath::CubicInterp( const FQuat& P0, const FQuat& T0, const FQuat& P1, const FQuat& T1, const U& A)
+FORCEINLINE FQuat FMath::CubicInterp( const FQuat& P0, const FQuat& T0, const FQuat& P1, const FQuat& T1, const U& A)
 {
 	return FQuat::Squad(P0, T0, P1, T1, A);
 }

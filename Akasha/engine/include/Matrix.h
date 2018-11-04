@@ -1,16 +1,9 @@
-// Copyright 1998-2018 Epic Games, Inc. All Rights Reserved.
-
 #pragma once
 
-#include "CoreTypes.h"
-#include "HAL/UnrealMemory.h"
-#include "Math/UnrealMathUtility.h"
-#include "Containers/UnrealString.h"
-#include "Math/Vector.h"
-#include "Math/Vector4.h"
-#include "Math/Plane.h"
-#include "Math/Rotator.h"
-#include "Math/Axis.h"
+#include "Vector.h"
+#include "Vector4.h"
+#include "MathUtility.h"
+#include "Axis.h"
 
 /**
  * 4x4 matrix of floating point values.
@@ -24,11 +17,11 @@ struct FMatrix
 public:
 	union
 	{
-		MS_ALIGN(16) float M[4][4] GCC_ALIGN(16);
+		MS_ALIGN(16) float M[4][4];
 	};
 
 	//Identity matrix
-	MS_ALIGN(16) static CORE_API const FMatrix Identity GCC_ALIGN(16);
+	MS_ALIGN(16) static CORE_API const FMatrix Identity;
 
 	// Constructors.
 	FORCEINLINE FMatrix();
@@ -38,9 +31,9 @@ public:
 	 *
 	 * @param EForceInit Force Init Enum.
 	 */
-	explicit FORCEINLINE FMatrix(EForceInit)
+	explicit FORCEINLINE FMatrix()
 	{
-		FMemory::Memzero(this,sizeof(*this));
+		memset(M, 0 , sizeof(float) * 16
 	}
 
 	/**
@@ -178,16 +171,16 @@ public:
 
 	// NOTE: There is some compiler optimization issues with WIN64 that cause FORCEINLINE to cause a crash
 	// Remove any scaling from this matrix (ie magnitude of each row is 1) with error Tolerance
-	inline void RemoveScaling(float Tolerance=SMALL_NUMBER);
+	inline void RemoveScaling(float Tolerance = SMALL_NUMBER);
 
 	// Returns matrix after RemoveScaling with error Tolerance
-	inline FMatrix GetMatrixWithoutScale(float Tolerance=SMALL_NUMBER) const;
+	inline FMatrix GetMatrixWithoutScale(float Tolerance = SMALL_NUMBER) const;
 
 	/** Remove any scaling from this matrix (ie magnitude of each row is 1) and return the 3D scale vector that was initially present with error Tolerance */
-	inline FVector ExtractScaling(float Tolerance=SMALL_NUMBER);
+	inline FVector ExtractScaling(float Tolerance = SMALL_NUMBER);
 
 	/** return a 3D scale vector calculated from this matrix (where each component is the magnitude of a row vector) with error Tolerance. */
-	inline FVector GetScaleVector(float Tolerance=SMALL_NUMBER) const;
+	inline FVector GetScaleVector(float Tolerance = SMALL_NUMBER) const;
 
 	// Remove any translation from this matrix
 	inline FMatrix RemoveTranslation() const;
@@ -308,45 +301,17 @@ public:
 	 */
 	inline void Mirror(EAxis::Type MirrorAxis, EAxis::Type FlipAxis);
 
-	/**
-	 * Get a textual representation of the vector.
-	 *
-	 * @return Text describing the vector.
-	 */
-	CORE_API FString ToString() const;
-
-	/** Output ToString */
-	void DebugPrint() const;
-
 	/** For debugging purpose, could be changed */
 	CORE_API uint32 ComputeHash() const; 
 
-	/**
-	 * Serializes the Matrix.
-	 *
-	 * @param Ar Reference to the serialization archive.
-	 * @param M Reference to the matrix being serialized.
-	 * @return Reference to the Archive after serialization.
-	 */
-	friend CORE_API FArchive& operator<<(FArchive& Ar,FMatrix& M);
-
-	bool Serialize( FArchive& Ar )
-	{
-		if (Ar.UE4Ver() >= VER_UE4_ADDED_NATIVE_SERIALIZATION_FOR_IMMUTABLE_STRUCTURES)
-		{
-			Ar << *this;
-			return true;
-		}
-		return false;
-	}
 
 	/**
 	 * Convert this Atom to the 3x4 transpose of the transformation matrix.
 	 */
 	void To3x4MatrixTranspose( float* Out ) const
 	{
-		const float* RESTRICT Src = &(M[0][0]);
-		float* RESTRICT Dest = Out;
+		const float* Src = &(M[0][0]);
+		float* Dest = Out;
 
 		Dest[0] = Src[0];   // [0][0]
 		Dest[1] = Src[4];   // [1][0]
@@ -363,13 +328,6 @@ public:
 		Dest[10] = Src[10]; // [2][2]
 		Dest[11] = Src[14]; // [3][2]
 	}	
-
-private:
-
-	/** 
-	 * Output an error message and trigger an ensure 
-	 */
-	static CORE_API void ErrorEnsure(const TCHAR* Message);
 };
 
 
@@ -430,8 +388,6 @@ struct FLookAtMatrix : FMatrix
 };
 
 
-template <> struct TIsPODType<FMatrix> { enum { Value = true }; };
-
 
 // very high quality 4x4 matrix inverse
 static inline void Inverse4x4( double* dst, const float* src )
@@ -470,4 +426,4 @@ static inline void Inverse4x4( double* dst, const float* src )
 	}
 }
 
-#include "Math/Matrix.inl"
+#include "Matrix.inl"

@@ -1,6 +1,11 @@
 #pragma once
 #include "TypeDefines.h"
 #include "CoreDefines.h"
+#include "MathUtility.h"
+#include "NumericLimits.h"
+
+struct FVector;
+struct FFloat16Color;
 
 /**
 * Enum for the different kinds of gamma spaces we expect to need to convert from/to.
@@ -252,7 +257,7 @@ struct FLinearColor
 	* @param	OutPoints		Receives the output samples.
 	* @return					Path length.
 	*/
-	static float EvaluateBezier(const FLinearColor* ControlPoints, int32 NumPoints, TArray<FLinearColor>& OutPoints);
+	static float EvaluateBezier(const FLinearColor* ControlPoints, int32 NumPoints, std::vector<FLinearColor>& OutPoints);
 
 	/** Converts a linear space RGB color to an HSV color */
 	FLinearColor LinearRGBToHSV() const;
@@ -361,12 +366,8 @@ public:
 	const uint32& DWColor(void) const { return *((uint32*)this); }
 
 	// Constructors.
-	__forceinline FColor() {}
-	__forceinline explicit FColor(EForceInit)
-	{
-		// put these into the body for proper ordering with INTEL vs non-INTEL_BYTE_ORDER
-		R = G = B = A = 0;
-	}
+	__forceinline FColor() { R = G = B = A = 0; }
+
 	__forceinline FColor(uint8 InR, uint8 InG, uint8 InB, uint8 InA = 255)
 	{
 		// put these into the body for proper ordering with INTEL vs non-INTEL_BYTE_ORDER
@@ -395,24 +396,13 @@ public:
 
 	FORCEINLINE void operator+=(const FColor& C)
 	{
-		R = (uint8)FMath::Min((int32)R + (int32)C.R, 255);
-		G = (uint8)FMath::Min((int32)G + (int32)C.G, 255);
-		B = (uint8)FMath::Min((int32)B + (int32)C.B, 255);
-		A = (uint8)FMath::Min((int32)A + (int32)C.A, 255);
+		R = (uint8)FMath::Min((int32)R + (int32)C.R, (int32)255);
+		G = (uint8)FMath::Min((int32)G + (int32)C.G, (int32)255);
+		B = (uint8)FMath::Min((int32)B + (int32)C.B, (int32)255);
+		A = (uint8)FMath::Min((int32)A + (int32)C.A, (int32)255);
 	}
 
 	FLinearColor FromRGBE() const;
-
-	/**
-	* Creates a color value from the given hexadecimal string.
-	*
-	* Supported formats are: RGB, RRGGBB, RRGGBBAA, #RGB, #RRGGBB, #RRGGBBAA
-	*
-	* @param HexString - The hexadecimal string.
-	* @return The corresponding color value.
-	* @see ToHex
-	*/
-	static CORE_API FColor FromHex(const FString& HexString);
 
 	/**
 	* Makes a random but quite nice color.
@@ -511,13 +501,6 @@ private:
 FORCEINLINE uint32 GetTypeHash(const FColor& Color)
 {
 	return Color.DWColor();
-}
-
-
-FORCEINLINE uint32 GetTypeHash(const FLinearColor& LinearColor)
-{
-	// Note: this assumes there's no padding in FLinearColor that could contain uncompared data.
-	return FCrc::MemCrc_DEPRECATED(&LinearColor, sizeof(FLinearColor));
 }
 
 

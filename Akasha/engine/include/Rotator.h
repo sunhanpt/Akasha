@@ -1,14 +1,12 @@
-// Copyright 1998-2018 Epic Games, Inc. All Rights Reserved.
-
 #pragma once
 
-#include "CoreTypes.h"
-#include "Math/UnrealMathUtility.h"
-#include "Containers/UnrealString.h"
-#include "Misc/Parse.h"
-#include "Logging/LogMacros.h"
-#include "Math/Vector.h"
-#include "Math/VectorRegister.h"
+#include "Vector.h"
+#include "Vector4.h"
+#include "MathUtility.h"
+#include "Axis.h"
+#include "CoreDefines.h"
+
+struct FQuat;
 
 /**
  * Implements a container for rotation information.
@@ -33,29 +31,6 @@ public:
 	static CORE_API const FRotator ZeroRotator;
 
 public:
-
-#if ENABLE_NAN_DIAGNOSTIC
-	FORCEINLINE void DiagnosticCheckNaN() const
-	{
-		if (ContainsNaN())
-		{
-			logOrEnsureNanError(TEXT("FRotator contains NaN: %s"), *ToString());
-			*const_cast<FRotator*>(this) = ZeroRotator;
-		}
-	}
-
-	FORCEINLINE void DiagnosticCheckNaN(const TCHAR* Message) const
-	{
-		if (ContainsNaN())
-		{
-			logOrEnsureNanError(TEXT("%s: FRotator contains NaN: %s"), Message, *ToString());
-			*const_cast<FRotator*>(this) = ZeroRotator;
-		}
-	}
-#else
-	FORCEINLINE void DiagnosticCheckNaN() const {}
-	FORCEINLINE void DiagnosticCheckNaN(const TCHAR* Message) const {}
-#endif
 
 	/**
 	 * Default constructor (no initialization).
@@ -83,7 +58,7 @@ public:
 	 *
 	 * @param EForceInit Force Init Enum.
 	 */
-	explicit FORCEINLINE FRotator( EForceInit );
+	explicit FORCEINLINE FRotator();
 
 	/**
 	 * Constructor.
@@ -298,48 +273,11 @@ public:
 	CORE_API void GetWindingAndRemainder( FRotator& Winding, FRotator& Remainder ) const;
 
 	/**
-	 * Get a textual representation of the vector.
-	 *
-	 * @return Text describing the vector.
-	 */
-	FString ToString() const;
-
-	/** Get a short textural representation of this vector, for compact readable logging. */
-	FString ToCompactString() const;
-
-	/**
-	 * Initialize this Rotator based on an FString. The String is expected to contain P=, Y=, R=.
-	 * The FRotator will be bogus when InitFromString returns false.
-	 *
-	 * @param InSourceString	FString containing the rotator values.
-	 * @return true if the P,Y,R values were read successfully; false otherwise.
-	 */
-	bool InitFromString( const FString& InSourceString );
-
-	/**
 	 * Utility to check if there are any non-finite values (NaN or Inf) in this Rotator.
 	 *
 	 * @return true if there are any non-finite values in this Rotator, otherwise false.
 	 */
 	bool ContainsNaN() const;
-
-	/**
-	 * Serializes the rotator compressed for e.g. network transmission.
-	 * 
-	 * @param	Ar	Archive to serialize to/ from
-	 */
-	CORE_API void SerializeCompressed( FArchive& Ar );
-
-	/**
-	 * Serializes the rotator compressed for e.g. network transmission (use shorts though).
-	 * 
-	 * @param	Ar	Archive to serialize to/ from
-	 */
-	CORE_API void SerializeCompressedShort( FArchive& Ar );
-
-	/**
-	 */
-	CORE_API bool NetSerialize( FArchive& Ar, class UPackageMap* Map, bool& bOutSuccess );
 
 public:
 	
@@ -399,27 +337,6 @@ public:
 	 */
 	static CORE_API FRotator MakeFromEuler( const FVector& Euler );
 
-
-public:
-
-	/**
-	 * Serializer.
-	 *
-	 * @param Ar Serialization Archive.
-	 * @param R Rotator being serialized.
-	 * @return Reference to Archive after serialization.
-	 */
-	friend FArchive& operator<<( FArchive& Ar, FRotator& R )
-	{
-		Ar << R.Pitch << R.Yaw << R.Roll;
-		return Ar;
-	}
-
-	bool Serialize( FArchive& Ar )
-	{
-		Ar << *this;
-		return true;
-	}
 };
 
 
@@ -442,18 +359,16 @@ FORCEINLINE FRotator operator*( float Scale, const FRotator& R )
 FORCEINLINE FRotator::FRotator( float InF ) 
 	:	Pitch(InF), Yaw(InF), Roll(InF) 
 {
-	DiagnosticCheckNaN();
 }
 
 
 FORCEINLINE FRotator::FRotator( float InPitch, float InYaw, float InRoll )
 	:	Pitch(InPitch), Yaw(InYaw), Roll(InRoll) 
 {
-	DiagnosticCheckNaN();
 }
 
 
-FORCEINLINE FRotator::FRotator(EForceInit)
+FORCEINLINE FRotator::FRotator()
 	: Pitch(0), Yaw(0), Roll(0)
 {}
 
@@ -479,7 +394,6 @@ FORCEINLINE FRotator FRotator::operator*( float Scale ) const
 FORCEINLINE FRotator FRotator::operator*= (float Scale)
 {
 	Pitch = Pitch*Scale; Yaw = Yaw*Scale; Roll = Roll*Scale;
-	DiagnosticCheckNaN();
 	return *this;
 }
 
@@ -499,7 +413,6 @@ FORCEINLINE bool FRotator::operator!=( const FRotator& V ) const
 FORCEINLINE FRotator FRotator::operator+=( const FRotator& R )
 {
 	Pitch += R.Pitch; Yaw += R.Yaw; Roll += R.Roll;
-	DiagnosticCheckNaN();
 	return *this;
 }
 
@@ -507,24 +420,17 @@ FORCEINLINE FRotator FRotator::operator+=( const FRotator& R )
 FORCEINLINE FRotator FRotator::operator-=( const FRotator& R )
 {
 	Pitch -= R.Pitch; Yaw -= R.Yaw; Roll -= R.Roll;
-	DiagnosticCheckNaN();
 	return *this;
 }
 
 
 FORCEINLINE bool FRotator::IsNearlyZero(float Tolerance) const
 {
-#if PLATFORM_ENABLE_VECTORINTRINSICS
-	const VectorRegister RegA = VectorLoadFloat3_W0(this);
-	const VectorRegister Norm = VectorNormalizeRotator(RegA);
-	const VectorRegister AbsNorm = VectorAbs(Norm);
-	return !VectorAnyGreaterThan(AbsNorm, VectorLoadFloat1(&Tolerance));
-#else
 	return
 		FMath::Abs(NormalizeAxis(Pitch))<=Tolerance
 		&&	FMath::Abs(NormalizeAxis(Yaw))<=Tolerance
 		&&	FMath::Abs(NormalizeAxis(Roll))<=Tolerance;
-#endif
+
 }
 
 
@@ -536,17 +442,9 @@ FORCEINLINE bool FRotator::IsZero() const
 
 FORCEINLINE bool FRotator::Equals(const FRotator& R, float Tolerance) const
 {
-#if PLATFORM_ENABLE_VECTORINTRINSICS
-	const VectorRegister RegA = VectorLoadFloat3_W0(this);
-	const VectorRegister RegB = VectorLoadFloat3_W0(&R);
-	const VectorRegister NormDelta = VectorNormalizeRotator(VectorSubtract(RegA, RegB));
-	const VectorRegister AbsNormDelta = VectorAbs(NormDelta);
-	return !VectorAnyGreaterThan(AbsNormDelta, VectorLoadFloat1(&Tolerance));
-#else
 	return (FMath::Abs(NormalizeAxis(Pitch - R.Pitch)) <= Tolerance) 
 		&& (FMath::Abs(NormalizeAxis(Yaw - R.Yaw)) <= Tolerance) 
 		&& (FMath::Abs(NormalizeAxis(Roll - R.Roll)) <= Tolerance);
-#endif
 }
 
 
@@ -555,7 +453,6 @@ FORCEINLINE FRotator FRotator::Add( float DeltaPitch, float DeltaYaw, float Delt
 	Yaw   += DeltaYaw;
 	Pitch += DeltaPitch;
 	Roll  += DeltaRoll;
-	DiagnosticCheckNaN();
 	return *this;
 }
 
@@ -655,16 +552,9 @@ FORCEINLINE FRotator FRotator::GetDenormalized() const
 
 FORCEINLINE void FRotator::Normalize()
 {
-#if PLATFORM_ENABLE_VECTORINTRINSICS
-	VectorRegister VRotator = VectorLoadFloat3_W0(this);
-	VRotator = VectorNormalizeRotator(VRotator);
-	VectorStoreFloat3(VRotator, this);
-#else
 	Pitch = NormalizeAxis(Pitch);
 	Yaw = NormalizeAxis(Yaw);
 	Roll = NormalizeAxis(Roll);
-#endif
-	DiagnosticCheckNaN();
 }
 
 FORCEINLINE float FRotator::GetComponentForAxis(EAxis::Type Axis) const
@@ -698,59 +588,6 @@ FORCEINLINE void FRotator::SetComponentForAxis(EAxis::Type Axis, float Component
 	}
 }
 
-FORCEINLINE FString FRotator::ToString() const
-{
-	return FString::Printf(TEXT("P=%f Y=%f R=%f"), Pitch, Yaw, Roll );
-}
-
-
-FORCEINLINE FString FRotator::ToCompactString() const
-{
-	if( IsNearlyZero() )
-	{
-		return FString::Printf(TEXT("R(0)"));
-	}
-
-	FString ReturnString(TEXT("R("));
-	bool bIsEmptyString = true;
-	if( !FMath::IsNearlyZero(Pitch) )
-	{
-		ReturnString += FString::Printf(TEXT("P=%.2f"), Pitch);
-		bIsEmptyString = false;
-	}
-	if( !FMath::IsNearlyZero(Yaw) )
-	{
-		if( !bIsEmptyString )
-		{
-			ReturnString += FString(TEXT(", "));
-		}
-		ReturnString += FString::Printf(TEXT("Y=%.2f"), Yaw);
-		bIsEmptyString = false;
-	}
-	if( !FMath::IsNearlyZero(Roll) )
-	{
-		if( !bIsEmptyString )
-		{
-			ReturnString += FString(TEXT(", "));
-		}
-		ReturnString += FString::Printf(TEXT("R=%.2f"), Roll);
-		bIsEmptyString = false;
-	}
-	ReturnString += FString(TEXT(")"));
-	return ReturnString;
-}
-
-
-FORCEINLINE bool FRotator::InitFromString( const FString& InSourceString )
-{
-	Pitch = Yaw = Roll = 0;
-
-	// The initialization is only successful if the X, Y, and Z values can all be parsed from the string
-	const bool bSuccessful = FParse::Value( *InSourceString, TEXT("P=") , Pitch ) && FParse::Value( *InSourceString, TEXT("Y="), Yaw ) && FParse::Value( *InSourceString, TEXT("R="), Roll );
-	DiagnosticCheckNaN();
-	return bSuccessful;
-}
-
 
 FORCEINLINE bool FRotator::ContainsNaN() const
 {
@@ -760,20 +597,18 @@ FORCEINLINE bool FRotator::ContainsNaN() const
 }
 
 
-template<> struct TIsPODType<FRotator> { enum { Value = true }; };
-
 
 /* FMath inline functions
  *****************************************************************************/
 
 template<class U>
-FORCEINLINE_DEBUGGABLE FRotator FMath::Lerp(const FRotator& A, const FRotator& B, const U& Alpha)
+FORCEINLINE FRotator FMath::Lerp(const FRotator& A, const FRotator& B, const U& Alpha)
 {
 	return A + (B - A).GetNormalized() * Alpha;
 }
 
 template<class U>
-FORCEINLINE_DEBUGGABLE FRotator FMath::LerpRange(const FRotator& A, const FRotator& B, const U& Alpha)
+FORCEINLINE FRotator FMath::LerpRange(const FRotator& A, const FRotator& B, const U& Alpha)
 {
 	// Similar to Lerp, but does not take the shortest path. Allows interpolation over more than 180 degrees.
 	return (A * (1 - Alpha) + B * Alpha).GetNormalized();

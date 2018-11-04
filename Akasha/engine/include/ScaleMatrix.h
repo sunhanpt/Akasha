@@ -1,10 +1,7 @@
-// Copyright 1998-2018 Epic Games, Inc. All Rights Reserved.
-
 #pragma once
 
-#include "CoreTypes.h"
-#include "Math/Plane.h"
-#include "Math/Matrix.h"
+#include "Plane.h"
+#include "Matrix.h"
 
 /**
  * Scale matrix.

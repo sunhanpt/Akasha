@@ -1,12 +1,7 @@
-// Copyright 1998-2018 Epic Games, Inc. All Rights Reserved.
-
 #pragma once
 
-#include "CoreTypes.h"
-#include "Math/Vector.h"
-#include "Math/Rotator.h"
-#include "Math/Matrix.h"
-#include "Math/RotationTranslationMatrix.h"
+#include "RotationTranslationMatrix.h"
+
 
 /** Rotation matrix no translation */
 class FRotationMatrix

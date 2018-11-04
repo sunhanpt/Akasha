@@ -1,12 +1,10 @@
-// Copyright 1998-2018 Epic Games, Inc. All Rights Reserved.
-
 #pragma once
 
-#include "CoreTypes.h"
-#include "Math/UnrealMathUtility.h"
-#include "Math/Vector.h"
-#include "Math/Vector4.h"
-#include "UObject/ObjectVersion.h"
+#include "Vector.h"
+#include "Vector4.h"
+#include "MathUtility.h"
+
+struct FMatrix;
 
 /**
  * Structure for three dimensional planes.
@@ -81,7 +79,7 @@ public:
 	 *
 	 * @param EForceInit Force Init Enum.
 	 */
-	explicit FORCEINLINE FPlane(EForceInit);
+	explicit FORCEINLINE FPlane();
 
 	// Functions.
 
@@ -241,53 +239,7 @@ public:
 	 */
 	FPlane operator/=(float V);
 
-	/**
-	 * Serializer.
-	 *
-	 * @param Ar Serialization Archive.
-	 * @param P Plane to serialize.
-	 * @return Reference to Archive after serialization.
-	 */
-	friend FArchive& operator<<(FArchive& Ar, FPlane &P)
-	{
-		return Ar << (FVector&)P << P.W;
-	}
-
-	bool Serialize(FArchive& Ar)
-	{
-		if (Ar.UE4Ver() >= VER_UE4_ADDED_NATIVE_SERIALIZATION_FOR_IMMUTABLE_STRUCTURES)
-		{
-			Ar << *this;
-			return true;
-		}
-		return false;
-	}
-
-	/**
-	 * Serializes the vector compressed for e.g. network transmission.
-	 * @param Ar Archive to serialize to/ from.
-	 * @return false to allow the ordinary struct code to run (this never happens).
-	 */
-	bool NetSerialize(FArchive& Ar, class UPackageMap*, bool& bOutSuccess)
-	{
-		if(Ar.IsLoading())
-		{
-			int16 iX, iY, iZ, iW;
-			Ar << iX << iY << iZ << iW;
-			*this = FPlane(iX,iY,iZ,iW);
-		}
-		else
-		{
-			int16 iX(FMath::RoundToInt(X));
-			int16 iY(FMath::RoundToInt(Y));
-			int16 iZ(FMath::RoundToInt(Z));
-			int16 iW(FMath::RoundToInt(W));
-			Ar << iX << iY << iZ << iW;
-		}
-		bOutSuccess = true;
-		return true;
-	}
-} GCC_ALIGN(16);
+};
 
 /* FMath inline functions
  *****************************************************************************/
@@ -411,8 +363,8 @@ FORCEINLINE FPlane::FPlane(FVector A, FVector B, FVector C)
 }
 
 
-FORCEINLINE FPlane::FPlane(EForceInit)
-	: FVector(ForceInit), W(0.f)
+FORCEINLINE FPlane::FPlane()
+	: FVector(), W(0.f)
 {}
 
 
@@ -528,5 +480,3 @@ FORCEINLINE FPlane FPlane::operator/=(float V)
 	return *this;
 }
 
-
-template <> struct TIsPODType<FPlane> { enum { Value = true }; };

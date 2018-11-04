@@ -1,11 +1,9 @@
-// Copyright 1998-2018 Epic Games, Inc. All Rights Reserved.
-
 #pragma once
 
-#include "CoreTypes.h"
-#include "Math/UnrealMathUtility.h"
-#include "Math/VectorRegister.h"
-#include "Math/Matrix.h"
+#include "Plane.h"
+#include "Matrix.h"
+#include "Rotator.h"
+#include "UnrealMathSSE.h"
 
 /** Combined rotation and translation matrix */
 class FRotationTranslationMatrix
@@ -31,7 +29,6 @@ public:
 
 FORCEINLINE FRotationTranslationMatrix::FRotationTranslationMatrix(const FRotator& Rot, const FVector& Origin)
 {
-#if PLATFORM_ENABLE_VECTORINTRINSICS
 
 	const VectorRegister Angles = MakeVectorRegister(Rot.Pitch, Rot.Yaw, Rot.Roll, 0.0f);
 	const VectorRegister HalfAngles = VectorMultiply(Angles, GlobalVectorConstants::DEG_TO_RAD);
@@ -45,16 +42,6 @@ FORCEINLINE FRotationTranslationMatrix::FRotationTranslationMatrix(const FRotato
 	const float	CP	= CosAngles.f[0];
 	const float	CY	= CosAngles.f[1];
 	const float	CR	= CosAngles.f[2];
-
-#else
-	
-	float SP, SY, SR;
-	float CP, CY, CR;
-	FMath::SinCos(&SP, &CP, FMath::DegreesToRadians(Rot.Pitch));
-	FMath::SinCos(&SY, &CY, FMath::DegreesToRadians(Rot.Yaw));
-	FMath::SinCos(&SR, &CR, FMath::DegreesToRadians(Rot.Roll));
-
-#endif // PLATFORM_ENABLE_VECTORINTRINSICS
 
 	M[0][0]	= CP * CY;
 	M[0][1]	= CP * SY;

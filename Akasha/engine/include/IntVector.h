@@ -1,7 +1,10 @@
 #pragma once
 
 #include "MathUtility.h"
-#include "Vector.h"
+#include "TypeDefines.h"
+
+
+struct FVector;
 
 /**
  * Structure for integer vectors in 3-d space.
@@ -53,7 +56,7 @@ public:
 	 *
 	 * @param InVector float vector converted to int
 	 */
-	explicit FIntVector( FVector InVector  );
+	explicit FIntVector( FVector& InVector  );
 
 
 public:

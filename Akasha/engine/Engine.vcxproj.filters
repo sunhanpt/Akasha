@@ -192,15 +192,6 @@
     <ClInclude Include="include\Quat.h">
       <Filter>Source\Core\Public\Math</Filter>
     </ClInclude>
-    <ClInclude Include="include\Range.h">
-      <Filter>Source\Core\Public\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="include\RangeBound.h">
-      <Filter>Source\Core\Public\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="include\RangeSet.h">
-      <Filter>Source\Core\Public\Math</Filter>
-    </ClInclude>
     <ClInclude Include="include\RotationMatrix.h">
       <Filter>Source\Core\Public\Math</Filter>
     </ClInclude>
@@ -211,6 +202,30 @@
       <Filter>Source\Core\Public\Math</Filter>
     </ClInclude>
     <ClInclude Include="include\ScaleMatrix.h">
+      <Filter>Source\Core\Public\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="include\NumericLimits.h">
+      <Filter>Source\Core\Public\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Float16Color.h">
+      <Filter>Source\Core\Public\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Axis.h">
+      <Filter>Source\Core\Public\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="include\UnrealMathSSE.h">
+      <Filter>Source\Core\Public\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="include\UnrealMathVectorConstants.h">
+      <Filter>Source\Core\Public\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RotationAboutPointMatrix.h">
+      <Filter>Source\Core\Public\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="include\QuatRotationTranslationMatrix.h">
+      <Filter>Source\Core\Public\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Box.h">
       <Filter>Source\Core\Public\Math</Filter>
     </ClInclude>
   </ItemGroup>
