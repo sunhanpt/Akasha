@@ -228,5 +228,11 @@
     <ClInclude Include="include\Box.h">
       <Filter>Source\Core\Public\Math</Filter>
     </ClInclude>
+    <ClInclude Include="include\MathDefines.h">
+      <Filter>Source\Core\Public\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MathGeometry.h">
+      <Filter>Source\Core\Public\Math</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -23,17 +23,14 @@ public:
 	//Identity matrix
 	MS_ALIGN(16) static CORE_API const FMatrix Identity;
 
-	// Constructors.
-	FORCEINLINE FMatrix();
-
 	/**
 	 * Constructor.
 	 *
 	 * @param EForceInit Force Init Enum.
 	 */
-	explicit FORCEINLINE FMatrix()
+	FORCEINLINE FMatrix()
 	{
-		memset(M, 0 , sizeof(float) * 16
+		memset(M, 0, sizeof(float) * 16);
 	}
 
 	/**
@@ -301,9 +298,6 @@ public:
 	 */
 	inline void Mirror(EAxis::Type MirrorAxis, EAxis::Type FlipAxis);
 
-	/** For debugging purpose, could be changed */
-	CORE_API uint32 ComputeHash() const; 
-
 
 	/**
 	 * Convert this Atom to the 3x4 transpose of the transformation matrix.
@@ -340,7 +334,7 @@ class TMatrix
 public:
 
 	// Variables.
-	MS_ALIGN(16) float M[NumRows][NumColumns] GCC_ALIGN(16);
+	MS_ALIGN(16) float M[NumRows][NumColumns];
 
 	// Constructor
 	TMatrix();

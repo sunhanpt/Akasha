@@ -1,6 +1,7 @@
 #pragma once
 #include "MathUtility.h"
 #include "IntPoint.h"
+#include "MathDefines.h"
 
 struct FVector;
 
@@ -799,7 +800,7 @@ FORCEINLINE FIntPoint FVector2D::IntPoint() const
 
 FORCEINLINE FVector2D FVector2D::RoundToVector() const
 {
-	return FVector2D(FMath::RoundToInt(X), FMath::RoundToInt(Y));
+	return FVector2D((float)FMath::RoundToInt(X), (float)FMath::RoundToInt(Y));
 }
 
 FORCEINLINE FVector2D FVector2D::ClampAxes(float MinAxisVal, float MaxAxisVal) const
@@ -822,16 +823,3 @@ FORCEINLINE FVector2D FVector2D::GetAbs() const
 	return FVector2D(FMath::Abs(X), FMath::Abs(Y));
 }
 
-
-/* FMath inline functions
- *****************************************************************************/
-
-FORCEINLINE float FMath::GetRangePct(FVector2D const& Range, float Value)
-{
-	return (Range.X != Range.Y) ? (Value - Range.X) / (Range.Y - Range.X) : Range.X;
-}
-
-FORCEINLINE float FMath::GetRangeValue(FVector2D const& Range, float Pct)
-{
-	return Lerp<float>(Range.X, Range.Y, Pct);
-}

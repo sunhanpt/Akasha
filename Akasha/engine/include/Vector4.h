@@ -61,6 +61,7 @@ public:
 	CORE_API FRotator ToOrientationRotator() const;
 	CORE_API FRotator Rotation() const;
 	CORE_API FQuat ToOrientationQuat() const;
+	FORCEINLINE FVector4 GetSafeNormal(float Tolerance = SMALL_NUMBER) const;
 };
 
 
@@ -188,6 +189,18 @@ FORCEINLINE void FVector4::Set(float InX, float InY, float InZ, float InW)
 	Z = InZ;
 	W = InW;
 }
+
+FORCEINLINE FVector4 FVector4::GetSafeNormal(float Tolerance) const
+{
+	const float SquareSum = X*X + Y*Y + Z*Z;
+	if (SquareSum > Tolerance)
+	{
+		const float Scale = FMath::InvSqrt(SquareSum);
+		return FVector4(X*Scale, Y*Scale, Z*Scale, 0.0f);
+	}
+	return FVector4(0.f);
+}
+
 
 
 /////////////////////////////////////*Vector*/////////////////////////////////////

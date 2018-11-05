@@ -35,7 +35,7 @@ public:
 	/**
 	 * Default constructor (no initialization).
 	 */
-	FORCEINLINE FRotator() { }
+	FORCEINLINE FRotator();
 
 	/**
 	 * Constructor
@@ -52,13 +52,6 @@ public:
 	 * @param InRoll Roll in degrees.
 	 */
 	FORCEINLINE FRotator( float InPitch, float InYaw, float InRoll );
-
-	/**
-	 * Constructor.
-	 *
-	 * @param EForceInit Force Init Enum.
-	 */
-	explicit FORCEINLINE FRotator();
 
 	/**
 	 * Constructor.
@@ -601,15 +594,15 @@ FORCEINLINE bool FRotator::ContainsNaN() const
 /* FMath inline functions
  *****************************************************************************/
 
-template<class U>
-FORCEINLINE FRotator FMath::Lerp(const FRotator& A, const FRotator& B, const U& Alpha)
-{
-	return A + (B - A).GetNormalized() * Alpha;
-}
-
-template<class U>
-FORCEINLINE FRotator FMath::LerpRange(const FRotator& A, const FRotator& B, const U& Alpha)
-{
-	// Similar to Lerp, but does not take the shortest path. Allows interpolation over more than 180 degrees.
-	return (A * (1 - Alpha) + B * Alpha).GetNormalized();
-}
+//template<class U>
+//FORCEINLINE FRotator FMath::Lerp(const FRotator& A, const FRotator& B, const U& Alpha)
+//{
+//	return A + (B - A).GetNormalized() * Alpha;
+//}
+//
+//template<class U>
+//FORCEINLINE FRotator FMath::LerpRange(const FRotator& A, const FRotator& B, const U& Alpha)
+//{
+//	// Similar to Lerp, but does not take the shortest path. Allows interpolation over more than 180 degrees.
+//	return (A * (1 - Alpha) + B * Alpha).GetNormalized();
+//}

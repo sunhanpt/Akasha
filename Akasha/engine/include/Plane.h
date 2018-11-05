@@ -3,6 +3,7 @@
 #include "Vector.h"
 #include "Vector4.h"
 #include "MathUtility.h"
+#include "MathGeometry.h"
 
 struct FMatrix;
 
@@ -73,13 +74,6 @@ public:
 	 * @param C Third point in the plane.
 	 */
 	FPlane(FVector A, FVector B, FVector C);
-
-	/**
-	 * Constructor
-	 *
-	 * @param EForceInit Force Init Enum.
-	 */
-	explicit FORCEINLINE FPlane();
 
 	// Functions.
 
@@ -241,59 +235,8 @@ public:
 
 };
 
-/* FMath inline functions
- *****************************************************************************/
 
-inline FVector FMath::LinePlaneIntersection
-	(
-	const FVector &Point1,
-	const FVector &Point2,
-	const FPlane  &Plane
-	)
-{
-	return
-		Point1
-		+	(Point2-Point1)
-		*	((Plane.W - (Point1|Plane))/((Point2 - Point1)|Plane));
-}
 
-inline bool FMath::IntersectPlanes3( FVector& I, const FPlane& P1, const FPlane& P2, const FPlane& P3 )
-{
-	// Compute determinant, the triple product P1|(P2^P3)==(P1^P2)|P3.
-	const float Det = (P1 ^ P2) | P3;
-	if( Square(Det) < Square(0.001f) )
-	{
-		// Degenerate.
-		I = FVector::ZeroVector;
-		return 0;
-	}
-	else
-	{
-		// Compute the intersection point, guaranteed valid if determinant is nonzero.
-		I = (P1.W*(P2^P3) + P2.W*(P3^P1) + P3.W*(P1^P2)) / Det;
-	}
-	return 1;
-}
-
-inline bool FMath::IntersectPlanes2( FVector& I, FVector& D, const FPlane& P1, const FPlane& P2 )
-{
-	// Compute line direction, perpendicular to both plane normals.
-	D = P1 ^ P2;
-	const float DD = D.SizeSquared();
-	if( DD < Square(0.001f) )
-	{
-		// Parallel or nearly parallel planes.
-		D = I = FVector::ZeroVector;
-		return 0;
-	}
-	else
-	{
-		// Compute intersection.
-		I = (P1.W*(P2^D) + P2.W*(D^P1)) / DD;
-		D.Normalize();
-		return 1;
-	}
-}
 
 /* FVector inline functions
  *****************************************************************************/
@@ -322,9 +265,6 @@ inline FVector FVector::PointPlaneProject(const FVector& Point, const FVector& A
 
 /* FPlane inline functions
  *****************************************************************************/
-
-FORCEINLINE FPlane::FPlane()
-{}
 
 
 FORCEINLINE FPlane::FPlane(const FPlane& P)

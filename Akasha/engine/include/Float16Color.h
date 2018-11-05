@@ -10,7 +10,7 @@
 /**
  *	RGBA Color made up of FFloat16
  */
-class FFloat16Color
+struct FFloat16Color
 {
 public:
 

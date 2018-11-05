@@ -3,10 +3,13 @@
 #include "CoreDefines.h"
 #include "TypeDefines.h"
 #include "Vector2D.h"
+#include "MathDefines.h"
+#include "MathGeometry.h"
 
 struct FVector4;
 struct FQuat;
 struct FRotator;
+struct FPlane;
 
 struct FVector
 {
@@ -54,6 +57,7 @@ public:
 	FORCEINLINE FVector operator/(const FVector& V) const;			// ÏòÁ¿Ïà³ý
 	FORCEINLINE FVector operator+=(const FVector & V);
 	FORCEINLINE FVector operator-=(const FVector & V);
+	FORCEINLINE FVector operator*=(float Scale);
 	bool operator==(const FVector& V) const;
 	bool operator!=(const FVector& V) const;
 	bool Equals(const FVector& V, float Tolerance = KINDA_SMALL_NUMBER) const;
@@ -189,6 +193,12 @@ FORCEINLINE FVector FVector::operator+=(const FVector& V)
 FORCEINLINE FVector FVector::operator-=(const FVector& V)
 {
 	X -= V.X; Y -= V.Y; Z -= V.Z;
+	return *this;
+}
+
+FORCEINLINE FVector FVector::operator*=(float Scale)
+{
+	X *= Scale; Y *= Scale; Z *= Scale;
 	return *this;
 }
 
@@ -374,56 +384,6 @@ FORCEINLINE float ComputeSquaredDistanceFromBoxToPoint(const FVector& Mins, cons
 	return DistSquared;
 }
 
-/* FVector2D inline functions
-*****************************************************************************/
-
-FORCEINLINE FVector2D::FVector2D(const FVector& V)
-	: X(V.X), Y(V.Y)
-{
-}
-
-inline FVector FVector2D::SphericalToUnitCartesian() const
-{
-	const float SinTheta = FMath::Sin(X);
-	return FVector(FMath::Cos(Y) * SinTheta, FMath::Sin(Y) * SinTheta, FMath::Cos(X));
-}
-
-/* FMath inline functions
-*****************************************************************************/
-
-inline FVector FMath::LinePlaneIntersection
-(
-	const FVector &Point1,
-	const FVector &Point2,
-	const FVector &PlaneOrigin,
-	const FVector &PlaneNormal
-)
-{
-	return
-		Point1
-		+ (Point2 - Point1)
-		*	(((PlaneOrigin - Point1) | PlaneNormal) / ((Point2 - Point1) | PlaneNormal));
-}
-
-inline bool FMath::LineSphereIntersection(const FVector& Start, const FVector& Dir, float Length, const FVector& Origin, float Radius)
-{
-	const FVector	EO = Start - Origin;
-	const float		v = (Dir | (Origin - Start));
-	const float		disc = Radius * Radius - ((EO | EO) - v * v);
-
-	if (disc >= 0.0f)
-	{
-		const float	Time = (v - Sqrt(disc)) / Length;
-
-		if (Time >= 0.0f && Time <= 1.0f)
-			return 1;
-		else
-			return 0;
-	}
-	else
-		return 0;
-}
-
 FORCEINLINE FVector FVector::Reciprocal() const
 {
 	FVector RecVector;
@@ -480,3 +440,19 @@ inline FVector FVector::RotateAngleAxis(const float AngleDeg, const FVector& Axi
 		(OMC * ZX - YS) * X + (OMC * YZ + XS) * Y + (OMC * ZZ + C) * Z
 	);
 }
+
+
+/* FVector2D inline functions
+*****************************************************************************/
+
+FORCEINLINE FVector2D::FVector2D(const FVector& V)
+	: X(V.X), Y(V.Y)
+{
+}
+
+inline FVector FVector2D::SphericalToUnitCartesian() const
+{
+	const float SinTheta = FMath::Sin(X);
+	return FVector(FMath::Cos(Y) * SinTheta, FMath::Sin(Y) * SinTheta, FMath::Cos(X));
+}
+

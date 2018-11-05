@@ -1,6 +1,9 @@
+#include "stdafx.h"
 #include "Color.h"
 #include "Vector.h"
 #include "Float16Color.h"
+#include <cmath>
+#include "TypeDefines.h"
 
 // Common colors.
 const FLinearColor FLinearColor::White(1.f, 1.f, 1.f);
@@ -82,7 +85,7 @@ FLinearColor FLinearColor::FromPow22Color(const FColor& Color)
 // Convert from float to RGBE as outlined in Gregory Ward's Real Pixels article, Graphics Gems II, page 80.
 FColor FLinearColor::ToRGBE() const
 {
-	const float	Primary = FMath::Max3(R, G, B);
+	float	Primary = FMath::Max3(R, G, B);
 	FColor	Color;
 
 	if (Primary < 1E-32)
@@ -91,13 +94,13 @@ FColor FLinearColor::ToRGBE() const
 	}
 	else
 	{
-		int32	Exponent;
+		int	Exponent;
 		const float Scale = frexp(Primary, &Exponent) / Primary * 255.f;
 
-		Color.R = FMath::Clamp(FMath::TruncToInt(R * Scale), 0, 255);
-		Color.G = FMath::Clamp(FMath::TruncToInt(G * Scale), 0, 255);
-		Color.B = FMath::Clamp(FMath::TruncToInt(B * Scale), 0, 255);
-		Color.A = FMath::Clamp(FMath::TruncToInt(Exponent), -128, 127) + 128;
+		Color.R = FMath::Clamp((int)FMath::TruncToInt(R * Scale), 0, 255);
+		Color.G = FMath::Clamp((int)FMath::TruncToInt(G * Scale), 0, 255);
+		Color.B = FMath::Clamp((int)FMath::TruncToInt(B * Scale), 0, 255);
+		Color.A = FMath::Clamp(Exponent, -128, 127) + 128;
 	}
 
 	return Color;
@@ -121,10 +124,10 @@ FColor FLinearColor::ToFColor(const bool bSRGB) const
 
 	FColor ret;
 
-	ret.A = FMath::FloorToInt(FloatA * 255.999f);
-	ret.R = FMath::FloorToInt(FloatR * 255.999f);
-	ret.G = FMath::FloorToInt(FloatG * 255.999f);
-	ret.B = FMath::FloorToInt(FloatB * 255.999f);
+	ret.A = (uint8)FMath::FloorToInt(FloatA * 255.999f);
+	ret.R = (uint8)FMath::FloorToInt(FloatR * 255.999f);
+	ret.G = (uint8)FMath::FloorToInt(FloatG * 255.999f);
+	ret.B = (uint8)FMath::FloorToInt(FloatB * 255.999f);
 
 	return ret;
 }
@@ -169,7 +172,7 @@ FLinearColor FColor::FromRGBE() const
 		return FLinearColor::Black;
 	else
 	{
-		const float Scale = ldexp(1 / 255.0, A - 128);
+		const float Scale = ldexp(1.0f / 255.0f, A - 128);
 		return FLinearColor(R * Scale, G * Scale, B * Scale, 1.0f);
 	}
 }
@@ -335,7 +338,7 @@ FColor FColor::MakeRedToGreenColorFromScalar(float Scalar)
 	int32 R = FMath::TruncToInt(255 * RedSclr);
 	int32 G = FMath::TruncToInt(255 * GreenSclr);
 	int32 B = 0;
-	return FColor(R, G, B);
+	return FColor((uint8)R, (uint8)G, (uint8)B);
 }
 
 void ComputeAndFixedColorAndIntensity(const FLinearColor& InLinearColor, FColor& OutColor, float& OutIntensity)

@@ -28,27 +28,27 @@ public:
 
 	int32 Add(int32 Amount)
 	{
-		_InterlockedExchangeAdd(&m_Counter, Amount);
+		return _InterlockedExchangeAdd(&m_Counter, Amount);
 	}
 
 	int32 Decrement()
 	{
-		_InterlockedDecrement(&m_Counter);
+		return _InterlockedDecrement(&m_Counter);
 	}
 
 	int32 Subtract(int32 Amount)
 	{
-		_InterlockedExchangeAdd(&m_Counter, -Amount);
+		return _InterlockedExchangeAdd(&m_Counter, -Amount);
 	}
 
 	int32 Set(int32 Value)
 	{
-		_InterlockedExchange(&m_Counter, Value);
+		return _InterlockedExchange(&m_Counter, Value);
 	}
 
 	int32 ReSet(int32 Value)
 	{
-		_InterlockedExchange(&m_Counter, 0);
+		return _InterlockedExchange(&m_Counter, 0);
 	}
 
 	int32 GetValue() const

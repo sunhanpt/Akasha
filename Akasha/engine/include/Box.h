@@ -8,6 +8,7 @@
 #include "MathUtility.h"
 #include <vector>
 #include "Matrix.h"
+#include "MathGeometry.h"
 
 /**
  * Implements an axis-aligned box.

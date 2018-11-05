@@ -1,19 +1,20 @@
+#include "stdafx.h"
 #include "MathUtility.h"
 
 static int32 GSRandSeed;
 
 
-void FMathGeneric::SRandInit(int32 Seed)
+void FMath::SRandInit(int32 Seed)
 {
 	GSRandSeed = Seed;
 }
 
-int32 FMathGeneric::GetRandSeed()
+int32 FMath::GetRandSeed()
 {
 	return GSRandSeed;
 }
 
-float FMathGeneric::SRand()
+float FMath::SRand()
 {
 	GSRandSeed = (GSRandSeed * 196314165) + 907633515;
 	union { float f; int32 i; } Result;
@@ -21,10 +22,10 @@ float FMathGeneric::SRand()
 	const float SRandTemp = 1.0f;
 	Temp.f = SRandTemp;
 	Result.i = (Temp.i & 0xff800000) | (GSRandSeed & 0x007fffff);
-	return FMathGeneric::Fractional(Result.f);
+	return FMath::Fractional(Result.f);
 }
 
-float FMathGeneric::Atan2(float Y, float X)
+float FMath::Atan2(float Y, float X)
 {
 	//return atan2f(Y,X);
 	// atan2f occasionally returns NaN with perfectly valid input (possibly due to a compiler or library bug).

@@ -927,8 +927,8 @@ FORCEINLINE VectorRegister VectorLoadURGB10A2N(void* Ptr)
 {
 	VectorRegister Tmp;
 
-	Tmp = _mm_and_ps(_mm_load_ps1((const float *)Ptr), MakeVectorRegister(0x3FFu, 0x3FFu << 10, 0x3FFu << 20, 0x3u << 30));
-	Tmp = _mm_xor_ps(Tmp, VectorSet(0, 0, 0, 0x80000000));
+	Tmp = _mm_and_ps(_mm_load_ps1((const float *)Ptr), MakeVectorRegister((uint32)0x3FFu, (uint32)0x3FFu << 10, (uint32)0x3FFu << 20, (uint32)0x3u << 30));
+	Tmp = _mm_xor_ps(Tmp, VectorSet((uint32)0, (uint32)0, (uint32)0, (uint32)0x80000000));
 	Tmp = _mm_cvtepi32_ps(*(const VectorRegisterInt*)&Tmp);
 	Tmp = _mm_add_ps(Tmp, VectorSet(0, 0, 0, 32768.0f*65536.0f));
 	Tmp = _mm_mul_ps(Tmp, VectorSet(1.0f / 1023.0f, 1.0f / (1023.0f*1024.0f), 1.0f / (1023.0f*1024.0f*1024.0f), 1.0f / (3.0f*1024.0f*1024.0f*1024.0f)));

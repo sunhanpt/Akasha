@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Plane.h"
+#include "UnrealMathSSE.h"
 
 struct FBasisVectorMatrix;
 struct FLookAtMatrix;
@@ -11,10 +12,6 @@ struct FMath;
  */
 
 // Constructors.
-
-FORCEINLINE FMatrix::FMatrix()
-{
-}
 
 FORCEINLINE FMatrix::FMatrix(const FPlane& InX,const FPlane& InY,const FPlane& InZ,const FPlane& InW)
 {

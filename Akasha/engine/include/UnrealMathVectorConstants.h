@@ -45,7 +45,7 @@ namespace GlobalVectorConstants
 	static const VectorRegisterInt IntSignBit = MakeVectorRegisterInt(SIGN_BIT, SIGN_BIT, SIGN_BIT, SIGN_BIT);
 	static const VectorRegisterInt IntSignMask = MakeVectorRegisterInt((~SIGN_BIT), (~SIGN_BIT), (~SIGN_BIT), (~SIGN_BIT));
 #undef SIGN_BIT
-	static const VectorRegister AllMask = MakeVectorRegister(0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF);
+	static const VectorRegister AllMask = MakeVectorRegister((uint32)0xFFFFFFFF, (uint32)0xFFFFFFFF, (uint32)0xFFFFFFFF, (uint32)0xFFFFFFFF);
 	static const VectorRegisterInt IntAllMask = MakeVectorRegisterInt(0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF);
 
 	/** Vector full of positive infinity */

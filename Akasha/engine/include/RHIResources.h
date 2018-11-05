@@ -32,7 +32,7 @@ public:
 
 	__forceinline uint32 Release() const
 	{
-		int32 NewValue = m_NumRefs.Decrement;
+		int32 NewValue = m_NumRefs.Decrement();
 		if (NewValue == 0)
 		{
 			if (!DeferDelete())

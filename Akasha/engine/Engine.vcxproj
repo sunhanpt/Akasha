@@ -41,6 +41,8 @@
     <ClInclude Include="include\IntPoint.h" />
     <ClInclude Include="include\IntRect.h" />
     <ClInclude Include="include\IntVector.h" />
+    <ClInclude Include="include\MathDefines.h" />
+    <ClInclude Include="include\MathGeometry.h" />
     <ClInclude Include="include\MathUtility.h" />
     <ClInclude Include="include\Matrix.h" />
     <ClInclude Include="include\NumericLimits.h" />

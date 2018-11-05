@@ -5,48 +5,45 @@
 #include "ScopeLock.h"
 #include <cassert>
 #include <stack>
+#include "CriticalSection.h"
 
 template<class T>
 class AThreadSafeStack
 {
 public:
-	AThreadSafeStack() {}
+	AThreadSafeStack()
+		:ThreadsCritical()
+	{}
 
 	~AThreadSafeStack() {}
 
 	int32 Size()
 	{
-		AScopeLock(&ThreadsCritical);
+		AScopeLock Scope(&ThreadsCritical);
 		return (int32)m_Stack.size();
 	}
 
 	bool IsEmpty()
 	{
-		AScopeLock(&ThreadsCritical);
+		AScopeLock Scope(&ThreadsCritical);
 		return m_Stack.empty();
 	}
 
 	void Push(T value)
 	{
-		AScopeLock(&ThreadsCritical);
+		AScopeLock Scope(&ThreadsCritical);
 		m_Stack.push(value);
 	}
 
 	void Pop()
 	{
-		AScopeLock(&ThreadsCritical);
+		AScopeLock Scope(&ThreadsCritical);
 		m_Stack.pop();
 	}
 
 	T& Top()
 	{
-		AScopeLock(&ThreadsCritical);
-		return m_Stack.top();
-	}
-
-	const T& Top()
-	{
-		AScopeLock(&ThreadsCritical);
+		AScopeLock Scope(&ThreadsCritical);
 		return m_Stack.top();
 	}
 

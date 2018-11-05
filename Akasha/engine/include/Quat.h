@@ -45,14 +45,7 @@ public:
 public:
 
 	/** Default constructor (no initialization). */
-	FORCEINLINE FQuat() { }
-
-	/**
-	 * Creates and initializes a new quaternion, with the W component either 0 or 1.
-	 *
-	 * @param EForceInit Force init enum: if equal to ForceInitToZero then W is 0, otherwise W = 1 (creating an identity transform)
-	 */
-	explicit FORCEINLINE FQuat();
+	FORCEINLINE FQuat();
 
 	/**
 	 * Constructor.
@@ -972,11 +965,11 @@ FORCEINLINE bool FQuat::ContainsNaN() const
 /* FMath inline functions
  *****************************************************************************/
 
-template<class U>
-FORCEINLINE FQuat FMath::Lerp( const FQuat& A, const FQuat& B, const U& Alpha)
-{
-	return FQuat::Slerp(A, B, Alpha);
-}
+//template<class U>
+//FORCEINLINE FQuat FMath::Lerp( const FQuat& A, const FQuat& B, const U& Alpha)
+//{
+//	return FQuat::Slerp(A, B, Alpha);
+//}
 
 template<class U>
 FORCEINLINE FQuat FMath::BiLerp(const FQuat& P00, const FQuat& P10, const FQuat& P01, const FQuat& P11, float FracX, float FracY)

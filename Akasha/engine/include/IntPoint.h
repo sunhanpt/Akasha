@@ -1,6 +1,7 @@
 #pragma once
 
 #include "MathUtility.h"
+#include "MathGeometry.h"
 
 /**
  * Structure for integer points in 2-d space.

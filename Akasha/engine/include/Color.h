@@ -3,9 +3,11 @@
 #include "CoreDefines.h"
 #include "MathUtility.h"
 #include "NumericLimits.h"
+#include "MathDefines.h"
 
 struct FVector;
 struct FFloat16Color;
+struct FColor;
 
 /**
 * Enum for the different kinds of gamma spaces we expect to need to convert from/to.
