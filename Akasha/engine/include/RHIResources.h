@@ -161,6 +161,10 @@ public:
 	{}
 
 	virtual class FRHITexture2D* GetTexture2D() { return nullptr; }
+	virtual class FRHITexture2DArray* GetTexture2DArray() { return nullptr; }
+	virtual class FRHITexture3D* GetTexture3D() { return nullptr; }
+	virtual class FRHITextureCube* GetTextureCube() { return nullptr; }
+	virtual class FRHITextureReference* GetTextureReference() { return nullptr; }
 
 private:
 	FClearValueBinding m_ClearValue;
