@@ -970,24 +970,24 @@ FORCEINLINE bool FQuat::ContainsNaN() const
 //{
 //	return FQuat::Slerp(A, B, Alpha);
 //}
-
-template<class U>
-FORCEINLINE FQuat FMath::BiLerp(const FQuat& P00, const FQuat& P10, const FQuat& P01, const FQuat& P11, float FracX, float FracY)
-{
-	FQuat Result;
-
-	Result = Lerp(
-		FQuat::Slerp_NotNormalized(P00,P10,FracX),
-		FQuat::Slerp_NotNormalized(P01,P11,FracX),
-		FracY
-		);
-
-	return Result;
-}
-
-template<class U>
-FORCEINLINE FQuat FMath::CubicInterp( const FQuat& P0, const FQuat& T0, const FQuat& P1, const FQuat& T1, const U& A)
-{
-	return FQuat::Squad(P0, T0, P1, T1, A);
-}
+//
+//template<class U>
+//FORCEINLINE FQuat FMath::BiLerp(const FQuat& P00, const FQuat& P10, const FQuat& P01, const FQuat& P11, float FracX, float FracY)
+//{
+//	FQuat Result;
+//
+//	Result = Lerp(
+//		FQuat::Slerp_NotNormalized(P00,P10,FracX),
+//		FQuat::Slerp_NotNormalized(P01,P11,FracX),
+//		FracY
+//		);
+//
+//	return Result;
+//}
+//
+//template<class U>
+//FORCEINLINE FQuat FMath::CubicInterp( const FQuat& P0, const FQuat& T0, const FQuat& P1, const FQuat& T1, const U& A)
+//{
+//	return FQuat::Squad(P0, T0, P1, T1, A);
+//}
 

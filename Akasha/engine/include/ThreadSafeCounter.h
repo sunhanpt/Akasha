@@ -3,20 +3,20 @@
 #include "TypeDefines.h"
 #include <intrin.h>
 
-class AThreadSafeCounter
+class FThreadSafeCounter
 {
 public:
-	AThreadSafeCounter()
+	FThreadSafeCounter()
 	{
 		m_Counter = 0;
 	}
 
-	AThreadSafeCounter(const AThreadSafeCounter& Other)
+	FThreadSafeCounter(const FThreadSafeCounter& Other)
 	{
 		//m_Counter = 
 	}
 
-	AThreadSafeCounter(int32 Value)
+	FThreadSafeCounter(int32 Value)
 	{
 		m_Counter = Value;
 	}
@@ -53,11 +53,11 @@ public:
 
 	int32 GetValue() const
 	{
-		return _InterlockedCompareExchange(&const_cast<AThreadSafeCounter*>(this)->m_Counter, 0, 0);
+		return _InterlockedCompareExchange(&const_cast<FThreadSafeCounter*>(this)->m_Counter, 0, 0);
 	}
 
 private:
 	// 此函数不安全所以隐藏掉
-	void operator=(const AThreadSafeCounter& Other) {}
+	void operator=(const FThreadSafeCounter& Other) {}
 	volatile int32 m_Counter;
 };

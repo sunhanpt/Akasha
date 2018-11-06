@@ -8,14 +8,14 @@
 #include "CriticalSection.h"
 
 template<class T>
-class AThreadSafeStack
+class FThreadSafeStack
 {
 public:
-	AThreadSafeStack()
+	FThreadSafeStack()
 		:ThreadsCritical()
 	{}
 
-	~AThreadSafeStack() {}
+	~FThreadSafeStack() {}
 
 	int32 Size()
 	{

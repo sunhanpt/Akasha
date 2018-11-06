@@ -7,12 +7,12 @@
 #include <queue>
 
 template<class T>
-class AThreadSafeQueue
+class FThreadSafeQueue
 {
 public:
-	AThreadSafeQueue() {}
+	FThreadSafeQueue() {}
 
-	~AThreadSafeQueue() {}
+	~FThreadSafeQueue() {}
 
 	int32 Size()
 	{
