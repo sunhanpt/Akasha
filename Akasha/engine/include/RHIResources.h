@@ -8,6 +8,7 @@
 #include "Hash.h"
 #include "PixelFormat.h"
 #include "RHI.h"
+#include <memory>
 
 class AKADLL_API FRHIResource
 {
@@ -166,6 +167,50 @@ public:
 	virtual class FRHITextureCube* GetTextureCube() { return nullptr; }
 	virtual class FRHITextureReference* GetTextureReference() { return nullptr; }
 
+	uint32 GetNumMips() const { return m_NumMips; }
+	EPixelFormat GetFormat() const { return m_Format; }
+	uint32 GetFlags() const { return m_Flags; }
+	uint32 GetNumSamples() const { return m_NumSamples; }
+	bool IsMultiSampled() const { return m_NumSamples > 1; }
+	void SetName(const std::string& Name) { m_TextureName = Name; }
+	const std::string& GetName() { return m_TextureName; }
+
+	bool HasClearValue() const
+	{
+		return m_ClearValue.ColorBinding != EClearBinding::ENoneBound;
+	}
+
+	FLinearColor GetClearColor() const
+	{
+		return m_ClearValue.GetClearColor();
+	}
+
+	void GetDepthStencilClearValue(float& OutDepth, uint32& OutStencil) const
+	{
+		return m_ClearValue.GetDepthStencil(OutDepth, OutStencil);
+	}
+
+	float GetDepthClearValue() const
+	{
+		float Depth;
+		uint32 Stencil;
+		m_ClearValue.GetDepthStencil(Depth, Stencil);
+		return Depth;
+	}
+
+	uint32 GetStencilClearValue() const
+	{
+		float Depth;
+		uint32 Stencil;
+		m_ClearValue.GetDepthStencil(Depth, Stencil);
+		return Stencil;
+	}
+
+	const FClearValueBinding GetClearBinding() const
+	{
+		return m_ClearValue;
+	}
+
 private:
 	FClearValueBinding m_ClearValue;
 	uint32 m_NumMips;
@@ -174,3 +219,56 @@ private:
 	uint32 m_Flags;
 	std::string m_TextureName;
 };
+
+class FRHITexture2D : public FRHITexture
+{
+public:
+	FRHITexture2D(uint32 InSizeX, uint32 InSizeY, uint32 InNumMips, uint32 InNumSamples, EPixelFormat InFormat, uint32 InFlags, const FClearValueBinding& InClearValue)
+		: FRHITexture(InNumMips, InNumSamples, InFormat, InFlags, InClearValue)
+		, m_SizeX(InSizeX)
+		, m_SizeY(InSizeY)
+	{}
+
+	virtual FRHITexture2D* GetTexture2D() { return this; }
+
+	uint32 GetSizeX() const { return m_SizeX; }
+	uint32 GetSizeY() const { return m_SizeY; }
+
+private:
+	uint32 m_SizeX;
+	uint32 m_SizeY;
+};
+
+class FRHITextureCube : public FRHITexture
+{
+public:
+	FRHITextureCube(uint32 InSize, uint32 InNumMips, EPixelFormat InFormat, uint32 InFlags, const FClearValueBinding& InClearValue)
+		: FRHITexture(InNumMips, 1, InFormat, InFlags, InClearValue)
+		, m_Size(InSize)
+	{}
+
+	virtual FRHITextureCube* GetTextureCube() { return this; }
+
+	uint32 GetSize() const { return m_Size; }
+
+private:
+	uint32 m_Size;
+};
+
+class FRHITextureReference : public FRHITexture
+{
+public:
+	explicit FRHITextureReference()
+		: FRHITexture(0, 0, PF_Unknown, 0, FClearValueBinding())
+	{}
+
+	virtual FRHITextureReference* GetTextureReference() override { return this; }
+	inline FRHITexture* GetReferencedTexture() const { return m_ReferencedTexture.get(); }
+
+	void SetReferencedTexture(FRHITexture* InTexture) { m_ReferencedTexture = std::shared_ptr<FRHITexture>(InTexture); }
+
+private:
+	std::shared_ptr<FRHITexture> m_ReferencedTexture;
+};
+
+//TODO: Ìí¼Óviewport¡£
