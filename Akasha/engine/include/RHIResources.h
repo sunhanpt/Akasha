@@ -96,6 +96,11 @@ private:
 	}
 };
 
+class FRHISamplerState : public FRHIResource {};
+class FRHIRasterizerState : public FRHIResource {};
+class FRHIDepthStencilState : public FRHIResource {};
+class FRHIBlendState : public FRHIResource {};
+
 
 class FRHIShader : public FRHIResource
 {
@@ -166,6 +171,9 @@ public:
 	virtual class FRHITexture3D* GetTexture3D() { return nullptr; }
 	virtual class FRHITextureCube* GetTextureCube() { return nullptr; }
 	virtual class FRHITextureReference* GetTextureReference() { return nullptr; }
+
+	virtual void* GetNativeResource() const { return nullptr; }
+	virtual void* GetNativeShaderResourceView() const { return nullptr; }
 
 	uint32 GetNumMips() const { return m_NumMips; }
 	EPixelFormat GetFormat() const { return m_Format; }
@@ -271,4 +279,36 @@ private:
 	std::shared_ptr<FRHITexture> m_ReferencedTexture;
 };
 
-//TODO: Ìí¼Óviewport¡£
+class FRHICustomPresent;
+class FRHIViewport : public FRHIResource
+{
+public:
+	FRHIViewport() : FRHIResource(true) {}
+
+	virtual void* GetNativeSwapChain() const { return nullptr; }
+	virtual void* GetNativeBackBufferTexture() const { return nullptr; }
+	virtual void* GetNativeBackBufferRT() const { return nullptr; }
+	virtual void* GetNativeWindow(void** AddParam = nullptr) const { return nullptr; }
+	virtual void SetCustomPresent(FRHICustomPresent* InPresent) {}
+	virtual FRHICustomPresent* GetCustomPresent() const { return nullptr; }
+};
+
+class FRHICustomPresent : public FRHIResource
+{
+	explicit FRHICustomPresent(FRHIViewport* InViewport)
+		: FRHIResource(true)
+		, m_ViewportRHI(InViewport)
+	{
+	}
+
+	virtual void OnBackBufferSize() = 0;
+	virtual bool Present(int32& InOutSynInterval) = 0;
+	virtual void PostPresent() {}
+	virtual void OnAcquireThreadOwnerShip() {}
+	virtual void OnReleaseThreadOwnerShip() {}
+
+protected:
+	FRHIViewport* m_ViewportRHI;
+};
+
+class FRHIShaderResourceView : public FRHIResource {};
