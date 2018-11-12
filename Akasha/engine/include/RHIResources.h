@@ -9,6 +9,7 @@
 #include "PixelFormat.h"
 #include "RHI.h"
 #include <memory>
+#include "AlignmentTemplates.h"
 
 class AKADLL_API FRHIResource
 {
@@ -96,10 +97,15 @@ private:
 	}
 };
 
+// state block
 class FRHISamplerState : public FRHIResource {};
 class FRHIRasterizerState : public FRHIResource {};
 class FRHIDepthStencilState : public FRHIResource {};
 class FRHIBlendState : public FRHIResource {};
+
+// shader binding
+class FRHIVertexDeclaration : public FRHIResource {};
+class FRHIBoundShaderState : public FRHIResource {};
 
 
 class FRHIShader : public FRHIResource
@@ -122,6 +128,119 @@ class FRHIDomainShader : public FRHIResource {};
 class FRHIPixelShader : public FRHIResource {};
 class FRHIGeometryShader : public FRHIResource {};
 class FRHIComputerShader : public FRHIResource {};
+
+class FRHIGraphicsPipelineState : public FRHIResource {};
+
+// Buffer
+/** The layout of a uniform buffer in memory. */
+struct FRHIUniformBufferLayout
+{
+	/** The size of the constant buffer in bytes. */
+	uint32 ConstantBufferSize;
+	/** The offset to the beginning of the resource table. */
+	uint32 ResourceOffset;
+	/** The type of each resource (EUniformBufferBaseType). */
+	std::vector<uint8> Resources;
+
+	uint32 GetHash() const
+	{
+		if (!bComputedHash)
+		{
+			uint32 TmpHash = ConstantBufferSize << 16;
+			// This is to account for 32vs64 bits difference in pointer sizes.
+			TmpHash ^= Align(ResourceOffset, 8);
+			uint32 N = Resources.size();
+			while (N >= 4)
+			{
+				TmpHash ^= (Resources[--N] << 0);
+				TmpHash ^= (Resources[--N] << 8);
+				TmpHash ^= (Resources[--N] << 16);
+				TmpHash ^= (Resources[--N] << 24);
+			}
+			while (N >= 2)
+			{
+				TmpHash ^= Resources[--N] << 0;
+				TmpHash ^= Resources[--N] << 16;
+			}
+			while (N > 0)
+			{
+				TmpHash ^= Resources[--N];
+			}
+			Hash = TmpHash;
+			bComputedHash = true;
+		}
+		return Hash;
+	}
+
+	explicit FRHIUniformBufferLayout(std::string& InName) :
+		ConstantBufferSize(0),
+		ResourceOffset(0),
+		Name(InName),
+		Hash(0),
+		bComputedHash(false)
+	{
+	}
+
+	enum EInit
+	{
+		Zero
+	};
+	explicit FRHIUniformBufferLayout(EInit) :
+		ConstantBufferSize(0),
+		ResourceOffset(0),
+		Name(""),
+		Hash(0),
+		bComputedHash(false)
+	{
+	}
+
+	void CopyFrom(const FRHIUniformBufferLayout& Source)
+	{
+		ConstantBufferSize = Source.ConstantBufferSize;
+		ResourceOffset = Source.ResourceOffset;
+		Resources = Source.Resources;
+		Name = Source.Name;
+		Hash = Source.Hash;
+		bComputedHash = Source.bComputedHash;
+	}
+
+	const std::string GetDebugName() const { return Name; }
+
+private:
+	// for debugging / error message
+	std::string Name;
+
+	mutable uint32 Hash;
+	mutable bool bComputedHash;
+};
+
+
+/** Compare two uniform buffer layouts. */
+inline bool operator==(const FRHIUniformBufferLayout& A, const FRHIUniformBufferLayout& B)
+{
+	return A.ConstantBufferSize == B.ConstantBufferSize
+		&& A.ResourceOffset == B.ResourceOffset
+		&& A.Resources == B.Resources;
+}
+
+class FRHIUniformBuffer : public FRHIResource
+{
+public:
+
+	/** Initialization constructor. */
+	FRHIUniformBuffer(const FRHIUniformBufferLayout& InLayout)
+		: Layout(&InLayout)
+	{}
+
+	/** @return The number of bytes in the uniform buffer. */
+	uint32 GetSize() const { return Layout->ConstantBufferSize; }
+	const FRHIUniformBufferLayout& GetLayout() const { return *Layout; }
+
+private:
+	/** Layout of the uniform buffer. */
+	const FRHIUniformBufferLayout* Layout;
+};
+
 
 class FRHIIndexBuffer : public FRHIResource
 {
@@ -312,3 +431,61 @@ protected:
 };
 
 class FRHIShaderResourceView : public FRHIResource {};
+
+typedef FRHISamplerState*						FSamplerStateRHIParamRef;
+typedef std::shared_ptr<FRHISamplerState>		FSamplerStateRHIRef;
+
+typedef FRHIRasterizerState*					FRasterizerStateRHIParamRef;
+typedef std::shared_ptr<FRHIRasterizerState>	FRasterizerStateRHIRef;
+
+typedef FRHIDepthStencilState*					FDepthStencilStateRHIParamRef;
+typedef std::shared_ptr<FRHIDepthStencilState>	FDepthStencilStateRHIRef;
+
+typedef FRHIBlendState*							FBlendStateRHIParamRef;
+typedef std::shared_ptr<FRHIBlendState>			FBlendStateRHIRef;
+
+typedef FRHIVertexDeclaration*					FVertexDeclarationRHIParamRef;
+typedef std::shared_ptr<FRHIVertexDeclaration>	FVertexDeclarationRHIef;
+
+typedef FRHIBoundShaderState*					FBoundShaderStateRHIParamRef;
+typedef std::shared_ptr<FRHIBoundShaderState>	FBoundShaderStateRHIRef;
+
+typedef FRHIVertexShader*						FVertexShaderRHIParamRef;
+typedef std::shared_ptr<FRHIVertexShader>		FVertexShaderRHIRef;
+
+typedef FRHIHullShader*							FHullShaderRHIParamRef;
+typedef std::shared_ptr<FRHIHullShader>			FHullShaderRHIRef;
+
+typedef FRHIDomainShader*						FDomainShaderRHIParamRef;
+typedef std::shared_ptr<FRHIDomainShader>		FDomainShaderRHIRef;
+
+typedef FRHIGeometryShader*						FGeometryShaderRHIParamRef;
+typedef std::shared_ptr<FRHIGeometryShader>		FGeometryShaderRHIRef;
+
+typedef FRHIPixelShader*						FPixelShaderRHIParamRef;
+typedef std::shared_ptr<FRHIPixelShader>		FPixelShaderRHIRef;
+
+typedef FRHIUniformBuffer*						FUniformBufferRHIParamRef;
+typedef std::shared_ptr<FRHIUniformBuffer>		FUniformBufferRHIRef;
+
+typedef FRHITexture*							FTextureRHIParamRef;
+typedef std::shared_ptr<FRHITexture>			FTextureRHIRef;
+
+typedef FRHITexture2D*							FTexture2DRHIParamRef;
+typedef std::shared_ptr<FRHITexture2D>			FTexture2DRHIRef;
+
+typedef FRHITextureCube*						FTextureCubeRHIParamRef;
+typedef std::shared_ptr<FRHITextureCube>		FTextureCubeRHIRef;
+
+typedef FRHITextureReference*					FTextureReferenceRHIParamRef;
+typedef std::shared_ptr<FRHITextureReference>	FTextureReferenceRHIRef;
+
+typedef FRHIViewport*							FViewportRHIParamRef;
+typedef std::shared_ptr<FRHIViewport>			FViewportRHIRef;
+
+typedef FRHIShaderResourceView*							FShaderResourceViewRHIParamRef;
+typedef std::shared_ptr<FRHIShaderResourceView>			FShaderResourceViewRHIRef;
+
+typedef FRHIGraphicsPipelineState*						FGraphicsPipelineStateRHIParamRef;
+typedef std::shared_ptr<FRHIGraphicsPipelineState>		FGraphicsPipelineStateRHIRef;
+

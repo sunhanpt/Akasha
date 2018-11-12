@@ -103,6 +103,9 @@
     <Filter Include="Source\Core\Private\Math">
       <UniqueIdentifier>{7a4f3709-9feb-4539-a49e-101e98c34c4d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Core\Public\Template">
+      <UniqueIdentifier>{2e731e10-5e41-4155-81cf-447faba77674}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\stdafx.h">
@@ -233,6 +236,12 @@
     </ClInclude>
     <ClInclude Include="include\MathGeometry.h">
       <Filter>Source\Core\Public\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="include\AlignmentTemplates.h">
+      <Filter>Source\Core\Public\Template</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RHIDefines.h">
+      <Filter>Source\RHI\Public</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

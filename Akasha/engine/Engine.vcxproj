@@ -30,6 +30,7 @@
     <ClCompile Include="source\UnrealMath.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\AlignmentTemplates.h" />
     <ClInclude Include="include\Axis.h" />
     <ClInclude Include="include\Box.h" />
     <ClInclude Include="include\Color.h" />
@@ -54,6 +55,7 @@
     <ClInclude Include="include\Quat.h" />
     <ClInclude Include="include\QuatRotationTranslationMatrix.h" />
     <ClInclude Include="include\RHI.h" />
+    <ClInclude Include="include\RHIDefines.h" />
     <ClInclude Include="include\RHIResources.h" />
     <ClInclude Include="include\RotationAboutPointMatrix.h" />
     <ClInclude Include="include\RotationMatrix.h" />
