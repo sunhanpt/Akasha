@@ -10,6 +10,7 @@
 #include "RHI.h"
 #include <memory>
 #include "AlignmentTemplates.h"
+#include "RHIDefines.h"
 
 class AKADLL_API FRHIResource
 {
@@ -149,7 +150,7 @@ struct FRHIUniformBufferLayout
 			uint32 TmpHash = ConstantBufferSize << 16;
 			// This is to account for 32vs64 bits difference in pointer sizes.
 			TmpHash ^= Align(ResourceOffset, 8);
-			uint32 N = Resources.size();
+			uint32 N = (uint32)Resources.size();
 			while (N >= 4)
 			{
 				TmpHash ^= (Resources[--N] << 0);
@@ -489,3 +490,229 @@ typedef std::shared_ptr<FRHIShaderResourceView>			FShaderResourceViewRHIRef;
 typedef FRHIGraphicsPipelineState*						FGraphicsPipelineStateRHIParamRef;
 typedef std::shared_ptr<FRHIGraphicsPipelineState>		FGraphicsPipelineStateRHIRef;
 
+class FRHIRenderTargetView
+{
+public:
+	FTextureRHIParamRef			Texture;
+	uint32						MipIndex;
+	uint32						ArraySliceIndex;
+	ERenderTargetLoadAction		LoadAction;
+	ERenderTargetStoreAction	StoreAction;
+
+	FRHIRenderTargetView()
+		: Texture(nullptr)
+		, MipIndex(0)
+		, ArraySliceIndex(-1)
+		, LoadAction(ERenderTargetLoadAction::ENoAction)
+		, StoreAction(ERenderTargetStoreAction::ENoAction)
+	{}
+
+	FRHIRenderTargetView(const FRHIRenderTargetView& Other)
+		: Texture(Other.Texture)
+		, MipIndex(Other.MipIndex)
+		, ArraySliceIndex(Other.ArraySliceIndex)
+		, LoadAction(Other.LoadAction)
+		, StoreAction(Other.StoreAction)
+	{}
+
+	explicit FRHIRenderTargetView(FTextureRHIParamRef InTexture, ERenderTargetLoadAction InLoadAction)
+		: Texture(InTexture)
+		, MipIndex(0)
+		, ArraySliceIndex(-1)
+		, LoadAction(InLoadAction)
+		, StoreAction(ERenderTargetStoreAction::EStore)
+	{}
+
+	explicit FRHIRenderTargetView(FTextureRHIParamRef InTexture, ERenderTargetLoadAction InLoadAction, uint32 InMipIndex, uint32 InArraySliceIndex)
+		: Texture(InTexture)
+		, LoadAction(InLoadAction)
+		, MipIndex(InMipIndex)
+		, ArraySliceIndex(InArraySliceIndex)
+	{}
+
+	explicit FRHIRenderTargetView(FTextureRHIParamRef InTexture, uint32 InMipIndex, uint32 InArraySliceIndex, ERenderTargetLoadAction InLoadAction, ERenderTargetStoreAction InStoreAction)
+		: Texture(InTexture)
+		, MipIndex(InMipIndex)
+		, ArraySliceIndex(InArraySliceIndex)
+		, LoadAction(InLoadAction)
+		, StoreAction(InStoreAction)
+	{}
+
+	bool operator==(const FRHIRenderTargetView& Other) const
+	{
+		return
+			Texture == Other.Texture &&
+			MipIndex == Other.MipIndex &&
+			ArraySliceIndex == Other.ArraySliceIndex &&
+			LoadAction == Other.LoadAction &&
+			StoreAction == Other.StoreAction;
+	}
+};
+
+class FExclusiveDepthStencil
+{
+public:
+	enum Type
+	{
+		// don't use those directly, use the combined versions below
+		// 4 bits are used for depth and 4 for stencil to make the hex value readable and non overlapping
+		DepthNop = 0x00,
+		DepthRead = 0x01,
+		DepthWrite = 0x02,
+		DepthMask = 0x0f,
+		StencilNop = 0x00,
+		StencilRead = 0x10,
+		StencilWrite = 0x20,
+		StencilMask = 0xf0,
+
+		// use those:
+		DepthNop_StencilNop = DepthNop + StencilNop,
+		DepthRead_StencilNop = DepthRead + StencilNop,
+		DepthWrite_StencilNop = DepthWrite + StencilNop,
+		DepthNop_StencilRead = DepthNop + StencilRead,
+		DepthRead_StencilRead = DepthRead + StencilRead,
+		DepthWrite_StencilRead = DepthWrite + StencilRead,
+		DepthNop_StencilWrite = DepthNop + StencilWrite,
+		DepthRead_StencilWrite = DepthRead + StencilWrite,
+		DepthWrite_StencilWrite = DepthWrite + StencilWrite,
+	};
+
+private:
+	Type Value;
+
+public:
+	// constructor
+	FExclusiveDepthStencil(Type InValue = DepthNop_StencilNop)
+		: Value(InValue)
+	{
+	}
+
+	inline bool IsUsingDepthStencil() const
+	{
+		return Value != DepthNop_StencilNop;
+	}
+	inline bool IsUsingDepth() const
+	{
+		return (ExtractDepth() != DepthNop);
+	}
+	inline bool IsUsingStencil() const
+	{
+		return (ExtractStencil() != StencilNop);
+	}
+	inline bool IsDepthWrite() const
+	{
+		return ExtractDepth() == DepthWrite;
+	}
+	inline bool IsStencilWrite() const
+	{
+		return ExtractStencil() == StencilWrite;
+	}
+
+	inline bool IsAnyWrite() const
+	{
+		return IsDepthWrite() || IsStencilWrite();
+	}
+
+	inline void SetDepthWrite()
+	{
+		Value = (Type)(ExtractStencil() | DepthWrite);
+	}
+	inline void SetStencilWrite()
+	{
+		Value = (Type)(ExtractDepth() | StencilWrite);
+	}
+	inline void SetDepthStencilWrite(bool bDepth, bool bStencil)
+	{
+		Value = DepthNop_StencilNop;
+
+		if (bDepth)
+		{
+			SetDepthWrite();
+		}
+		if (bStencil)
+		{
+			SetStencilWrite();
+		}
+	}
+	bool operator==(const FExclusiveDepthStencil& rhs) const
+	{
+		return Value == rhs.Value;
+	}
+	inline bool IsValid(FExclusiveDepthStencil& Current) const
+	{
+		Type Depth = ExtractDepth();
+
+		if (Depth != DepthNop && Depth != Current.ExtractDepth())
+		{
+			return false;
+		}
+
+		Type Stencil = ExtractStencil();
+
+		if (Stencil != StencilNop && Stencil != Current.ExtractStencil())
+		{
+			return false;
+		}
+
+		return true;
+	}
+
+	uint32 GetIndex() const
+	{
+		// Note: The array to index has views created in that specific order.
+
+		// we don't care about the Nop versions so less views are needed
+		// we combine Nop and Write
+		switch (Value)
+		{
+		case DepthWrite_StencilNop:
+		case DepthNop_StencilWrite:
+		case DepthWrite_StencilWrite:
+		case DepthNop_StencilNop:
+			return 0; // old DSAT_Writable
+
+		case DepthRead_StencilNop:
+		case DepthRead_StencilWrite:
+			return 1; // old DSAT_ReadOnlyDepth
+
+		case DepthNop_StencilRead:
+		case DepthWrite_StencilRead:
+			return 2; // old DSAT_ReadOnlyStencil
+
+		case DepthRead_StencilRead:
+			return 3; // old DSAT_ReadOnlyDepthAndStencil
+		}
+		// should never happen
+		check(0);
+		return -1;
+	}
+	static const uint32 MaxIndex = 4;
+
+private:
+	inline Type ExtractDepth() const
+	{
+		return (Type)(Value & DepthMask);
+	}
+	inline Type ExtractStencil() const
+	{
+		return (Type)(Value & StencilMask);
+	}
+};
+
+class FRHIDepthRenderTargetView
+{
+public:
+	FTextureRHIParamRef			Texture;
+
+	ERenderTargetLoadAction		DepthLoadAction;
+	ERenderTargetStoreAction	DepthStoreAction;
+	ERenderTargetLoadAction		StencilLoadAction;
+
+private:
+	ERenderTargetStoreAction	StencilStoreAction;
+	FExclusiveDepthStencil		DepthStencilAccess;
+
+public:
+	ERenderTargetStoreAction	GetStencilStoreAction() const { return StencilStoreAction; }
+	FExclusiveDepthStencil		GetDepthStencilAccess() const { return DepthStencilAccess; }
+};

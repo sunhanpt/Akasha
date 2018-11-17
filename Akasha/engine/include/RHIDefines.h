@@ -841,7 +841,7 @@ inline ERHIFeatureLevel::Type GetMaxSupportedFeatureLevel(EShaderPlatform InShad
 	case SP_SWITCH_FORWARD:
 		return ERHIFeatureLevel::ES3_1;
 	default:
-		assert(0, TEXT("Unknown ShaderPlatform %d"), (int32)InShaderPlatform);
+		assert(0 && TEXT("Unknown ShaderPlatform"));
 		return ERHIFeatureLevel::Num;
 	}
 }
@@ -932,7 +932,7 @@ inline int32 GetFeatureLevelMaxNumberOfBones(ERHIFeatureLevel::Type FeatureLevel
 	case ERHIFeatureLevel::SM5:
 		return 256;
 	default:
-		assert(0, ("Unknown FeatureLevel %d"), (int32)FeatureLevel);
+		assert(0 && ("Unknown FeatureLevel"));
 	}
 
 	return 0;
@@ -943,9 +943,9 @@ inline bool IsUniformBufferResourceType(EUniformBufferBaseType BaseType)
 	return BaseType == UBMT_SRV || BaseType == UBMT_UAV || BaseType == UBMT_SAMPLER || BaseType == UBMT_TEXTURE;
 }
 
-inline const char* GetShaderFrequencyString(EShaderFrequency Frequency, bool bIncludePrefix = true)
+inline const TCHAR* GetShaderFrequencyString(EShaderFrequency Frequency, bool bIncludePrefix = true)
 {
-	const TCHAR* String = ("SF_NumFrequencies");
+	const TCHAR* String = _T("SF_NumFrequencies");
 	switch (Frequency)
 	{
 	case SF_Vertex:			String = TEXT("SF_Vertex"); break;
@@ -955,7 +955,7 @@ inline const char* GetShaderFrequencyString(EShaderFrequency Frequency, bool bIn
 	case SF_Pixel:			String = TEXT("SF_Pixel"); break;
 	case SF_Compute:		String = TEXT("SF_Compute"); break;
 	default:
-		assert(0, TEXT("Unknown ShaderFrequency %d"), (int32)Frequency);
+		assert(0 && TEXT("Unknown ShaderFrequency"));
 		break;
 	}
 
