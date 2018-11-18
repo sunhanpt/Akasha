@@ -108,7 +108,7 @@
     </Lib>
     <PostBuildEvent>
       <Command>copy "$(ProjectDir)lib\debug\*.*" "$(ProjectDir)..\..\..\EngineSDK\lib"
-copy /Y "$(ProjectDir)include\*.*" "$(ProjectDir)..\..\..\EngineSDK\include\glog\"
+copy /Y /E "$(ProjectDir)include\*.*" "$(ProjectDir)..\..\..\EngineSDK\include\glog\"
 </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
