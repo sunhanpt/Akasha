@@ -113,4 +113,5 @@ UpgradeLog*.htm
 *.db-shm
 *.db-wal
 
-./EngineSDK
+EngineSDK/
+OutputDir/
