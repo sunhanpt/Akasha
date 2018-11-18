@@ -38,6 +38,7 @@
     <ClInclude Include="include\AlignmentTemplates.h" />
     <ClInclude Include="include\Axis.h" />
     <ClInclude Include="include\Box.h" />
+    <ClInclude Include="include\GameClient.h" />
     <ClInclude Include="include\Color.h" />
     <ClInclude Include="include\CoreDefines.h" />
     <ClInclude Include="include\Engine.h" />

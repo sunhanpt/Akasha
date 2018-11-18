@@ -285,5 +285,8 @@
     <ClInclude Include="include\World.h">
       <Filter>Source\Engine\GameFramework\Public</Filter>
     </ClInclude>
+    <ClInclude Include="include\GameClient.h">
+      <Filter>Source\Engine\GameFramework\Public</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
