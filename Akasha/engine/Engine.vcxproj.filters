@@ -120,20 +120,11 @@
     <ClInclude Include="include\TypeDefines.h">
       <Filter>Source\Common\Public</Filter>
     </ClInclude>
-    <ClInclude Include="include\ThreadSafeCounter.h">
-      <Filter>Source\HAL\Public</Filter>
-    </ClInclude>
     <ClInclude Include="include\ThreadSafeQueue.h">
       <Filter>Source\Core\Public\Containers</Filter>
     </ClInclude>
     <ClInclude Include="include\ThreadSafeStack.h">
       <Filter>Source\Core\Public\Containers</Filter>
-    </ClInclude>
-    <ClInclude Include="include\CriticalSection.h">
-      <Filter>Source\HAL\Public</Filter>
-    </ClInclude>
-    <ClInclude Include="include\ScopeLock.h">
-      <Filter>Source\HAL\Public</Filter>
     </ClInclude>
     <ClInclude Include="include\Hash.h">
       <Filter>Source\Core\Public\Misc</Filter>

@@ -2,7 +2,7 @@
 
 #include "TypeDefines.h"
 #include "CoreDefines.h"
-#include "ThreadSafeCounter.h"
+#include "taskGraph/ThreadSafeCounter.h"
 #include <cassert>
 #include "ThreadSafeStack.h"
 #include "Hash.h"
@@ -413,23 +413,6 @@ public:
 	virtual FRHICustomPresent* GetCustomPresent() const { return nullptr; }
 };
 
-class FRHICustomPresent : public FRHIResource
-{
-	explicit FRHICustomPresent(FRHIViewport* InViewport)
-		: FRHIResource(true)
-		, m_ViewportRHI(InViewport)
-	{
-	}
-
-	virtual void OnBackBufferSize() = 0;
-	virtual bool Present(int32& InOutSynInterval) = 0;
-	virtual void PostPresent() {}
-	virtual void OnAcquireThreadOwnerShip() {}
-	virtual void OnReleaseThreadOwnerShip() {}
-
-protected:
-	FRHIViewport* m_ViewportRHI;
-};
 
 class FRHIShaderResourceView : public FRHIResource {};
 

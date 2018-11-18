@@ -11,6 +11,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ThirdSDK", "ThirdSDK", "{F6
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "glog", "3rdSDK\glog\glog.vcxproj", "{D030D4F6-A7EC-3A55-971C-B2B72AECC3CB}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TaskGraph", "taskGraph\TaskGraph\TaskGraph.vcxproj", "{97C7AE94-750D-479C-A3AA-ED932AFF51A6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -75,6 +77,20 @@ Global
 		{D030D4F6-A7EC-3A55-971C-B2B72AECC3CB}.RelWithDebInfo|x64.Build.0 = RelWithDebInfo|x64
 		{D030D4F6-A7EC-3A55-971C-B2B72AECC3CB}.RelWithDebInfo|x64.Deploy.0 = RelWithDebInfo|x64
 		{D030D4F6-A7EC-3A55-971C-B2B72AECC3CB}.RelWithDebInfo|x86.ActiveCfg = RelWithDebInfo|x64
+		{97C7AE94-750D-479C-A3AA-ED932AFF51A6}.Debug|x64.ActiveCfg = Debug|x64
+		{97C7AE94-750D-479C-A3AA-ED932AFF51A6}.Debug|x64.Build.0 = Debug|x64
+		{97C7AE94-750D-479C-A3AA-ED932AFF51A6}.Debug|x86.ActiveCfg = Debug|x64
+		{97C7AE94-750D-479C-A3AA-ED932AFF51A6}.MinSizeRel|x64.ActiveCfg = Release|x64
+		{97C7AE94-750D-479C-A3AA-ED932AFF51A6}.MinSizeRel|x64.Build.0 = Release|x64
+		{97C7AE94-750D-479C-A3AA-ED932AFF51A6}.MinSizeRel|x86.ActiveCfg = Release|x64
+		{97C7AE94-750D-479C-A3AA-ED932AFF51A6}.MinSizeRel|x86.Build.0 = Release|x64
+		{97C7AE94-750D-479C-A3AA-ED932AFF51A6}.Release|x64.ActiveCfg = Release|x64
+		{97C7AE94-750D-479C-A3AA-ED932AFF51A6}.Release|x64.Build.0 = Release|x64
+		{97C7AE94-750D-479C-A3AA-ED932AFF51A6}.Release|x86.ActiveCfg = Release|x64
+		{97C7AE94-750D-479C-A3AA-ED932AFF51A6}.RelWithDebInfo|x64.ActiveCfg = Release|x64
+		{97C7AE94-750D-479C-A3AA-ED932AFF51A6}.RelWithDebInfo|x64.Build.0 = Release|x64
+		{97C7AE94-750D-479C-A3AA-ED932AFF51A6}.RelWithDebInfo|x86.ActiveCfg = Release|x64
+		{97C7AE94-750D-479C-A3AA-ED932AFF51A6}.RelWithDebInfo|x86.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

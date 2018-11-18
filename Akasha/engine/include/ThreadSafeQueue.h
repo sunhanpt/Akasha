@@ -2,7 +2,7 @@
 
 #include "TypeDefines.h"
 #include "CoreDefines.h"
-#include "ScopeLock.h"
+#include "taskgraph\ScopeLock.h"
 #include <cassert>
 #include <queue>
 
@@ -52,5 +52,5 @@ public:
 
 private:
 	std::queue<T> m_Queue;
-	ACriticalSection ThreadsCritical;
+	FCriticalSection ThreadsCritical;
 };

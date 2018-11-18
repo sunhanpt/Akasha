@@ -2,10 +2,10 @@
 
 #include "TypeDefines.h"
 #include "CoreDefines.h"
-#include "ScopeLock.h"
+#include "taskgraph\ScopeLock.h"
 #include <cassert>
 #include <stack>
-#include "CriticalSection.h"
+#include "taskgraph\WindowsCriticalSection.h"
 
 template<class T>
 class FThreadSafeStack
@@ -31,23 +31,23 @@ public:
 
 	void Push(T value)
 	{
-		AScopeLock Scope(&ThreadsCritical);
+		FScopeLock Scope(&ThreadsCritical);
 		m_Stack.push(value);
 	}
 
 	void Pop()
 	{
-		AScopeLock Scope(&ThreadsCritical);
+		FScopeLock Scope(&ThreadsCritical);
 		m_Stack.pop();
 	}
 
 	T& Top()
 	{
-		AScopeLock Scope(&ThreadsCritical);
+		FScopeLock Scope(&ThreadsCritical);
 		return m_Stack.top();
 	}
 
 private:
 	std::stack<T> m_Stack;
-	ACriticalSection ThreadsCritical;
+	FCriticalSection ThreadsCritical;
 };
