@@ -12,7 +12,7 @@ class IQueuedWork;
  * This interface is used by all queued thread pools. It used as a callback by
  * FQueuedThreads and is used to queue asynchronous work for callers.
  */
-class CORE_API FQueuedThreadPool
+class TASKGRAPH_API FQueuedThreadPool
 {
 public:
 
@@ -86,10 +86,10 @@ public:
 /**
  *  Global thread pool for shared async operations
  */
-extern CORE_API FQueuedThreadPool* GThreadPool;
+extern TASKGRAPH_API FQueuedThreadPool* GThreadPool;
 
-extern CORE_API FQueuedThreadPool* GIOThreadPool;
+extern TASKGRAPH_API FQueuedThreadPool* GIOThreadPool;
 
 //#if WITH_EDITOR
-//extern CORE_API FQueuedThreadPool* GLargeThreadPool;
+//extern TASKGRAPH_API FQueuedThreadPool* GLargeThreadPool;
 //#endif

@@ -409,17 +409,17 @@ public:
 	/**
 	* Makes a random but quite nice color.
 	*/
-	static CORE_API FColor MakeRandomColor();
+	static AKADLL_API FColor MakeRandomColor();
 
 	/**
 	* Makes a color red->green with the passed in scalar (e.g. 0 is red, 1 is green)
 	*/
-	static CORE_API FColor MakeRedToGreenColorFromScalar(float Scalar);
+	static AKADLL_API FColor MakeRedToGreenColorFromScalar(float Scalar);
 
 	/**
 	* Converts temperature in Kelvins of a black body radiator to RGB chromaticity.
 	*/
-	static CORE_API FColor MakeFromColorTemperature(float Temp);
+	static AKADLL_API FColor MakeFromColorTemperature(float Temp);
 
 	/**
 	*	@return a new FColor based of this color with the new alpha value.
@@ -473,20 +473,20 @@ public:
 	}
 
 	/** Some pre-inited colors, useful for debug code */
-	static CORE_API const FColor White;
-	static CORE_API const FColor Black;
-	static CORE_API const FColor Transparent;
-	static CORE_API const FColor Red;
-	static CORE_API const FColor Green;
-	static CORE_API const FColor Blue;
-	static CORE_API const FColor Yellow;
-	static CORE_API const FColor Cyan;
-	static CORE_API const FColor Magenta;
-	static CORE_API const FColor Orange;
-	static CORE_API const FColor Purple;
-	static CORE_API const FColor Turquoise;
-	static CORE_API const FColor Silver;
-	static CORE_API const FColor Emerald;
+	static AKADLL_API const FColor White;
+	static AKADLL_API const FColor Black;
+	static AKADLL_API const FColor Transparent;
+	static AKADLL_API const FColor Red;
+	static AKADLL_API const FColor Green;
+	static AKADLL_API const FColor Blue;
+	static AKADLL_API const FColor Yellow;
+	static AKADLL_API const FColor Cyan;
+	static AKADLL_API const FColor Magenta;
+	static AKADLL_API const FColor Orange;
+	static AKADLL_API const FColor Purple;
+	static AKADLL_API const FColor Turquoise;
+	static AKADLL_API const FColor Silver;
+	static AKADLL_API const FColor Emerald;
 
 private:
 	/**
@@ -507,7 +507,7 @@ FORCEINLINE uint32 GetTypeHash(const FColor& Color)
 
 
 /** Computes a brightness and a fixed point color from a floating point color. */
-extern CORE_API void ComputeAndFixedColorAndIntensity(const FLinearColor& InLinearColor, FColor& OutColor, float& OutIntensity);
+extern AKADLL_API void ComputeAndFixedColorAndIntensity(const FLinearColor& InLinearColor, FColor& OutColor, float& OutIntensity);
 
 
 

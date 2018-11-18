@@ -75,7 +75,7 @@ private:
 };
 
 ///** System-Wide Critical Section for windows using mutex */
-//class CORE_API FWindowsSystemWideCriticalSection
+//class TASKGRAPH_API FWindowsSystemWideCriticalSection
 //{
 //public:
 //	/** Construct a named, system-wide critical section and attempt to get access/ownership of it */

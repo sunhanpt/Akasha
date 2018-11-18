@@ -58,9 +58,9 @@ public:
 	FORCEINLINE void Set(float InX, float InY, float InZ, float InW);
 
 public:
-	CORE_API FRotator ToOrientationRotator() const;
-	CORE_API FRotator Rotation() const;
-	CORE_API FQuat ToOrientationQuat() const;
+	AKADLL_API FRotator ToOrientationRotator() const;
+	AKADLL_API FRotator Rotation() const;
+	AKADLL_API FQuat ToOrientationQuat() const;
 	FORCEINLINE FVector4 GetSafeNormal(float Tolerance = SMALL_NUMBER) const;
 };
 

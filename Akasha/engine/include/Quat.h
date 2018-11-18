@@ -40,7 +40,7 @@ public:
 public:
 
 	/** Identity quaternion. */
-	static CORE_API const FQuat Identity;
+	static AKADLL_API const FQuat Identity;
 
 public:
 
@@ -251,10 +251,10 @@ public:
 	 * @param Euler the Euler angles
 	 * @return constructed FQuat
 	 */
-	static CORE_API FQuat MakeFromEuler(const FVector& Euler);
+	static AKADLL_API FQuat MakeFromEuler(const FVector& Euler);
 
 	/** Convert a Quaternion into floating-point Euler angles (in degrees). */
-	CORE_API FVector Euler() const;
+	AKADLL_API FVector Euler() const;
 
 	/**
 	 * Normalize this quaternion if it is large enough.
@@ -310,7 +310,7 @@ public:
 	 * @param OutTwist Twist component quaternion
 	 * @warning assumes normalised quaternion and twist axis
 	 */
-	CORE_API void ToSwingTwist(const FVector& InTwistAxis, FQuat& OutSwing, FQuat& OutTwist) const;
+	AKADLL_API void ToSwingTwist(const FVector& InTwistAxis, FQuat& OutSwing, FQuat& OutTwist) const;
 
 	/**
 	 * Rotate a vector by this quaternion.
@@ -331,14 +331,14 @@ public:
 	/**
 	 * @return quaternion with W=0 and V=theta*v.
 	 */
-	CORE_API FQuat Log() const;
+	AKADLL_API FQuat Log() const;
 
 	/**
 	 * @note Exp should really only be used after Log.
 	 * Assumes a quaternion with W=0 and V=theta*v (where |v| = 1).
 	 * Exp(q) = (sin(theta)*v, cos(theta))
 	 */
-	CORE_API FQuat Exp() const;
+	AKADLL_API FQuat Exp() const;
 
 	/**
 	 * @return inverse of this quaternion
@@ -373,7 +373,7 @@ public:
 	FORCEINLINE FVector Vector() const;
 
 	/** Get the FRotator representation of this Quaternion. */
-	CORE_API FRotator Rotator() const;
+	AKADLL_API FRotator Rotator() const;
 
 	/**
 	 * Get the axis of rotation of the Quaternion.
@@ -406,12 +406,12 @@ public:
 	/**
 	 * Generates the 'smallest' (geodesic) rotation between two normals (assumed to be unit length).
 	 */
-	static CORE_API FQuat FindBetweenNormals(const FVector& Normal1, const FVector& Normal2);
+	static AKADLL_API FQuat FindBetweenNormals(const FVector& Normal1, const FVector& Normal2);
 
 	/**
 	 * Generates the 'smallest' (geodesic) rotation between two vectors of arbitrary length.
 	 */
-	static CORE_API FQuat FindBetweenVectors(const FVector& Vector1, const FVector& Vector2);
+	static AKADLL_API FQuat FindBetweenVectors(const FVector& Vector1, const FVector& Vector2);
 
 	/**
 	 * Error measure (angle) between two quaternions, ranged [0..1].
@@ -439,7 +439,7 @@ public:
 
 
 	/** Spherical interpolation. Will correct alignment. Result is NOT normalized. */
-	static CORE_API FQuat Slerp_NotNormalized(const FQuat &Quat1, const FQuat &Quat2, float Slerp);
+	static AKADLL_API FQuat Slerp_NotNormalized(const FQuat &Quat1, const FQuat &Quat2, float Slerp);
 
 	/** Spherical interpolation. Will correct alignment. Result is normalized. */
 	static FORCEINLINE FQuat Slerp(const FQuat &Quat1, const FQuat &Quat2, float Slerp)
@@ -452,7 +452,7 @@ public:
 	 * We need this for the cubic interpolation stuff so that the multiple Slerps dont go in different directions.
 	 * Result is NOT normalized.
 	 */
-	static CORE_API FQuat SlerpFullPath_NotNormalized(const FQuat &quat1, const FQuat &quat2, float Alpha);
+	static AKADLL_API FQuat SlerpFullPath_NotNormalized(const FQuat &quat1, const FQuat &quat2, float Alpha);
 
 	/**
 	 * Simpler Slerp that doesn't do any checks for 'shortest distance' etc.
@@ -468,13 +468,13 @@ public:
 	 * Given start and end quaternions of quat1 and quat2, and tangents at those points tang1 and tang2, calculate the point at Alpha (between 0 and 1) between them. Result is normalized.
 	 * This will correct alignment by ensuring that the shortest path is taken.
 	 */
-	static CORE_API FQuat Squad(const FQuat& quat1, const FQuat& tang1, const FQuat& quat2, const FQuat& tang2, float Alpha);
+	static AKADLL_API FQuat Squad(const FQuat& quat1, const FQuat& tang1, const FQuat& quat2, const FQuat& tang2, float Alpha);
 
 	/**
 	 * Simpler Squad that doesn't do any checks for 'shortest distance' etc.
 	 * Given start and end quaternions of quat1 and quat2, and tangents at those points tang1 and tang2, calculate the point at Alpha (between 0 and 1) between them. Result is normalized.
 	 */
-	static CORE_API FQuat SquadFullPath(const FQuat& quat1, const FQuat& tang1, const FQuat& quat2, const FQuat& tang2, float Alpha);
+	static AKADLL_API FQuat SquadFullPath(const FQuat& quat1, const FQuat& tang1, const FQuat& quat2, const FQuat& tang2, float Alpha);
 
 	/**
 	 * Calculate tangents between given points
@@ -485,7 +485,7 @@ public:
 	 * @param Tension @todo document
 	 * @param OutTan Out control point
 	 */
-	static CORE_API void CalcTangents(const FQuat& PrevP, const FQuat& P, const FQuat& NextP, float Tension, FQuat& OutTan);
+	static AKADLL_API void CalcTangents(const FQuat& PrevP, const FQuat& P, const FQuat& NextP, float Tension, FQuat& OutTan);
 
 
 };

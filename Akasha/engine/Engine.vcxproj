@@ -23,21 +23,28 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <UndefineAllPreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</UndefineAllPreprocessorDefinitions>
     </ClCompile>
+    <ClCompile Include="source\Actor.cpp" />
     <ClCompile Include="source\Color.cpp" />
+    <ClCompile Include="source\GameInstance.cpp" />
     <ClCompile Include="source\Hash.cpp" />
     <ClCompile Include="source\MathUtility.cpp" />
+    <ClCompile Include="source\Object.cpp" />
     <ClCompile Include="source\stdafx.cpp" />
     <ClCompile Include="source\UnrealMath.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\Actor.h" />
+    <ClInclude Include="include\ActorComponent.h" />
     <ClInclude Include="include\AlignmentTemplates.h" />
     <ClInclude Include="include\Axis.h" />
     <ClInclude Include="include\Box.h" />
     <ClInclude Include="include\Color.h" />
     <ClInclude Include="include\CoreDefines.h" />
+    <ClInclude Include="include\Engine.h" />
     <ClInclude Include="include\Float16.h" />
     <ClInclude Include="include\Float16Color.h" />
     <ClInclude Include="include\Float32.h" />
+    <ClInclude Include="include\GameInstance.h" />
     <ClInclude Include="include\IntPoint.h" />
     <ClInclude Include="include\IntRect.h" />
     <ClInclude Include="include\IntVector.h" />
@@ -46,6 +53,7 @@
     <ClInclude Include="include\MathUtility.h" />
     <ClInclude Include="include\Matrix.h" />
     <ClInclude Include="include\NumericLimits.h" />
+    <ClInclude Include="include\Object.h" />
     <ClInclude Include="include\OrthoMatrix.h" />
     <ClInclude Include="include\PackedVector.h" />
     <ClInclude Include="include\PerspectiveMatrix.h" />
@@ -62,6 +70,7 @@
     <ClInclude Include="include\Rotator.h" />
     <ClInclude Include="include\ScaleMatrix.h" />
     <ClInclude Include="include\Hash.h" />
+    <ClInclude Include="include\SceneComponent.h" />
     <ClInclude Include="include\ThreadSafeQueue.h" />
     <ClInclude Include="include\ThreadSafeStack.h" />
     <ClInclude Include="include\TypeDefines.h" />
@@ -74,6 +83,7 @@
     <ClInclude Include="include\Vector2D.h" />
     <ClInclude Include="include\Vector2DHalf.h" />
     <ClInclude Include="include\Vector4.h" />
+    <ClInclude Include="include\World.h" />
     <ClInclude Include="source\stdafx.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
@@ -169,12 +179,14 @@
       <PrecompiledHeader>Create</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;_DLL_EXPPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;_DLL_EXPPORTS;TASKGRAPH_API=__declspec(dllimport);%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>include\;../../EngineSDK/include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>..\..\EngineSDK\lib\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>TaskGraph_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -201,7 +213,7 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;_DLL_EXPPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;_DLL_EXPPORTS;TASKGRAPH_API=__declspec(dllimport);%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>include\;../../EngineSDK/include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>

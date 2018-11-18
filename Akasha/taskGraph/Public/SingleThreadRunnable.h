@@ -6,7 +6,7 @@
  * Interface for ticking runnables when there's only one thread available and 
  * multithreading is disabled.
  */
-class CORE_API FSingleThreadRunnable
+class TASKGRAPH_API FSingleThreadRunnable
 {
 public:
 

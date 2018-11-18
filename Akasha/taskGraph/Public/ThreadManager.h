@@ -7,7 +7,7 @@
 /**
  * Manages runnables and runnable threads.
  */
-class CORE_API FThreadManager
+class TASKGRAPH_API FThreadManager
 {
 	/** List of thread objects to be ticked. */
 	std::map<unsigned int, class FRunnableThread*> Threads;

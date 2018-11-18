@@ -36,7 +36,7 @@ protected:
 /**
 * Windows implementation of the Atomics OS functions
 */
-struct CORE_API FWindowsPlatformAtomics
+struct TASKGRAPH_API FWindowsPlatformAtomics
 	: public FGenericPlatformAtomics
 {
 	static __forceinline int InterlockedIncrement(volatile int* Value)

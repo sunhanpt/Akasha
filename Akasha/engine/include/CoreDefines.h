@@ -7,8 +7,6 @@
 #define AKADLL_API __declspec(dllimport)
 #endif
 
-
-#define CORE_API AKADLL_API
 #define FORCEINLINE __forceinline
 
 #define check assert

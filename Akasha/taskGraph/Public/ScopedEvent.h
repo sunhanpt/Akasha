@@ -19,10 +19,10 @@ class FScopedEvent
 public:
 
 	/** Default constructor. */
-	CORE_API FScopedEvent();
+	TASKGRAPH_API FScopedEvent();
 
 	/** Destructor. */
-	CORE_API ~FScopedEvent();
+	TASKGRAPH_API ~FScopedEvent();
 
 	/** Triggers the event. */
 	void Trigger()

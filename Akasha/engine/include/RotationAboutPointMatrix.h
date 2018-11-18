@@ -25,7 +25,7 @@ public:
 	}
 
 	/** Matrix factory. Return an FMatrix so we don't have type conversion issues in expressions. */
-	static CORE_API FMatrix Make(const FQuat& Rot, const FVector& Origin);
+	static AKADLL_API FMatrix Make(const FQuat& Rot, const FVector& Origin);
 };
 
 

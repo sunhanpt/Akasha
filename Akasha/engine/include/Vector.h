@@ -19,19 +19,19 @@ public:
 public:
 
 	/** A zero vector (0,0,0) */
-	static CORE_API const FVector ZeroVector;
+	static AKADLL_API const FVector ZeroVector;
 
 	/** One vector (1,1,1) */
-	static CORE_API const FVector OneVector;
+	static AKADLL_API const FVector OneVector;
 
 	/** World up vector (0,0,1) */
-	static CORE_API const FVector UpVector;
+	static AKADLL_API const FVector UpVector;
 
 	/** Unreal forward vector (1,0,0) */
-	static CORE_API const FVector ForwardVector;
+	static AKADLL_API const FVector ForwardVector;
 
 	/** Unreal right vector (0,1,0) */
-	static CORE_API const FVector RightVector;
+	static AKADLL_API const FVector RightVector;
 
 public:
 	FORCEINLINE static FVector CrossProduct(const FVector& A, const FVector& B);
@@ -79,20 +79,20 @@ public:
 	static FVector PointPlaneProject(const FVector& Point, const FPlane& Plane);
 	static FVector PointPlaneProject(const FVector& Point, const FVector& A, const FVector& B, const FVector& C);
 	static float PointPlaneDist(const FVector &Point, const FVector &PlaneBase, const FVector &PlaneNormal);
-	static CORE_API void CreateOrthonormalBasis(FVector& XAxis, FVector& YAxis, FVector& ZAxis);
+	static AKADLL_API void CreateOrthonormalBasis(FVector& XAxis, FVector& YAxis, FVector& ZAxis);
 	static FORCEINLINE float Dist(const FVector &V1, const FVector &V2);
 	static FORCEINLINE float DistSquared(const FVector &V1, const FVector &V2);
-	static CORE_API float EvaluateBezier(const FVector* ControlPoints, int32 NumPoints, std::vector<FVector>& OutPoints);
+	static AKADLL_API float EvaluateBezier(const FVector* ControlPoints, int32 NumPoints, std::vector<FVector>& OutPoints);
 
-	CORE_API FQuat ToOrientationQuat() const;
+	AKADLL_API FQuat ToOrientationQuat() const;
 
-	CORE_API FRotator ToOrientationRotator() const;
+	AKADLL_API FRotator ToOrientationRotator() const;
 
-	CORE_API FRotator Rotation() const;
+	AKADLL_API FRotator Rotation() const;
 
-	CORE_API void FindBestAxisVectors(FVector& Axis1, FVector& Axis2) const;
+	AKADLL_API void FindBestAxisVectors(FVector& Axis1, FVector& Axis2) const;
 
-	CORE_API void UnwindEuler();
+	AKADLL_API void UnwindEuler();
 
 	FVector Reciprocal() const;
 

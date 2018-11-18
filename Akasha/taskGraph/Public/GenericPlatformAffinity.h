@@ -27,51 +27,51 @@ enum EThreadPriority
 class FGenericPlatformAffinity
 {
 public:
-	static const CORE_API unsigned long long GetMainGameMask()
+	static const TASKGRAPH_API unsigned long long GetMainGameMask()
 	{
 		return 0xFFFFFFFFFFFFFFFF;
 	}
 
-	static const CORE_API unsigned long long GetRenderingThreadMask()
+	static const TASKGRAPH_API unsigned long long GetRenderingThreadMask()
 	{
 		return 0xFFFFFFFFFFFFFFFF;
 	}
 
-	static const CORE_API unsigned long long GetRHIThreadMask()
+	static const TASKGRAPH_API unsigned long long GetRHIThreadMask()
 	{
 		return 0xFFFFFFFFFFFFFFFF;
 	}
 
-	static const CORE_API unsigned long long GetRTHeartBeatMask()
+	static const TASKGRAPH_API unsigned long long GetRTHeartBeatMask()
 	{
 		return 0xFFFFFFFFFFFFFFFF;
 	}
 
-	static const CORE_API unsigned long long GetPoolThreadMask()
+	static const TASKGRAPH_API unsigned long long GetPoolThreadMask()
 	{
 		return 0xFFFFFFFFFFFFFFFF;
 	}
 
-	static const CORE_API unsigned long long GetTaskGraphThreadMask()
+	static const TASKGRAPH_API unsigned long long GetTaskGraphThreadMask()
 	{
 		return 0xFFFFFFFFFFFFFFFF;
 	}
 
-	static const CORE_API unsigned long long GetStatsThreadMask()
+	static const TASKGRAPH_API unsigned long long GetStatsThreadMask()
 	{
 		return 0xFFFFFFFFFFFFFFFF;
 	}
 
-	static const CORE_API unsigned long long GetAudioThreadMask()
+	static const TASKGRAPH_API unsigned long long GetAudioThreadMask()
 	{
 		return 0xFFFFFFFFFFFFFFFF;
 	}
 
-	static const CORE_API unsigned long long GetNoAffinityMask()
+	static const TASKGRAPH_API unsigned long long GetNoAffinityMask()
 	{
 		return 0xFFFFFFFFFFFFFFFF;
 	}
-	static const CORE_API unsigned long long GetTaskGraphBackgroundTaskMask()
+	static const TASKGRAPH_API unsigned long long GetTaskGraphBackgroundTaskMask()
 	{
 		return 0xFFFFFFFFFFFFFFFF;
 	}

@@ -12,8 +12,8 @@
 
 #ifdef _DEBUG 
 
-CORE_API void DoTestCriticalStall();
-extern CORE_API int GTestCriticalStalls;
+TASKGRAPH_API void DoTestCriticalStall();
+extern TASKGRAPH_API int GTestCriticalStalls;
 
 __forceinline void TestCriticalStall()
 {
@@ -28,10 +28,10 @@ __forceinline void TestCriticalStall()
 }
 #endif
 
-CORE_API void LockFreeTagCounterHasOverflowed();
-CORE_API void LockFreeLinksExhausted(unsigned int TotalNum);
-CORE_API void* LockFreeAllocLinks(size_t AllocSize);
-CORE_API void LockFreeFreeLinks(size_t AllocSize, void* Ptr);
+TASKGRAPH_API void LockFreeTagCounterHasOverflowed();
+TASKGRAPH_API void LockFreeLinksExhausted(unsigned int TotalNum);
+TASKGRAPH_API void* LockFreeAllocLinks(size_t AllocSize);
+TASKGRAPH_API void LockFreeFreeLinks(size_t AllocSize, void* Ptr);
 
 #define MAX_LOCK_FREE_LINKS_AS_BITS (26)
 #define MAX_LOCK_FREE_LINKS (1 << 26)
@@ -246,9 +246,9 @@ struct FLockFreeLinkPolicy
 		return Index;
 	}
 
-	CORE_API static unsigned int AllocLockFreeLink();
-	CORE_API static void FreeLockFreeLink(unsigned int Item);
-	CORE_API static TAllocator LinkAllocator;
+	TASKGRAPH_API static unsigned int AllocLockFreeLink();
+	TASKGRAPH_API static void FreeLockFreeLink(unsigned int Item);
+	TASKGRAPH_API static TAllocator LinkAllocator;
 };
 
 template<int TPaddingForCacheContention, unsigned long long TABAInc = 1>

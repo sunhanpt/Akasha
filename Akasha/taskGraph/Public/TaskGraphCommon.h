@@ -55,8 +55,8 @@ IMPLEMENT_ALIGNED_STORAGE(2);
 
 #undef IMPLEMENT_ALIGNED_STORAGE
 
-extern CORE_API bool GIsGameThreadIdInitialized;
-extern CORE_API unsigned int GGameThreadId;
+extern TASKGRAPH_API bool GIsGameThreadIdInitialized;
+extern TASKGRAPH_API unsigned int GGameThreadId;
 
 __forceinline bool IsInGameThread()
 {

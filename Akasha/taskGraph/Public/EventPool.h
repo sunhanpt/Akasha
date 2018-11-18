@@ -82,7 +82,7 @@ public:
 	*
 	* @return Pool singleton.
 	*/
-	CORE_API static FEventPool& Get()
+	TASKGRAPH_API static FEventPool& Get()
 	{
 		static FEventPool Singleton;
 		return Singleton;

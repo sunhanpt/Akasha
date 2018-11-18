@@ -68,14 +68,14 @@ public:
 	 * @param Points Array of Points to create for the bounding volume.
 	 * @param Count The number of points.
 	 */
-	CORE_API FBox( const FVector* Points, int32 Count );
+	AKADLL_API FBox( const FVector* Points, int32 Count );
 
 	/**
 	 * Creates and initializes a new box from an array of points.
 	 *
 	 * @param Points Array of Points to create for the bounding volume.
 	 */
-	CORE_API FBox( const std::vector<FVector>& Points );
+	AKADLL_API FBox( const std::vector<FVector>& Points );
 
 public:
 
@@ -333,7 +333,7 @@ public:
 	 * @param Other The bounding box to test overlap
 	 * @return the overlap box. It can be 0 if they don't overlap
 	 */
-	CORE_API FBox Overlap( const FBox& Other ) const;
+	AKADLL_API FBox Overlap( const FBox& Other ) const;
 
 	/**
 	  * Gets a bounding volume transformed by an inverted FTransform object.
@@ -341,7 +341,7 @@ public:
 	  * @param M The transformation object to perform the inversely transform this box with.
 	  * @return	The transformed box.
 	  */
-	//CORE_API FBox InverseTransformBy( const FTransform& M ) const;
+	//AKADLL_API FBox InverseTransformBy( const FTransform& M ) const;
 
 	/** 
 	 * Checks whether the given location is inside this box.
@@ -408,7 +408,7 @@ public:
 	 * @return The transformed box.
 	 * @see TransformProjectBy
 	 */
-	CORE_API FBox TransformBy( const FMatrix& M ) const;
+	AKADLL_API FBox TransformBy( const FMatrix& M ) const;
 
 	/**
 	 * Gets a bounding volume transformed by a FTransform object.
@@ -417,7 +417,7 @@ public:
 	 * @return The transformed box.
 	 * @see TransformProjectBy
 	 */
-	//CORE_API FBox TransformBy( const FTransform& M ) const;
+	//AKADLL_API FBox TransformBy( const FTransform& M ) const;
 
 	/** 
 	 * Transforms and projects a world bounding box to screen space
@@ -426,7 +426,7 @@ public:
 	 * @return The transformed box.
 	 * @see TransformBy
 	 */
-	CORE_API FBox TransformProjectBy( const FMatrix& ProjM ) const;
+	AKADLL_API FBox TransformProjectBy( const FMatrix& ProjM ) const;
 
 
 public:

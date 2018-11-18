@@ -207,7 +207,7 @@ struct FMath
 	static FORCEINLINE float Acos(float Value) { return acosf((Value<-1.f) ? -1.f : ((Value<1.f) ? Value : 1.f)); }
 	static FORCEINLINE float Tan(float Value) { return tanf(Value); }
 	static FORCEINLINE float Atan(float Value) { return atanf(Value); }
-	static CORE_API float Atan2(float Y, float X);
+	static AKADLL_API float Atan2(float Y, float X);
 	static FORCEINLINE float Sqrt(float Value) { return sqrtf(Value); }
 	static FORCEINLINE float Pow(float A, float B) { return powf(A, B); }
 
@@ -253,13 +253,13 @@ struct FMath
 	static FORCEINLINE float FRand() { return Rand() / (float)RAND_MAX; }
 
 	/** Seeds future calls to SRand() */
-	static CORE_API void SRandInit(int32 Seed);
+	static AKADLL_API void SRandInit(int32 Seed);
 
 	/** Returns the current seed for SRand(). */
-	static CORE_API int32 GetRandSeed();
+	static AKADLL_API int32 GetRandSeed();
 
 	/** Returns a seeded random float in the range [0,1), using the seed from SRandInit(). */
-	static CORE_API float SRand();
+	static AKADLL_API float SRand();
 
 	/**
 	* Computes the base 2 logarithm for an integer value that is greater than 0.

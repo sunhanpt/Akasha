@@ -22,48 +22,48 @@ FQueuedThreadPool* GIOThreadPool = nullptr;
 //FQueuedThreadPool* GLargeThreadPool = nullptr;
 //#endif
 
-CORE_API bool IsInSlateThread()
+TASKGRAPH_API bool IsInSlateThread()
 {
 	// If this explicitly is a slate thread, not just the main thread running slate
 	//return GSlateLoadingThreadId != 0 && FPlatformTLS::GetCurrentThreadId() == GSlateLoadingThreadId;
 	return false;
 }
 
-CORE_API FRunnableThread* GAudioThread = nullptr;
+TASKGRAPH_API FRunnableThread* GAudioThread = nullptr;
 
-CORE_API bool IsInAudioThread()
+TASKGRAPH_API bool IsInAudioThread()
 {
 	// True if this is the audio thread or if there is no audio thread, then if it is the game thread
 	//return (GAudioThreadId != 0 && FPlatformTLS::GetCurrentThreadId() == GAudioThreadId) || (GAudioThreadId == 0 && FPlatformTLS::GetCurrentThreadId() == GGameThreadId);
 	return false;
 }
 
-CORE_API int GIsRenderingThreadSuspended = 0;
+TASKGRAPH_API int GIsRenderingThreadSuspended = 0;
 
-CORE_API FRunnableThread* GRenderingThread = nullptr;
+TASKGRAPH_API FRunnableThread* GRenderingThread = nullptr;
 
-CORE_API bool IsInActualRenderingThread()
+TASKGRAPH_API bool IsInActualRenderingThread()
 {
 	return GRenderingThread && FPlatformTLS::GetCurrentThreadId() == GRenderingThread->GetThreadID();
 }
 
-CORE_API bool IsInRenderingThread()
+TASKGRAPH_API bool IsInRenderingThread()
 {
 	return !GRenderingThread || GIsRenderingThreadSuspended || (FPlatformTLS::GetCurrentThreadId() == GRenderingThread->GetThreadID());
 }
 
-CORE_API bool IsInParallelRenderingThread()
+TASKGRAPH_API bool IsInParallelRenderingThread()
 {
 	//return !GRenderingThread || GIsRenderingThreadSuspended || (FPlatformTLS::GetCurrentThreadId() != GGameThreadId);
 	return false;
 }
 
-CORE_API bool IsInRHIThread()
+TASKGRAPH_API bool IsInRHIThread()
 {
 	return false;
 	//return GRHIThread && FPlatformTLS::GetCurrentThreadId() == GRHIThread->GetThreadID();
 }
-CORE_API FRunnableThread* GRHIThread = nullptr;
+TASKGRAPH_API FRunnableThread* GRHIThread = nullptr;
 // Fake threads
 
 // Core version of IsInAsyncLoadingThread

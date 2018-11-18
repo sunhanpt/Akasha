@@ -23,10 +23,10 @@ static int GNumWorkerThreadsToIgnore = 0;
 
 namespace ENamedThreads
 {
-	CORE_API Type RenderThread = ENamedThreads::GameThread; // defaults to game and is set and reset by the render thread itself
-	CORE_API Type RenderThread_Local = ENamedThreads::GameThread_Local; // defaults to game local and is set and reset by the render thread itself
-	CORE_API int bHasBackgroundThreads = CREATE_BACKGROUND_TASK_THREADS;
-	CORE_API int bHasHighPriorityThreads = CREATE_HIPRI_TASK_THREADS;
+	TASKGRAPH_API Type RenderThread = ENamedThreads::GameThread; // defaults to game and is set and reset by the render thread itself
+	TASKGRAPH_API Type RenderThread_Local = ENamedThreads::GameThread_Local; // defaults to game local and is set and reset by the render thread itself
+	TASKGRAPH_API int bHasBackgroundThreads = CREATE_BACKGROUND_TASK_THREADS;
+	TASKGRAPH_API int bHasHighPriorityThreads = CREATE_HIPRI_TASK_THREADS;
 }
 
 #if CREATE_HIPRI_TASK_THREADS || CREATE_BACKGROUND_TASK_THREADS

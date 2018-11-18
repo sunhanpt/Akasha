@@ -19,10 +19,10 @@ struct FIntPoint
 public:
 
 	/** An integer point with zeroed values. */
-	CORE_API static const FIntPoint ZeroValue;
+	AKADLL_API static const FIntPoint ZeroValue;
 
 	/** An integer point with INDEX_NONE values. */
-	CORE_API static const FIntPoint NoneValue;
+	AKADLL_API static const FIntPoint NoneValue;
 
 public:
 

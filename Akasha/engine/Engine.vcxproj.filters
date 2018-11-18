@@ -9,7 +9,7 @@
       <Filter>Source\Core\Private\Misc</Filter>
     </ClCompile>
     <ClCompile Include="source\RHI.cpp">
-      <Filter>Source\RHI\Private</Filter>
+      <Filter>Source\Renderer\RHI\Private</Filter>
     </ClCompile>
     <ClCompile Include="source\Color.cpp">
       <Filter>Source\Core\Private\Math</Filter>
@@ -19,6 +19,15 @@
     </ClCompile>
     <ClCompile Include="source\UnrealMath.cpp">
       <Filter>Source\Core\Private\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Actor.cpp">
+      <Filter>Source\Engine\GameFramework\Private</Filter>
+    </ClCompile>
+    <ClCompile Include="source\GameInstance.cpp">
+      <Filter>Source\Engine\GameFramework\Private</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Object.cpp">
+      <Filter>Source\Engine\GameFramework\Private</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -34,17 +43,8 @@
     <Filter Include="Source\Engine">
       <UniqueIdentifier>{c11ed01f-bc01-4faa-9b63-db3dd7abe801}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\D3D11RHI">
-      <UniqueIdentifier>{049da77f-bf62-4fcf-8430-5e41746550f2}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Renderer">
       <UniqueIdentifier>{4e90560b-365f-4586-9cab-88a01d53de34}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\ShaderCore">
-      <UniqueIdentifier>{7c87ee49-55a5-4c76-8d48-4815cd82ff8c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\RHI">
-      <UniqueIdentifier>{f9870bdc-2762-4026-87ed-fc77abd9fa57}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Utility">
       <UniqueIdentifier>{4bc58864-7421-42d0-8a40-7d0358fddcd9}</UniqueIdentifier>
@@ -57,12 +57,6 @@
     </Filter>
     <Filter Include="Source\Common\Public">
       <UniqueIdentifier>{eb11bf3f-e359-453b-9c5f-471f34a90796}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\RHI\Public">
-      <UniqueIdentifier>{cfcf4876-d16d-49ee-bd21-108d84563024}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\RHI\Private">
-      <UniqueIdentifier>{39677752-f428-481a-b9e3-9659429449a1}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\HAL">
       <UniqueIdentifier>{8948c1f1-9df3-496e-8766-c410ddb91918}</UniqueIdentifier>
@@ -88,9 +82,6 @@
     <Filter Include="Source\Core\Private\Misc">
       <UniqueIdentifier>{27263c9e-8e85-4773-b06e-f5c0dfc6acba}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Engine\Public">
-      <UniqueIdentifier>{35eee815-1f73-4f65-be9a-546eb7eedcb3}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Core\Public\Math">
       <UniqueIdentifier>{50ae665b-037d-4278-9ea8-31d8c4b359ac}</UniqueIdentifier>
     </Filter>
@@ -106,13 +97,52 @@
     <Filter Include="Source\Core\Public\Template">
       <UniqueIdentifier>{2e731e10-5e41-4155-81cf-447faba77674}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Renderer\RHI">
+      <UniqueIdentifier>{f9870bdc-2762-4026-87ed-fc77abd9fa57}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Renderer\RHI\Public">
+      <UniqueIdentifier>{cfcf4876-d16d-49ee-bd21-108d84563024}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Renderer\RHI\Private">
+      <UniqueIdentifier>{39677752-f428-481a-b9e3-9659429449a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Renderer\ShaderCore">
+      <UniqueIdentifier>{7c87ee49-55a5-4c76-8d48-4815cd82ff8c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Renderer\D3D11RHI">
+      <UniqueIdentifier>{049da77f-bf62-4fcf-8430-5e41746550f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Engine\EngineCore">
+      <UniqueIdentifier>{42930f38-2b7e-4fe1-b5c8-5bc03fe243e9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Engine\EngineCore\Private">
+      <UniqueIdentifier>{31d11321-e303-46a2-9d70-110086c8a0d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Engine\EngineCore\Public">
+      <UniqueIdentifier>{35eee815-1f73-4f65-be9a-546eb7eedcb3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Engine\GameFramework">
+      <UniqueIdentifier>{58aebcf9-2828-470e-9ce0-957e62667f88}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Engine\GameFramework\Public">
+      <UniqueIdentifier>{d5b400c9-d736-423f-b4d9-1bd01e2c27c8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Engine\GameFramework\Private">
+      <UniqueIdentifier>{2b8bbff0-0cbd-4309-89a8-b2d3b3b71eaf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Engine\GameFramework\Public\Components">
+      <UniqueIdentifier>{442e2ad7-6c6b-4096-a750-0043d402da6f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Engine\GameFramework\Private\Components">
+      <UniqueIdentifier>{16637992-bff1-4876-b0d7-d5526da580f6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\stdafx.h">
       <Filter>Source\Common\Private</Filter>
     </ClInclude>
     <ClInclude Include="include\RHIResources.h">
-      <Filter>Source\RHI\Public</Filter>
+      <Filter>Source\Renderer\RHI\Public</Filter>
     </ClInclude>
     <ClInclude Include="include\CoreDefines.h">
       <Filter>Source\Common\Public</Filter>
@@ -130,10 +160,10 @@
       <Filter>Source\Core\Public\Misc</Filter>
     </ClInclude>
     <ClInclude Include="include\PixelFormat.h">
-      <Filter>Source\Engine\Public</Filter>
+      <Filter>Source\Engine\EngineCore\Public</Filter>
     </ClInclude>
     <ClInclude Include="include\RHI.h">
-      <Filter>Source\RHI\Public</Filter>
+      <Filter>Source\Renderer\RHI\Public</Filter>
     </ClInclude>
     <ClInclude Include="include\Float16.h">
       <Filter>Source\Core\Public\Math</Filter>
@@ -232,7 +262,28 @@
       <Filter>Source\Core\Public\Template</Filter>
     </ClInclude>
     <ClInclude Include="include\RHIDefines.h">
-      <Filter>Source\RHI\Public</Filter>
+      <Filter>Source\Renderer\RHI\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Object.h">
+      <Filter>Source\Engine\GameFramework\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Actor.h">
+      <Filter>Source\Engine\GameFramework\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ActorComponent.h">
+      <Filter>Source\Engine\GameFramework\Public\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SceneComponent.h">
+      <Filter>Source\Engine\GameFramework\Public\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GameInstance.h">
+      <Filter>Source\Engine\GameFramework\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Engine.h">
+      <Filter>Source\Engine\GameFramework\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="include\World.h">
+      <Filter>Source\Engine\GameFramework\Public</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

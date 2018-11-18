@@ -6,7 +6,7 @@
 /**
  * The base class of reference counted objects.
  */
-class CORE_API FRefCountedObject
+class TASKGRAPH_API FRefCountedObject
 {
 public:
 	FRefCountedObject(): NumRefs(0) {}

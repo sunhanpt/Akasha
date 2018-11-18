@@ -32,7 +32,7 @@ struct FCPUTime
 /**
 * Generic implementation for most platforms
 **/
-struct CORE_API FGenericPlatformTime
+struct TASKGRAPH_API FGenericPlatformTime
 {
 
 	/** Updates CPU utilization, called through a delegate from the Core ticker. */
@@ -89,7 +89,7 @@ protected:
 	static double SecondsPerCycle64;
 };
 
-struct CORE_API FWindowsPlatformTime
+struct TASKGRAPH_API FWindowsPlatformTime
 	: public FGenericPlatformTime
 {
 	static double InitTiming();

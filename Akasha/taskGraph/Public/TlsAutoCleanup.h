@@ -3,7 +3,7 @@
 #pragma once
 
 /** Base class for objects in TLS that support auto-cleanup. */
-class CORE_API FTlsAutoCleanup
+class TASKGRAPH_API FTlsAutoCleanup
 {
 public:
 	/** Virtual destructor. */

@@ -16,7 +16,7 @@ class FTlsAutoCleanup;
  *
  * This interface specifies the methods used to manage a thread's life cycle.
  */
-class CORE_API FRunnableThread
+class TASKGRAPH_API FRunnableThread
 {
 	friend class FThreadSingletonInitializer;
 	friend class FTlsAutoCleanup;

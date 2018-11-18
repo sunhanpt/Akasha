@@ -28,7 +28,7 @@ public:
 public:
 
 	/** A rotator of zero degrees on each axis. */
-	static CORE_API const FRotator ZeroRotator;
+	static AKADLL_API const FRotator ZeroRotator;
 
 public:
 
@@ -58,7 +58,7 @@ public:
 	 *
 	 * @param Quat Quaternion used to specify rotation.
 	 */
-	explicit CORE_API FRotator( const FQuat& Quat );
+	explicit AKADLL_API FRotator( const FQuat& Quat );
 
 public:
 
@@ -177,7 +177,7 @@ public:
 	/**
 	 * Returns the inverse of the rotator.
 	 */
-	CORE_API FRotator GetInverse() const;
+	AKADLL_API FRotator GetInverse() const;
 
 	/**
 	 * Get the rotation, snapped to specified degree segments.
@@ -192,21 +192,21 @@ public:
 	 *
 	 * @return Rotation as a unit direction vector.
 	 */
-	CORE_API FVector Vector() const;
+	AKADLL_API FVector Vector() const;
 
 	/**
 	 * Get Rotation as a quaternion.
 	 *
 	 * @return Rotation as a quaternion.
 	 */
-	CORE_API FQuat Quaternion() const;
+	AKADLL_API FQuat Quaternion() const;
 
 	/**
 	 * Convert a Rotator into floating-point Euler angles (in degrees). Rotator now stored in degrees.
 	 *
 	 * @return Rotation as a Euler angle vector.
 	 */
-	CORE_API FVector Euler() const;
+	AKADLL_API FVector Euler() const;
 
 	/**
 	 * Rotate a vector rotated by this rotator.
@@ -214,7 +214,7 @@ public:
 	 * @param V The vector to rotate.
 	 * @return The rotated vector.
 	 */
-	CORE_API FVector RotateVector( const FVector& V ) const;
+	AKADLL_API FVector RotateVector( const FVector& V ) const;
 
 	/**
 	 * Returns the vector rotated by the inverse of this rotator.
@@ -222,7 +222,7 @@ public:
 	 * @param V The vector to rotate.
 	 * @return The rotated vector.
 	 */
-	CORE_API FVector UnrotateVector( const FVector& V ) const;
+	AKADLL_API FVector UnrotateVector( const FVector& V ) const;
 
 	/**
 	 * Gets the rotation values so they fall within the range [0,360]
@@ -263,7 +263,7 @@ public:
 	 * @param Winding[Out] the Winding part of this Rotator
 	 * @param Remainder[Out] the Remainder
 	 */
-	CORE_API void GetWindingAndRemainder( FRotator& Winding, FRotator& Remainder ) const;
+	AKADLL_API void GetWindingAndRemainder( FRotator& Winding, FRotator& Remainder ) const;
 
 	/**
 	 * Utility to check if there are any non-finite values (NaN or Inf) in this Rotator.
@@ -328,7 +328,7 @@ public:
 	 * @param Euler Euler angle vector.
 	 * @return A rotator from a Euler angle.
 	 */
-	static CORE_API FRotator MakeFromEuler( const FVector& Euler );
+	static AKADLL_API FRotator MakeFromEuler( const FVector& Euler );
 
 };
 

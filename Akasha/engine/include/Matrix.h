@@ -21,7 +21,7 @@ public:
 	};
 
 	//Identity matrix
-	MS_ALIGN(16) static CORE_API const FMatrix Identity;
+	MS_ALIGN(16) static AKADLL_API const FMatrix Identity;
 
 	/**
 	 * Constructor.
@@ -265,14 +265,14 @@ public:
 	inline FVector GetColumn(int32 i) const;
 
 	/** @return rotator representation of this matrix */
-	CORE_API FRotator Rotator() const;
+	AKADLL_API FRotator Rotator() const;
 
 	/** 
 	 * Transform a rotation matrix into a quaternion.
 	 *
 	 * @warning rotation part will need to be unit length for this to be right!
 	 */
-	CORE_API FQuat ToQuat() const;
+	AKADLL_API FQuat ToQuat() const;
 
 	// Frustum plane extraction.
 	/** @param OutPlane the near plane of the Frustum of this matrix */

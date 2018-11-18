@@ -11,7 +11,7 @@ class FRunnableThread;
 /**
 * Windows implementation of the Process OS functions.
 **/
-struct CORE_API FWindowsPlatformProcess
+struct TASKGRAPH_API FWindowsPlatformProcess
 {
 	
 	static void Sleep(float Seconds);
@@ -66,7 +66,7 @@ struct FGenericPlatformTLS
 /**
 * Windows implementation of the TLS OS functions.
 */
-struct CORE_API FWindowsPlatformTLS
+struct TASKGRAPH_API FWindowsPlatformTLS
 	: public FGenericPlatformTLS
 {
 	/**

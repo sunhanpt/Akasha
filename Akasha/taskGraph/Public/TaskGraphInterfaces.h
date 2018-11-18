@@ -89,13 +89,13 @@ namespace ENamedThreads
 		AnyBackgroundThreadNormalTask = AnyThread | BackgroundThreadPriority | NormalTaskPriority,
 		AnyBackgroundHiPriTask = AnyThread | BackgroundThreadPriority | HighTaskPriority,
 	};
-	extern CORE_API Type RenderThread; // this is not an enum, because if there is no render thread, this is just the game thread.
-	extern CORE_API Type RenderThread_Local; // this is not an enum, because if there is no render thread, this is just the game thread.
+	extern TASKGRAPH_API Type RenderThread; // this is not an enum, because if there is no render thread, this is just the game thread.
+	extern TASKGRAPH_API Type RenderThread_Local; // this is not an enum, because if there is no render thread, this is just the game thread.
 
 											 // these allow external things to make custom decisions based on what sorts of task threads we are running now.
 											 // this are bools to allow runtime tuning.
-	extern CORE_API int bHasBackgroundThreads;
-	extern CORE_API int bHasHighPriorityThreads;
+	extern TASKGRAPH_API int bHasBackgroundThreads;
+	extern TASKGRAPH_API int bHasHighPriorityThreads;
 
 	__forceinline Type GetThreadIndex(Type ThreadAndIndex)
 	{
@@ -202,20 +202,20 @@ public:
 	*	Explicit start call for the system. The ordinary singleton pattern does not work because internal threads start asking for the singleton before the constructor has returned.
 	*	@param	NumThreads; Total number of threads in the system, must be 0 to disable separate taskgraph thread, at least 2 if !threadedrendering, else at least 3
 	**/
-	static CORE_API void Startup(int NumThreads);
+	static TASKGRAPH_API void Startup(int NumThreads);
 	/**
 	*	Explicit start call to shutdown the system. This is unlikely to work unless the system is idle.
 	**/
-	static CORE_API void Shutdown();
+	static TASKGRAPH_API void Shutdown();
 	/**
 	*	Check to see if the system is running.
 	**/
-	static CORE_API bool IsRunning();
+	static TASKGRAPH_API bool IsRunning();
 	/**
 	*	Singleton for the system
 	*	@return a reference to the task graph system
 	**/
-	static CORE_API FTaskGraphInterface& Get();
+	static TASKGRAPH_API FTaskGraphInterface& Get();
 
 	/** Return the current thread type, if known. **/
 	virtual ENamedThreads::Type GetCurrentThreadIfKnown(bool bLocalQueue = false) = 0;
@@ -367,11 +367,11 @@ protected:
 
 #ifdef _DEBUG 
 	/** Logs a task name that may contain invalid subsequents. Debug only. */
-	static void CORE_API LogPossiblyInvalidSubsequentsTask(const wchar_t* TaskName);
+	static void TASKGRAPH_API LogPossiblyInvalidSubsequentsTask(const wchar_t* TaskName);
 #endif
 
 	/** Singleton to retrieve the small task allocator **/
-	static CORE_API TSmallTaskAllocator& GetSmallTaskAllocator();
+	static TASKGRAPH_API TSmallTaskAllocator& GetSmallTaskAllocator();
 
 	/**
 	*	An indication that a prerequisite has been completed. Reduces the number of prerequisites by one and if no prerequisites are outstanding, it queues the task for execution.
@@ -462,10 +462,10 @@ public:
 	*	A factory method to create a graph event.
 	*	@return a reference counted pointer to the new graph event. Note this should be stored in a FGraphEventRef or it will be immediately destroyed!
 	**/
-	static CORE_API FGraphEventRef CreateGraphEvent();
+	static TASKGRAPH_API FGraphEventRef CreateGraphEvent();
 
 	// the returned event will have ref count zero; be sure to add one!
-	static CORE_API FGraphEvent* CreateGraphEventWithInlineStorage();
+	static TASKGRAPH_API FGraphEvent* CreateGraphEventWithInlineStorage();
 	/**
 	*	Attempts to a new subsequent task. If this event has already fired, false is returned and action must be taken to ensure that the task will still fire even though this event cannot be a prerequisite (because it is already finished).
 	*	@return true if the task was successfully set up as a subsequent. false if the event has already fired.
@@ -499,7 +499,7 @@ public:
 	*	"Complete" the event. This grabs the list of subsequents and atomically closes it. Then for each subsequent it reduces the number of prerequisites outstanding and if that drops to zero, the task is queued.
 	*	@param CurrentThreadIfKnown if the current thread is known, provide it here. Otherwise it will be determined via TLS if any task ends up being queued.
 	**/
-	CORE_API void DispatchSubsequents(std::vector<FBaseGraphTask*>& NewTasks, ENamedThreads::Type CurrentThreadIfKnown = ENamedThreads::AnyThread);
+	TASKGRAPH_API void DispatchSubsequents(std::vector<FBaseGraphTask*>& NewTasks, ENamedThreads::Type CurrentThreadIfKnown = ENamedThreads::AnyThread);
 
 	/**
 	*	Determine if the event has been completed. This can be used to poll for completion.
@@ -520,7 +520,7 @@ private:
 	*	Internal function to call the destructor and recycle a graph event
 	*	@param ToRecycle; graph event to recycle
 	**/
-	static CORE_API void Recycle(FGraphEvent* ToRecycle);
+	static TASKGRAPH_API void Recycle(FGraphEvent* ToRecycle);
 
 	/**
 	*	Hidden Constructor

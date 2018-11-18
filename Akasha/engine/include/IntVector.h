@@ -23,10 +23,10 @@ struct FIntVector
 public:
 
 	/** An int point with zeroed values. */
-	CORE_API static const FIntVector ZeroValue;
+	AKADLL_API static const FIntVector ZeroValue;
 
 	/** An int point with INDEX_NONE values. */
-	CORE_API static const FIntVector NoneValue;
+	AKADLL_API static const FIntVector NoneValue;
 
 public:
 
