@@ -112,3 +112,5 @@ UpgradeLog*.htm
 *.opendb
 *.db-shm
 *.db-wal
+
+./EngineSDK
