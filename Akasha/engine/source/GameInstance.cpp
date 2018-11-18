@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "GameInstance.h"
 
 UWorld * UGameInstance::GetWorld() const
