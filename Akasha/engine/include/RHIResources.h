@@ -715,4 +715,216 @@ private:
 public:
 	ERenderTargetStoreAction	GetStencilStoreAction() const { return StencilStoreAction; }
 	FExclusiveDepthStencil		GetDepthStencilAccess() const { return DepthStencilAccess; }
+
+	explicit FRHIDepthRenderTargetView() :
+		Texture(nullptr),
+		DepthLoadAction(ERenderTargetLoadAction::ENoAction),
+		DepthStoreAction(ERenderTargetStoreAction::ENoAction),
+		StencilLoadAction(ERenderTargetLoadAction::ENoAction),
+		StencilStoreAction(ERenderTargetStoreAction::ENoAction),
+		DepthStencilAccess(FExclusiveDepthStencil::DepthNop_StencilNop)
+	{
+		Validate();
+	}
+
+	// common case
+	explicit FRHIDepthRenderTargetView(FTextureRHIParamRef InTexture, ERenderTargetLoadAction InLoadAction, ERenderTargetStoreAction InStoreAction) :
+		Texture(InTexture),
+		DepthLoadAction(InLoadAction),
+		DepthStoreAction(InStoreAction),
+		StencilLoadAction(InLoadAction),
+		StencilStoreAction(InStoreAction),
+		DepthStencilAccess(FExclusiveDepthStencil::DepthWrite_StencilWrite)
+	{
+		Validate();
+	}
+
+	explicit FRHIDepthRenderTargetView(FTextureRHIParamRef InTexture, ERenderTargetLoadAction InLoadAction, ERenderTargetStoreAction InStoreAction, FExclusiveDepthStencil InDepthStencilAccess) :
+		Texture(InTexture),
+		DepthLoadAction(InLoadAction),
+		DepthStoreAction(InStoreAction),
+		StencilLoadAction(InLoadAction),
+		StencilStoreAction(InStoreAction),
+		DepthStencilAccess(InDepthStencilAccess)
+	{
+		Validate();
+	}
+
+	explicit FRHIDepthRenderTargetView(FTextureRHIParamRef InTexture, ERenderTargetLoadAction InDepthLoadAction, ERenderTargetStoreAction InDepthStoreAction, ERenderTargetLoadAction InStencilLoadAction, ERenderTargetStoreAction InStencilStoreAction) :
+		Texture(InTexture),
+		DepthLoadAction(InDepthLoadAction),
+		DepthStoreAction(InDepthStoreAction),
+		StencilLoadAction(InStencilLoadAction),
+		StencilStoreAction(InStencilStoreAction),
+		DepthStencilAccess(FExclusiveDepthStencil::DepthWrite_StencilWrite)
+	{
+		Validate();
+	}
+
+	explicit FRHIDepthRenderTargetView(FTextureRHIParamRef InTexture, ERenderTargetLoadAction InDepthLoadAction, ERenderTargetStoreAction InDepthStoreAction, ERenderTargetLoadAction InStencilLoadAction, ERenderTargetStoreAction InStencilStoreAction, FExclusiveDepthStencil InDepthStencilAccess) :
+		Texture(InTexture),
+		DepthLoadAction(InDepthLoadAction),
+		DepthStoreAction(InDepthStoreAction),
+		StencilLoadAction(InStencilLoadAction),
+		StencilStoreAction(InStencilStoreAction),
+		DepthStencilAccess(InDepthStencilAccess)
+	{
+		Validate();
+	}
+
+	void Validate() const
+	{
+		//ensureMsgf(DepthStencilAccess.IsDepthWrite() || DepthStoreAction == ERenderTargetStoreAction::ENoAction, TEXT("Depth is read-only, but we are performing a store.  This is a waste on mobile.  If depth can't change, we don't need to store it out again"));
+		//ensureMsgf(DepthStencilAccess.IsStencilWrite() || StencilStoreAction == ERenderTargetStoreAction::ENoAction, TEXT("Stencil is read-only, but we are performing a store.  This is a waste on mobile.  If stencil can't change, we don't need to store it out again"));
+	}
+
+	bool operator==(const FRHIDepthRenderTargetView& Other) const
+	{
+		return
+			Texture == Other.Texture &&
+			DepthLoadAction == Other.DepthLoadAction &&
+			DepthStoreAction == Other.DepthStoreAction &&
+			StencilLoadAction == Other.StencilLoadAction &&
+			StencilStoreAction == Other.StencilStoreAction &&
+			DepthStencilAccess == Other.DepthStencilAccess;
+	}
+};
+
+class FRHISetRenderTargetsInfo
+{
+public:
+	// color render targets info.
+	FRHIRenderTargetView	ColorRenderTarget[MaxSimultaneousRenderTargets];
+	int32					NumColorRenderTargets;
+	bool					bClearColor;
+
+	// depth/stencil render target info.
+	FRHIDepthRenderTargetView	DepthStencilRenderTarget;
+	bool						bClearDepth;
+	bool						bClearStencil;
+
+	FRHISetRenderTargetsInfo() :
+		NumColorRenderTargets(0),
+		bClearColor(false),
+		bClearDepth(false),
+		bClearStencil(false)
+	{}
+
+	FRHISetRenderTargetsInfo(int32 InNumColorRenderTargets, const FRHIRenderTargetView* InColorRenderTargets, const FRHIDepthRenderTargetView& InDepthStencilRenderTarget) :
+		NumColorRenderTargets(InNumColorRenderTargets),
+		bClearColor(InNumColorRenderTargets > 0 && InColorRenderTargets[0].LoadAction == ERenderTargetLoadAction::EClear),
+		DepthStencilRenderTarget(InDepthStencilRenderTarget),
+		bClearDepth(InDepthStencilRenderTarget.Texture && InDepthStencilRenderTarget.DepthLoadAction == ERenderTargetLoadAction::EClear),
+		bClearStencil(InDepthStencilRenderTarget.Texture && InDepthStencilRenderTarget.StencilLoadAction == ERenderTargetLoadAction::EClear)
+	{
+		check(InNumColorRenderTargets > 0 && InColorRenderTargets);
+		for (int32 Index = 0; Index < InNumColorRenderTargets; ++Index)
+		{
+			ColorRenderTarget[Index] = InColorRenderTargets[Index];
+		}
+	}
+
+	void SetClearDepthStencil(bool bInClearDepth, bool bInClearStencil = false)
+	{
+		if (bInClearDepth)
+		{
+			DepthStencilRenderTarget.DepthLoadAction = ERenderTargetLoadAction::EClear;
+		}
+		if (bInClearStencil)
+		{
+			DepthStencilRenderTarget.StencilLoadAction = ERenderTargetLoadAction::EClear;
+		}
+		bClearDepth = bInClearDepth;
+		bClearStencil = bInClearStencil;
+	}
+};
+
+class FRHICustomPresent : public FRHIResource
+{
+	explicit FRHICustomPresent(FRHIViewport* InViewport)
+		: ViewportRHI(InViewport)
+	{
+	}
+
+	virtual ~FRHICustomPresent() {}
+
+	// Called when viewport is resized.
+	virtual void OnBackBufferResize() = 0;
+
+	// Called from render thread to see if a native present will be requested for this frame.
+	virtual bool NeedsNativePresent() = 0;
+
+	// Called from RHI thread to perform custom present.
+	virtual bool Present(int32& InOutSyncInterval) = 0;
+
+	// Called from RHI thread after native Present has been called
+	virtual void PostPresent() {};
+
+	// Called when rendering thread is acquired
+	virtual void OnAcquireThreadOwnership() {}
+	// Called when rendering thread is released
+	virtual void OnReleaseThreadOwnership() {}
+
+protected:
+	// Weak reference, don't create a circular dependency that would prevent the viewport from being destroyed.
+	FRHIViewport* ViewportRHI;
+};
+
+typedef FRHICustomPresent*					FCustomPresentRHIParamRef;
+typedef std::shared_ptr<FRHICustomPresent>	FCustomPresentRHIRef;
+
+// Template magic to convert an FRHI*Shader to its enum
+template<typename TRHIShader> struct TRHIShaderToEnum {};
+template<> struct TRHIShaderToEnum<FRHIVertexShader> { enum { ShaderFrequency = SF_Vertex }; };
+template<> struct TRHIShaderToEnum<FRHIHullShader> { enum { ShaderFrequency = SF_Hull }; };
+template<> struct TRHIShaderToEnum<FRHIDomainShader> { enum { ShaderFrequency = SF_Domain }; };
+template<> struct TRHIShaderToEnum<FRHIPixelShader> { enum { ShaderFrequency = SF_Pixel }; };
+template<> struct TRHIShaderToEnum<FRHIGeometryShader> { enum { ShaderFrequency = SF_Geometry }; };
+template<> struct TRHIShaderToEnum<FVertexShaderRHIParamRef> { enum { ShaderFrequency = SF_Vertex }; };
+template<> struct TRHIShaderToEnum<FHullShaderRHIParamRef> { enum { ShaderFrequency = SF_Hull }; };
+template<> struct TRHIShaderToEnum<FDomainShaderRHIParamRef> { enum { ShaderFrequency = SF_Domain }; };
+template<> struct TRHIShaderToEnum<FPixelShaderRHIParamRef> { enum { ShaderFrequency = SF_Pixel }; };
+template<> struct TRHIShaderToEnum<FGeometryShaderRHIParamRef> { enum { ShaderFrequency = SF_Geometry }; };
+template<> struct TRHIShaderToEnum<FVertexShaderRHIRef> { enum { ShaderFrequency = SF_Vertex }; };
+template<> struct TRHIShaderToEnum<FHullShaderRHIRef> { enum { ShaderFrequency = SF_Hull }; };
+template<> struct TRHIShaderToEnum<FDomainShaderRHIRef> { enum { ShaderFrequency = SF_Domain }; };
+template<> struct TRHIShaderToEnum<FPixelShaderRHIRef> { enum { ShaderFrequency = SF_Pixel }; };
+template<> struct TRHIShaderToEnum<FGeometryShaderRHIRef> { enum { ShaderFrequency = SF_Geometry }; };
+
+
+struct FBoundShaderStateInput
+{
+	FVertexDeclarationRHIParamRef VertexDeclarationRHI;
+	FVertexShaderRHIParamRef VertexShaderRHI;
+	FHullShaderRHIParamRef HullShaderRHI;
+	FDomainShaderRHIParamRef DomainShaderRHI;
+	FPixelShaderRHIParamRef PixelShaderRHI;
+	FGeometryShaderRHIParamRef GeometryShaderRHI;
+
+	FORCEINLINE FBoundShaderStateInput()
+		: VertexDeclarationRHI(nullptr)
+		, VertexShaderRHI(nullptr)
+		, HullShaderRHI(nullptr)
+		, DomainShaderRHI(nullptr)
+		, PixelShaderRHI(nullptr)
+		, GeometryShaderRHI(nullptr)
+	{
+	}
+
+	FORCEINLINE FBoundShaderStateInput(
+		FVertexDeclarationRHIParamRef InVertexDeclarationRHI,
+		FVertexShaderRHIParamRef InVertexShaderRHI,
+		FHullShaderRHIParamRef InHullShaderRHI,
+		FDomainShaderRHIParamRef InDomainShaderRHI,
+		FPixelShaderRHIParamRef InPixelShaderRHI,
+		FGeometryShaderRHIParamRef InGeometryShaderRHI
+	)
+		: VertexDeclarationRHI(InVertexDeclarationRHI)
+		, VertexShaderRHI(InVertexShaderRHI)
+		, HullShaderRHI(InHullShaderRHI)
+		, DomainShaderRHI(InDomainShaderRHI)
+		, PixelShaderRHI(InPixelShaderRHI)
+		, GeometryShaderRHI(InGeometryShaderRHI)
+	{
+	}
 };
