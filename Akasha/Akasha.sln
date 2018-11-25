@@ -15,6 +15,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "libs", "libs", "{E823A0A9-2
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TaskGraph", "libs\taskGraph\TaskGraph\TaskGraph.vcxproj", "{97C7AE94-750D-479C-A3AA-ED932AFF51A6}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sdl2", "3rdSDK\sdl2\sdl2.vcxproj", "{60F5E40E-EF95-4BA2-8F97-BDF4A0E05E9F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -93,6 +95,22 @@ Global
 		{97C7AE94-750D-479C-A3AA-ED932AFF51A6}.RelWithDebInfo|x64.Build.0 = Release|x64
 		{97C7AE94-750D-479C-A3AA-ED932AFF51A6}.RelWithDebInfo|x86.ActiveCfg = Release|x64
 		{97C7AE94-750D-479C-A3AA-ED932AFF51A6}.RelWithDebInfo|x86.Build.0 = Release|x64
+		{60F5E40E-EF95-4BA2-8F97-BDF4A0E05E9F}.Debug|x64.ActiveCfg = Debug|x64
+		{60F5E40E-EF95-4BA2-8F97-BDF4A0E05E9F}.Debug|x64.Build.0 = Debug|x64
+		{60F5E40E-EF95-4BA2-8F97-BDF4A0E05E9F}.Debug|x86.ActiveCfg = Debug|Win32
+		{60F5E40E-EF95-4BA2-8F97-BDF4A0E05E9F}.Debug|x86.Build.0 = Debug|Win32
+		{60F5E40E-EF95-4BA2-8F97-BDF4A0E05E9F}.MinSizeRel|x64.ActiveCfg = Release|x64
+		{60F5E40E-EF95-4BA2-8F97-BDF4A0E05E9F}.MinSizeRel|x64.Build.0 = Release|x64
+		{60F5E40E-EF95-4BA2-8F97-BDF4A0E05E9F}.MinSizeRel|x86.ActiveCfg = Release|Win32
+		{60F5E40E-EF95-4BA2-8F97-BDF4A0E05E9F}.MinSizeRel|x86.Build.0 = Release|Win32
+		{60F5E40E-EF95-4BA2-8F97-BDF4A0E05E9F}.Release|x64.ActiveCfg = Release|x64
+		{60F5E40E-EF95-4BA2-8F97-BDF4A0E05E9F}.Release|x64.Build.0 = Release|x64
+		{60F5E40E-EF95-4BA2-8F97-BDF4A0E05E9F}.Release|x86.ActiveCfg = Release|Win32
+		{60F5E40E-EF95-4BA2-8F97-BDF4A0E05E9F}.Release|x86.Build.0 = Release|Win32
+		{60F5E40E-EF95-4BA2-8F97-BDF4A0E05E9F}.RelWithDebInfo|x64.ActiveCfg = Release|x64
+		{60F5E40E-EF95-4BA2-8F97-BDF4A0E05E9F}.RelWithDebInfo|x64.Build.0 = Release|x64
+		{60F5E40E-EF95-4BA2-8F97-BDF4A0E05E9F}.RelWithDebInfo|x86.ActiveCfg = Release|Win32
+		{60F5E40E-EF95-4BA2-8F97-BDF4A0E05E9F}.RelWithDebInfo|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -100,5 +118,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{999E24BB-3EB1-4829-9E28-76344F45C71C} = {F68CD8DE-9BAB-43DF-9BD1-8C2460B39D5D}
 		{97C7AE94-750D-479C-A3AA-ED932AFF51A6} = {E823A0A9-2B80-4870-A4CC-B25EED3C7446}
+		{60F5E40E-EF95-4BA2-8F97-BDF4A0E05E9F} = {F68CD8DE-9BAB-43DF-9BD1-8C2460B39D5D}
 	EndGlobalSection
 EndGlobal
