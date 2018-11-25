@@ -110,7 +110,7 @@ bool FWindowsPlatformTime::UpdateCPUTime( float /*DeltaTime*/ )
 	// so don't update to avoid oscillating between 0 and calculated value.
 	if( IntervalUserAndKernelTime > 0.0f )
 	{
-		CPUTimePctRelative = (float)IntervalUserAndKernelTime/IntervalProcessTime * 100.0f;
+		CPUTimePctRelative = (float)(IntervalUserAndKernelTime/IntervalProcessTime * 100.0f);
 
 		LastTotalProcessTime = CurrentTotalProcessTime;
 		LastTotalUserAndKernelTime = CurrentTotalUserAndKernelTime;

@@ -115,3 +115,5 @@ UpgradeLog*.htm
 
 EngineSDK/
 OutputDir/
+EngineSDK\
+OutputDir\
