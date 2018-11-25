@@ -120,6 +120,7 @@ xcopy ..\Public\*.* ..\..\..\..\EngineSDK\include\TaskGraph\ /y /d /r /s</Comman
     <ClInclude Include="..\Public\SingleThreadRunnable.h" />
     <ClInclude Include="..\Public\TaskGraphCommon.h" />
     <ClInclude Include="..\Public\TaskGraphInterfaces.h" />
+    <ClInclude Include="..\Public\ThreadCoreGlobals.h" />
     <ClInclude Include="..\Public\ThreadManager.h" />
     <ClInclude Include="..\Public\ThreadSafeCounter.h" />
     <ClInclude Include="..\Public\TlsAutoCleanup.h" />

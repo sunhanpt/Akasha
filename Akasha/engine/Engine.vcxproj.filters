@@ -29,6 +29,18 @@
     <ClCompile Include="source\Object.cpp">
       <Filter>Source\Engine\GameFramework\Private</Filter>
     </ClCompile>
+    <ClCompile Include="source\GameClinet.cpp">
+      <Filter>Source\Engine\GameFramework\Private</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Engine.cpp">
+      <Filter>Source\Engine\GameFramework\Private</Filter>
+    </ClCompile>
+    <ClCompile Include="source\RenderResource.cpp">
+      <Filter>Source\Engine\RenderCore\Private</Filter>
+    </ClCompile>
+    <ClCompile Include="source\CoreGlobas.cpp">
+      <Filter>Source\Core\Private</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Shader">
@@ -135,6 +147,15 @@
     </Filter>
     <Filter Include="Source\Engine\GameFramework\Private\Components">
       <UniqueIdentifier>{16637992-bff1-4876-b0d7-d5526da580f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Engine\RenderCore">
+      <UniqueIdentifier>{6d565302-f265-4930-b1d6-be5e788fe9ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Engine\RenderCore\Public">
+      <UniqueIdentifier>{61986648-e9c4-42a2-9533-ec4e2e022fad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Engine\RenderCore\Private">
+      <UniqueIdentifier>{8cb23aeb-26eb-4f70-a862-9ca607e0ddf3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -287,6 +308,18 @@
     </ClInclude>
     <ClInclude Include="include\GameClient.h">
       <Filter>Source\Engine\GameFramework\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RenderResource.h">
+      <Filter>Source\Engine\RenderCore\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CoreGlobals.h">
+      <Filter>Source\Core\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RHICommandList.h">
+      <Filter>Source\Renderer\RHI\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RHIContext.h">
+      <Filter>Source\Renderer\RHI\Public</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

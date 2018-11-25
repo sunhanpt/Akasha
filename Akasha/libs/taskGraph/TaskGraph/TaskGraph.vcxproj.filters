@@ -28,6 +28,9 @@
     <Filter Include="Public\Atomic">
       <UniqueIdentifier>{8997c7f4-002c-42a4-9276-f283555f7bea}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Public\Core">
+      <UniqueIdentifier>{0cf5301c-80fa-4479-ab36-affe45f30b53}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\LockFreeList.cpp">
@@ -127,6 +130,9 @@
     </ClInclude>
     <ClInclude Include="..\Public\GenericPlatformTime.h">
       <Filter>Public</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ThreadCoreGlobals.h">
+      <Filter>Public\Core</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -11,6 +11,7 @@
 #include "QueuedThreadPool.h"
 #include <vector>
 #include <algorithm>
+#include "ThreadCoreGlobals.h"
 
 
 /** The global thread pool */

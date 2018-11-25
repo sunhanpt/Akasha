@@ -1,7 +1,6 @@
 #pragma once
-
 #include "MathUtility.h"
-#include "MathGeometry.h"
+#include "MathDefines.h"
 
 /**
  * Structure for integer points in 2-d space.
@@ -443,7 +442,7 @@ FORCEINLINE int32 FIntPoint::Size() const
 {
 	int64 X64 = (int64)X;
 	int64 Y64 = (int64)Y;
-	return int32(FMath::Sqrt(float(X64 * X64 + Y64 * Y64)));
+	return int32(FMath::Sqrt(float(X64 * X64 + Y64 * Y64))); 
 }
 
 FORCEINLINE int32 FIntPoint::SizeSquared() const

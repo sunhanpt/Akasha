@@ -2,6 +2,9 @@
 #include "TypeDefines.h"
 #include "Color.h"
 
+/** True if the render hardware has been initialized. */
+extern AKADLL_API bool GIsRHIInitialized;
+
 enum class EClearBinding
 {
 	ENoneBound,
