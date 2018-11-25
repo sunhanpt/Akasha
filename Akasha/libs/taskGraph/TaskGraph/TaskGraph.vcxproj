@@ -66,6 +66,7 @@
     </Link>
     <PostBuildEvent>
       <Command>xcopy $(OutputPath)*.* ..\..\..\..\EngineSDK\lib\ /y /d /r /s
+xcopy $(OutputPath)*.dll ..\..\..\..\EngineSDK\bin\ /y /d /r /s
 xcopy ..\Public\*.* ..\..\..\..\EngineSDK\include\TaskGraph\ /y /d /r /s</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -88,6 +89,7 @@ xcopy ..\Public\*.* ..\..\..\..\EngineSDK\include\TaskGraph\ /y /d /r /s</Comman
     </Link>
     <PostBuildEvent>
       <Command>xcopy $(OutputPath)*.* ..\..\..\..\EngineSDK\lib\ /y /d /r /s
+xcopy $(OutputPath)*.dll ..\..\..\..\EngineSDK\bin\ /y /d /r /s
 xcopy ..\Public\*.* ..\..\..\..\EngineSDK\include\TaskGraph\ /y /d /r /s</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
