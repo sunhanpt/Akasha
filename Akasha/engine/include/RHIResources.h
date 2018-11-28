@@ -473,6 +473,12 @@ typedef std::shared_ptr<FRHIShaderResourceView>			FShaderResourceViewRHIRef;
 typedef FRHIGraphicsPipelineState*						FGraphicsPipelineStateRHIParamRef;
 typedef std::shared_ptr<FRHIGraphicsPipelineState>		FGraphicsPipelineStateRHIRef;
 
+typedef FRHIIndexBuffer*						FIndexBufferRHIParamRef;
+typedef std::shared_ptr<FRHIIndexBuffer>		FIndexBufferRHIRef;
+
+typedef FRHIVertexBuffer*						FVertexBufferRHIParamRef;
+typedef std::shared_ptr<FRHIVertexBuffer>		FVertexBufferRHIRef;
+
 class FRHIRenderTargetView
 {
 public:
@@ -911,3 +917,8 @@ struct FBoundShaderStateInput
 	{
 	}
 };
+
+
+class FRHIRenderPass : public FRHIResource {};
+
+// TODO: 添加其他renderpass定义
