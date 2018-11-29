@@ -918,6 +918,228 @@ struct FBoundShaderStateInput
 	}
 };
 
+enum class ERenderTargetActions : uint8
+{
+	LoadOpMask = 2,
+
+#define RTACTION_MAKE_MASK(Load, Store) (((uint8)ERenderTargetLoadAction::Load << (uint8)LoadOpMask) | (uint8)ERenderTargetStoreAction::Store)
+
+	DontLoad_DontStore = RTACTION_MAKE_MASK(ENoAction, ENoAction),
+
+	DontLoad_Store = RTACTION_MAKE_MASK(ENoAction, EStore),
+	Clear_Store = RTACTION_MAKE_MASK(EClear, EStore),
+	Load_Store = RTACTION_MAKE_MASK(ELoad, EStore),
+
+	Clear_DontStore = RTACTION_MAKE_MASK(EClear, ENoAction),
+	Load_DontStore = RTACTION_MAKE_MASK(ELoad, ENoAction),
+	Clear_Resolve = RTACTION_MAKE_MASK(EClear, EMultisampleResolve),
+	Load_Resolve = RTACTION_MAKE_MASK(ELoad, EMultisampleResolve),
+
+#undef RTACTION_MAKE_MASK
+};
+
+inline ERenderTargetLoadAction GetLoadAction(ERenderTargetActions Action)
+{
+	return (ERenderTargetLoadAction)((uint8)Action >> (uint8)ERenderTargetActions::LoadOpMask);
+}
+
+inline ERenderTargetStoreAction GetStoreAction(ERenderTargetActions Action)
+{
+	return (ERenderTargetStoreAction)((uint8)Action & ((1 << (uint8)ERenderTargetActions::LoadOpMask) - 1));
+}
+
+enum class EDepthStencilTargetActions : uint8
+{
+	DepthMask = 4,
+
+#define RTACTION_MAKE_MASK(Depth, Stencil) (((uint8)ERenderTargetActions::Depth << (uint8)DepthMask) | (uint8)ERenderTargetActions::Stencil)
+
+	DontLoad_DontStore = RTACTION_MAKE_MASK(DontLoad_DontStore, DontLoad_DontStore),
+	DontLoad_StoreDepthStencil = RTACTION_MAKE_MASK(DontLoad_Store, DontLoad_Store),
+	ClearDepthStencil_StoreDepthStencil = RTACTION_MAKE_MASK(Clear_Store, Clear_Store),
+	LoadDepthStencil_StoreDepthStencil = RTACTION_MAKE_MASK(Load_Store, Load_Store),
+	LoadDepthNotStencil_DontStore = RTACTION_MAKE_MASK(Load_DontStore, DontLoad_DontStore),
+	LoadDepthStencil_StoreStencilNotDepth = RTACTION_MAKE_MASK(Load_DontStore, Load_Store),
+
+	ClearDepthStencil_DontStoreDepthStencil = RTACTION_MAKE_MASK(Clear_DontStore, Clear_DontStore),
+	LoadDepthStencil_DontStoreDepthStencil = RTACTION_MAKE_MASK(Load_DontStore, Load_DontStore),
+	ClearDepthStencil_StoreDepthNotStencil = RTACTION_MAKE_MASK(Clear_Store, Clear_DontStore),
+	ClearDepthStencil_StoreStencilNotDepth = RTACTION_MAKE_MASK(Clear_DontStore, Clear_Store),
+	ClearDepthStencil_ResolveDepthNotStencil = RTACTION_MAKE_MASK(Clear_Resolve, Clear_DontStore),
+	ClearDepthStencil_ResolveStencilNotDepth = RTACTION_MAKE_MASK(Clear_DontStore, Clear_Resolve),
+
+#undef RTACTION_MAKE_MASK
+};
+
+inline ERenderTargetActions GetDepthActions(EDepthStencilTargetActions Action)
+{
+	return (ERenderTargetActions)((uint8)Action >> (uint8)EDepthStencilTargetActions::DepthMask);
+}
+
+inline ERenderTargetActions GetStencilActions(EDepthStencilTargetActions Action)
+{
+	return (ERenderTargetActions)((uint8)Action & ((1 << (uint8)EDepthStencilTargetActions::DepthMask) - 1));
+}
+
+struct FRHIRenderPassInfo
+{
+	struct FColorEntry
+	{
+		FRHITexture*	RenderTarget;
+		FRHITexture*	ResolveTarget;
+		int32			ArraySlice;
+		uint8			MipIndex;
+		ERenderTargetActions Action;
+	};
+	FColorEntry ColorRenderTargets[MaxSimultaneousRenderTargets];
+
+	struct FDepthStencilEntry
+	{
+		FRHITexture*	DepthStencilTarget;
+		FRHITexture*	ResloveTarget;
+		EDepthStencilTargetActions Action;
+	};
+	FDepthStencilEntry DepthStencilRenderTarget;
+
+	bool bDepthReadOnly = false;
+	bool bOcclusionQueries = false;
+
+	explicit FRHIRenderPassInfo(FRHITexture* ColorRT, ERenderTargetActions ColorAction, FRHITexture* ResolveRT = nullptr)
+	{
+		check(ColorRT);
+		ColorRenderTargets[0].RenderTarget = ColorRT;
+		ColorRenderTargets[0].ResolveTarget = ResolveRT;
+		ColorRenderTargets[0].ArraySlice = -1;
+		ColorRenderTargets[0].MipIndex = 0;
+		ColorRenderTargets[0].Action = ColorAction;
+		DepthStencilRenderTarget.DepthStencilTarget = nullptr;
+		DepthStencilRenderTarget.Action = EDepthStencilTargetActions::DontLoad_DontStore;
+		bIsMSAA = ColorRT->GetNumSamples() > 1;
+		memset(&ColorRenderTargets[1], 0, sizeof(FColorEntry) * (MaxSimultaneousRenderTargets - 1));
+	}
+
+	explicit FRHIRenderPassInfo(int32 NumColorRTs, FRHITexture* ColorRTs[], ERenderTargetActions ColorAction)
+	{
+		check(NumColorRTs > 0);
+		for (int32 Index = 0; Index < NumColorRTs; Index++)
+		{
+			check(ColorRTs[Index]);
+			ColorRenderTargets[Index].RenderTarget = ColorRTs[Index];
+			ColorRenderTargets[Index].ResolveTarget = nullptr;
+			ColorRenderTargets[Index].ArraySlice = -1;
+			ColorRenderTargets[Index].MipIndex = 0;
+			ColorRenderTargets[Index].Action = ColorAction;
+		}
+		DepthStencilRenderTarget.DepthStencilTarget = nullptr;
+		DepthStencilRenderTarget.Action = EDepthStencilTargetActions::DontLoad_DontStore;
+		if (NumColorRTs < MaxSimultaneousRenderTargets)
+		{
+			memset(&ColorRenderTargets[NumColorRTs], 0, sizeof(FColorEntry) * (MaxSimultaneousRenderTargets - NumColorRTs));
+		}
+	}
+
+	explicit FRHIRenderPassInfo(int32 NumColorRTs, FRHITexture* ColorRTs[], ERenderTargetActions ColorAction, FRHITexture* DepthRT, EDepthStencilTargetActions DepthActions)
+	{
+		check(NumColorRTs);
+		for (int32 Index = 0; Index < NumColorRTs; Index++)
+		{
+			check(ColorRTs[Index]);
+			ColorRenderTargets[Index].RenderTarget = ColorRTs[Index];
+			ColorRenderTargets[Index].ResolveTarget = nullptr;
+			ColorRenderTargets[Index].ArraySlice = -1;
+			ColorRenderTargets[Index].MipIndex = 0;
+			ColorRenderTargets[Index].Action = ColorAction;
+		}
+		check(DepthRT);
+		DepthStencilRenderTarget.DepthStencilTarget = DepthRT;
+		DepthStencilRenderTarget.ResloveTarget = nullptr;
+		DepthStencilRenderTarget.Action = DepthActions;
+		bIsMSAA = DepthRT->GetNumSamples() > 1;
+		if (NumColorRTs < MaxSimultaneousRenderTargets)
+		{
+			memset(&ColorRenderTargets[NumColorRTs], 0, sizeof(FColorEntry) * (MaxSimultaneousRenderTargets - NumColorRTs));
+		}
+	}
+
+	explicit FRHIRenderPassInfo(FRHITexture* DepthRT, EDepthStencilTargetActions DepthActions, FRHITexture* ResolveDepthRT = nullptr)
+	{
+		check(DepthRT);
+		DepthStencilRenderTarget.DepthStencilTarget = DepthRT;
+		DepthStencilRenderTarget.ResloveTarget = ResolveDepthRT;
+		DepthStencilRenderTarget.Action = DepthActions;
+		bIsMSAA = DepthRT->GetNumSamples() > 1;
+		memset(ColorRenderTargets, 0, sizeof(FColorEntry) * MaxSimultaneousRenderTargets);
+	}
+
+	explicit FRHIRenderPassInfo(FRHITexture* ColorRT, ERenderTargetActions ColorAction, FRHITexture* DepthRT, EDepthStencilTargetActions DepthActions)
+	{
+		check(ColorRT);
+		ColorRenderTargets[0].RenderTarget = ColorRT;
+		ColorRenderTargets[0].ResolveTarget = nullptr;
+		ColorRenderTargets[0].ArraySlice = -1;
+		ColorRenderTargets[0].MipIndex = 0;
+		ColorRenderTargets[0].Action = ColorAction;
+		bIsMSAA = ColorRT->GetNumSamples() > 1;
+		check(DepthRT);
+		DepthStencilRenderTarget.DepthStencilTarget = DepthRT;
+		DepthStencilRenderTarget.ResloveTarget = nullptr;
+		DepthStencilRenderTarget.Action = DepthActions;
+		memset(&ColorRenderTargets[1], 0, sizeof(FColorEntry) * (MaxSimultaneousRenderTargets - 1));
+	}
+
+	explicit FRHIRenderPassInfo(FRHITexture* ColorRT, ERenderTargetActions ColorAction, FRHITexture* ResolveColorRT, 
+		FRHITexture* DepthRT, EDepthStencilTargetActions DepthActions, FRHITexture* ResolveDepthRT)
+	{
+		check(ColorRT);
+		ColorRenderTargets[0].RenderTarget = ColorRT;
+		ColorRenderTargets[0].ResolveTarget = ResolveColorRT;
+		ColorRenderTargets[0].ArraySlice = -1;
+		ColorRenderTargets[0].MipIndex = 0;
+		ColorRenderTargets[0].Action = ColorAction;
+		bIsMSAA = ColorRT->GetNumSamples() > 1;
+		check(DepthRT);
+		DepthStencilRenderTarget.DepthStencilTarget = DepthRT;
+		DepthStencilRenderTarget.ResloveTarget = ResolveDepthRT;
+		DepthStencilRenderTarget.Action = DepthActions;
+		memset(&ColorRenderTargets[1], 0, sizeof(FColorEntry) * (MaxSimultaneousRenderTargets - 1));
+	}
+
+	explicit FRHIRenderPassInfo()
+	{
+		memset(this, 0, sizeof(FRHIRenderPassInfo));
+	}
+
+	void SetDepthReadOnly(bool bInDepthReadOnly)
+	{
+		bDepthReadOnly = bInDepthReadOnly;
+	}
+
+	void SetOcclusionQueries(bool bInOcclusionQueries)
+	{
+		bOcclusionQueries = bInOcclusionQueries;
+	}
+
+	void DEPRECATED_SetExclusiveDepthStencil(FExclusiveDepthStencil InEDS)
+	{
+		DEPRECATED_EDS = InEDS;
+		bDEPRECATEDHasEDS = true;
+	}
+
+	inline bool IsMSAA() const
+	{
+		return bIsMSAA;
+	}
+
+	inline void Validate() const
+	{
+		// TODO:
+	}
+
+private:
+	FExclusiveDepthStencil DEPRECATED_EDS;
+	bool bDEPRECATEDHasEDS = false;
+	bool bIsMSAA = false;
+};
 
 class FRHIRenderPass : public FRHIResource {};
 
