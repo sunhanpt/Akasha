@@ -115,7 +115,7 @@ public:
 	FRHIShader(bool InbDoNotDeferDelete = false) : FRHIResource(InbDoNotDeferDelete) {}
 
 #if _DEBUG
-	std::string m_ShaderName;
+	std::wstring m_ShaderName;
 #endif
 
 private:
@@ -173,7 +173,7 @@ struct FRHIUniformBufferLayout
 		return Hash;
 	}
 
-	explicit FRHIUniformBufferLayout(std::string& InName) :
+	explicit FRHIUniformBufferLayout(std::wstring& InName) :
 		ConstantBufferSize(0),
 		ResourceOffset(0),
 		Name(InName),
@@ -189,7 +189,7 @@ struct FRHIUniformBufferLayout
 	explicit FRHIUniformBufferLayout(EInit) :
 		ConstantBufferSize(0),
 		ResourceOffset(0),
-		Name(""),
+		Name(_TEXT("")),
 		Hash(0),
 		bComputedHash(false)
 	{
@@ -205,11 +205,11 @@ struct FRHIUniformBufferLayout
 		bComputedHash = Source.bComputedHash;
 	}
 
-	const std::string GetDebugName() const { return Name; }
+	const std::wstring GetDebugName() const { return Name; }
 
 private:
 	// for debugging / error message
-	std::string Name;
+	std::wstring Name;
 
 	mutable uint32 Hash;
 	mutable bool bComputedHash;
@@ -300,8 +300,8 @@ public:
 	uint32 GetFlags() const { return m_Flags; }
 	uint32 GetNumSamples() const { return m_NumSamples; }
 	bool IsMultiSampled() const { return m_NumSamples > 1; }
-	void SetName(const std::string& Name) { m_TextureName = Name; }
-	const std::string& GetName() { return m_TextureName; }
+	void SetName(const std::wstring& Name) { m_TextureName = Name; }
+	const std::wstring& GetName() { return m_TextureName; }
 
 	bool HasClearValue() const
 	{
@@ -345,7 +345,7 @@ private:
 	uint32 m_NumSamples;
 	EPixelFormat m_Format;
 	uint32 m_Flags;
-	std::string m_TextureName;
+	std::wstring m_TextureName;
 };
 
 class FRHITexture2D : public FRHITexture
@@ -1132,8 +1132,56 @@ struct FRHIRenderPassInfo
 
 	inline void Validate() const
 	{
-		// TODO:
+		int32 NumSamples = -1;
+		int32 ColorIndex = 0;
+		for (; ColorIndex < MaxSimultaneousRenderTargets; ++ColorIndex)
+		{
+			const FColorEntry& Entry = ColorRenderTargets[ColorIndex];
+			if (Entry.RenderTarget)
+			{
+				// 保证所有的rendertarget的sample个数一样。
+				if (NumSamples == -1)
+				{
+					NumSamples = Entry.RenderTarget->GetNumSamples();
+				}
+				else
+				{
+					assert(Entry.RenderTarget->GetNumSamples() == NumSamples);
+				}
+
+				ERenderTargetStoreAction Store = GetStoreAction(Entry.Action);
+				// Don't try to resolve a non-msaa
+				assert(Store != ERenderTargetStoreAction::EMultisampleResolve || Entry.RenderTarget->GetNumSamples() > 1);
+				// Don't resolve to null
+				assert(Store != ERenderTargetStoreAction::EMultisampleResolve || Entry.ResolveTarget);
+			}
+			else
+			{
+				break;
+			}
+		}
+
+		int32 NumColorRenderTargets = ColorIndex;
+		for (; ColorIndex < MaxSimultaneousRenderTargets; ++ColorIndex)
+		{
+			assert(!ColorRenderTargets[ColorIndex].RenderTarget && _TEXT("Missing color render target"));
+		}
+
+		if (DepthStencilRenderTarget.DepthStencilTarget)
+		{
+			if (NumSamples != -1)
+			{
+				assert(DepthStencilRenderTarget.DepthStencilTarget->GetNumSamples() == NumSamples);
+			}
+
+			ERenderTargetStoreAction DepthStore = GetStoreAction(GetDepthActions(DepthStencilRenderTarget.Action));
+			ERenderTargetStoreAction StencilStore = GetStoreAction(GetStencilActions(DepthStencilRenderTarget.Action));
+
+			bool bIsStore = DepthStore == ERenderTargetStoreAction::EMultisampleResolve || StencilStore == ERenderTargetStoreAction::EMultisampleResolve;
+		}
 	}
+
+	void ConvertToRenderTargetInfos(FRHISetRenderTargetsInfo& OutRTInfo) const;
 
 private:
 	FExclusiveDepthStencil DEPRECATED_EDS;
@@ -1143,4 +1191,28 @@ private:
 
 class FRHIRenderPass : public FRHIResource {};
 
-// TODO: 添加其他renderpass定义
+class FRHIRenderPassFallback : public FRHIRenderPass
+{
+public:
+	explicit FRHIRenderPassFallback(const FRHIRenderPassInfo& InInfo, const TCHAR* InName)
+		: Info(InInfo)
+		, Name(InName)
+		, bEnded(false)
+	{
+	}
+
+	virtual ~FRHIRenderPassFallback()
+	{
+		check(bEnded);
+	}
+
+	void SetEnded()
+	{
+		check(!bEnded);
+		bEnded = true;
+	}
+protected:
+	FRHIRenderPassInfo	Info;
+	std::wstring		Name;
+	bool				bEnded;
+};

@@ -1,6 +1,7 @@
 #pragma once
 #include "RHIResources.h"
 
+// 相当于d3d中的context。
 class IRHICommandContext
 {
 public:
@@ -70,5 +71,26 @@ public:
 	virtual void RHIEndDrawIndexedPrimitiveUP() = 0;
 
 	virtual void RHIEnableDepthBoundsTest(bool bEnable, float MinDepth, float MaxDepth) = 0;
-	//virtual std::shared_ptr<FRHIRenderPass> : TODO
+
+	virtual std::shared_ptr<FRHIRenderPass> RHIBeginRenderPass(const FRHIRenderPassInfo& Info, const TCHAR* InName)
+	{
+		Info.Validate();
+
+		FRHISetRenderTargetsInfo RTInfo;
+		Info.ConvertToRenderTargetInfos(RTInfo); // 这样搞，为了各个过程用的参数名称相匹配
+		FRHIRenderPassFallback* RenderPass = new FRHIRenderPassFallback(Info, InName);
+		RHISetRenderTargetsAndClear(RTInfo);
+		return std::shared_ptr<FRHIRenderPass>(RenderPass);
+	}
+	virtual void RHIEndRenderPass(FRHIRenderPass* RenderPass)
+	{
+		FRHIRenderPassFallback* Fallback = (FRHIRenderPassFallback*)RenderPass;
+		Fallback->SetEnded();
+	}
+
+	virtual void RHICopyToResloveTarget(FTextureRHIParamRef SourceTexture, FTextureRHIParamRef DestTexture, bool bKeepOriginalSurface, const FResolveParams& ResolveParams) = 0;
+	virtual void RHICopyTexture(FTextureRHIParamRef SourceTexture, FTextureRHIParamRef DestTexture, const FResolveParams& ResloveParams)
+	{
+		RHICopyToResloveTarget(SourceTexture, DestTexture, true, ResloveParams);
+	}
 };

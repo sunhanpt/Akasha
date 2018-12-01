@@ -43,6 +43,7 @@
     <ClInclude Include="include\Axis.h" />
     <ClInclude Include="include\Box.h" />
     <ClInclude Include="include\CoreGlobals.h" />
+    <ClInclude Include="include\DynamicRHI.h" />
     <ClInclude Include="include\GameClient.h" />
     <ClInclude Include="include\Color.h" />
     <ClInclude Include="include\CoreDefines.h" />

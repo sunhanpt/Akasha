@@ -68,7 +68,7 @@ public:
 	*/
 	void UpdateRHI();
 
-	virtual std::string GetFriendlyName() const { return "undefined"; }
+	virtual std::wstring GetFriendlyName() const { return _TEXT("undefined"); }
 
 	FORCEINLINE bool IsInitialized() { return m_bInitialized; }
 
