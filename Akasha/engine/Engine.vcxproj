@@ -69,6 +69,7 @@
     <ClInclude Include="include\Quat.h" />
     <ClInclude Include="include\QuatRotationTranslationMatrix.h" />
     <ClInclude Include="include\RenderResource.h" />
+    <ClInclude Include="include\ResourceArray.h" />
     <ClInclude Include="include\RHI.h" />
     <ClInclude Include="include\RHICommandList.h" />
     <ClInclude Include="include\RHIContext.h" />

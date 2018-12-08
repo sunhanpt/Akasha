@@ -14,6 +14,13 @@ struct FRHICommandBase
 class AKADLL_API FRHICommandListBase : public FNoncopyable
 {
 public:
-	FRHICommandListBase();
-	~FRHICommandListBase();
+	FRHICommandListBase() {}
+	virtual ~FRHICommandListBase() {}
+};
+
+class AKADLL_API FRHICommandList : public FRHICommandListBase
+{
+public:
+	FRHICommandList() {}
+	virtual ~FRHICommandList() {}
 };

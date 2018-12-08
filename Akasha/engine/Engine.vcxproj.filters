@@ -324,5 +324,8 @@
     <ClInclude Include="include\DynamicRHI.h">
       <Filter>Source\Renderer\RHI\Public</Filter>
     </ClInclude>
+    <ClInclude Include="include\ResourceArray.h">
+      <Filter>Source\Core\Public\Containers</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

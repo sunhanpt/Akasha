@@ -2,6 +2,7 @@
 #include "TypeDefines.h"
 #include "Color.h"
 #include "RHIDefines.h"
+#include <vector>
 
 /** True if the render hardware has been initialized. */
 extern AKADLL_API bool GIsRHIInitialized;
@@ -24,6 +25,32 @@ struct FClearValueBinding
 	FClearValueBinding() 
 		: ColorBinding(EClearBinding::ENoneBound)
 	{
+		Value.Color[0] = 0;
+		Value.Color[1] = 0;
+		Value.Color[2] = 0;
+		Value.Color[3] = 0;
+	}
+
+	FClearValueBinding(EClearBinding NoBinding)
+		: ColorBinding(NoBinding)
+	{
+		check(ColorBinding == EClearBinding::ENoneBound);
+	}
+
+	explicit FClearValueBinding(const FLinearColor& InClearColor)
+		: ColorBinding(EClearBinding::EColorBound)
+	{
+		Value.Color[0] = InClearColor.R;
+		Value.Color[1] = InClearColor.G;
+		Value.Color[2] = InClearColor.B;
+		Value.Color[3] = InClearColor.A;
+	}
+
+	explicit FClearValueBinding(float DepthClearValue, uint32 StencilClearValue = 0)
+		: ColorBinding(EClearBinding::EDepthStencilBound)
+	{
+		Value.DSValue.Depth = DepthClearValue;
+		Value.DSValue.Stencil = StencilClearValue;
 	}
 
 	FClearValueBinding(float R, float G, float B, float A)
@@ -197,6 +224,208 @@ struct FRaterizerStateInitializerRHI
 
 struct FDepthStencilStateInitializerRHI
 {
-	bool bEnableDpthWrite;
+	bool bEnableDepthWrite;
 	ECompareFunction DepthTest;
+
+	bool bEnableFrontFaceStencil;
+	ECompareFunction FrontFaceStencilTest;
+	EStencilOp FrontFaceStencilFailStencilOp;
+	EStencilOp FrontFaceDepthFailStencilOp;
+	EStencilOp FrontFacePassStencilOp;
+
+	bool bEnableBackFaceStencil;
+	ECompareFunction BackFaceStencilTest;
+	EStencilOp BackFaceStencilFailStencilOp;
+	EStencilOp BackFaceDepthFailStencilOp;
+	EStencilOp BackFacePassStencilOp;
+
+	uint8 StencilReadMask;
+	uint8 StencilWriteMask;
+
+	FDepthStencilStateInitializerRHI(
+		bool bInEnableDepthWrite = true,
+		ECompareFunction InDepthTest = CF_LessEqual,
+		bool bInEnableFrontFaceStencil = false,
+		ECompareFunction InFrontFaceStencilTest = CF_Always,
+		EStencilOp InFrontFaceStencilFailStencilOp = SO_Keep,
+		EStencilOp InFrontFaceDepthFailStencilOp = SO_Keep,
+		EStencilOp InFrontFacePassStencilOp = SO_Keep,
+		bool bInEnableBackFaceStencil = false,
+		ECompareFunction InBackFaceStencilTest = CF_Always,
+		EStencilOp InBackFaceStencilFailStencilOp = SO_Keep,
+		EStencilOp InBackFaceDepthFailStencilOp = SO_Keep,
+		EStencilOp InBackFacePassStencilOp = SO_Keep,
+		uint8 InStencilReadMask = 0xFF,
+		uint8 InStencilWriteMask = 0xFF
+		)
+		: bEnableDepthWrite(bInEnableDepthWrite)
+		, DepthTest(InDepthTest)
+		, bEnableFrontFaceStencil(bInEnableFrontFaceStencil)
+		, FrontFaceStencilTest(InFrontFaceStencilTest)
+		, FrontFaceStencilFailStencilOp(InFrontFaceStencilFailStencilOp)
+		, FrontFaceDepthFailStencilOp(InFrontFaceDepthFailStencilOp)
+		, FrontFacePassStencilOp(InFrontFacePassStencilOp)
+		, bEnableBackFaceStencil(bInEnableBackFaceStencil)
+		, BackFaceStencilTest(InBackFaceStencilTest)
+		, BackFaceStencilFailStencilOp(InBackFaceStencilFailStencilOp)
+		, BackFaceDepthFailStencilOp(InBackFaceDepthFailStencilOp)
+		, BackFacePassStencilOp(InBackFacePassStencilOp)
+		, StencilReadMask(InStencilReadMask)
+		, StencilWriteMask(InStencilWriteMask)
+	{}
+};
+
+struct FBlendStateInitializerRHI
+{
+	struct FRenderTarget
+	{
+		EBlendOperation		ColorBlendOp;
+		EBlendFactor		ColorSrcBlend;
+		EBlendFactor		ColorDestBlend;
+		EBlendOperation		AlphaBlendOp;
+		EBlendFactor		AlphaSrcBlend;
+		EBlendFactor		AlphaDestBlend;
+		EColorWriteMask		ColorWriteMask;
+
+		FRenderTarget(
+			EBlendOperation InColorBlendOp = BO_Add,
+			EBlendFactor InColorSrcBlend = BF_One,
+			EBlendFactor InColorDestBlend = BF_Zero,
+			EBlendOperation InAlphaBlendOp = BO_Add,
+			EBlendFactor InAlphaSrcBlend = BF_One,
+			EBlendFactor InAlphaDestBlend = BF_Zero,
+			EColorWriteMask InColorWriteMask = CW_RGBA
+		)
+			: ColorBlendOp(InColorBlendOp)
+			, ColorSrcBlend(InColorSrcBlend)
+			, ColorDestBlend(InColorDestBlend)
+			, AlphaBlendOp(InAlphaBlendOp)
+			, AlphaSrcBlend(InAlphaSrcBlend)
+			, AlphaDestBlend(InAlphaDestBlend)
+			, ColorWriteMask(InColorWriteMask)
+		{}
+	};
+
+	FBlendStateInitializerRHI() {}
+	FBlendStateInitializerRHI(const FRenderTarget& InRenderTargetBlendState)
+		: bUseIndependentRenderTargetBlendStates(false)
+	{
+		RenderTargets.resize(MaxSimultaneousRenderTargets);
+		RenderTargets[0] = InRenderTargetBlendState;
+	}
+
+	FBlendStateInitializerRHI(const FRenderTarget* InRenderTargets, uint32 NumRenderTargets)
+		: bUseIndependentRenderTargetBlendStates(NumRenderTargets > 1)
+	{
+		check(NumRenderTargets <= MaxSimultaneousRenderTargets && InRenderTargets);
+		RenderTargets.resize(MaxSimultaneousRenderTargets);
+
+		for (uint32 RenderTargetIndex = 0; RenderTargetIndex < NumRenderTargets; RenderTargetIndex++)
+		{
+			RenderTargets[RenderTargetIndex] = InRenderTargets[RenderTargetIndex];
+		}
+	}
+	std::vector<FRenderTarget> RenderTargets = std::vector<FRenderTarget>(MaxSimultaneousRenderTargets);
+	bool bUseIndependentRenderTargetBlendStates;
+};
+
+struct FVertexElement
+{
+	uint8 StreamIndex;
+	uint8 Offset;
+	EVertexElementType Type;
+	uint8 AttributeIndex;
+	uint16 Stride;
+
+	uint16 bUseInstanceIndex;
+
+	FVertexElement() {}
+	FVertexElement(
+		uint8 InStreamIndex,
+		uint8 InOffset,
+		EVertexElementType InType,
+		uint8 InAttributeIndex,
+		uint16 InStride,
+		bool bInUseInstanceIndex = false
+	)
+		: StreamIndex(InStreamIndex)
+		, Offset(InOffset)
+		, Type(InType)
+		, AttributeIndex(InAttributeIndex)
+		, Stride(InStride)
+		, bUseInstanceIndex(bInUseInstanceIndex)
+	{}
+
+	void operator=(const FVertexElement& Other)
+	{
+		StreamIndex = Other.StreamIndex;
+		Offset = Other.Offset;
+		Type = Other.Type;
+		AttributeIndex = Other.AttributeIndex;
+		Stride = Other.Stride;
+		bUseInstanceIndex = Other.bUseInstanceIndex;
+	}
+};
+
+typedef std::vector<FVertexElement> FVertexDeclarationElementList;
+
+class FResourceBulkDataInterface;
+class FResourceArrayInterface;
+struct FRHIResourceCreateInfo
+{
+	FRHIResourceCreateInfo()
+		: BulkData(nullptr)
+		, ResourceArray(nullptr)
+		, ClearValueBinding(FLinearColor::Transparent)
+	{}
+
+	// for CreateTexture calls
+	FRHIResourceCreateInfo(FResourceBulkDataInterface* InBulkData)
+		: BulkData(InBulkData)
+		, ResourceArray(nullptr)
+		, ClearValueBinding(FLinearColor::Transparent)
+	{}
+
+	// for CreateVertexBuffer/CreateStructuredBuffer calls
+	FRHIResourceCreateInfo(FResourceArrayInterface* InResourceArray)
+		: BulkData(nullptr)
+		, ResourceArray(InResourceArray)
+		, ClearValueBinding(FLinearColor::Transparent)
+	{}
+
+	FRHIResourceCreateInfo(const FClearValueBinding& InClearValueBinding)
+		: BulkData(nullptr)
+		, ResourceArray(nullptr)
+		, ClearValueBinding(InClearValueBinding)
+	{
+	}
+
+	// for CreateTexture calls
+	FResourceBulkDataInterface* BulkData;
+	// for CreateVertexBuffer/CreateStructuredBuffer calls
+	FResourceArrayInterface* ResourceArray;
+
+	// for binding clear colors to rendertargets.
+	FClearValueBinding ClearValueBinding;
+};
+
+struct FVRamAllocation
+{
+	FVRamAllocation(uint32 InAllocationStart = 0, uint32 InAllocationSize = 0)
+		: AllocationStart(InAllocationStart)
+		, AllocationSize(InAllocationSize)
+	{
+	}
+
+	bool IsValid() const { return AllocationSize > 0; }
+
+	// in bytes
+	uint32 AllocationStart;
+	// in bytes
+	uint32 AllocationSize;
+};
+
+struct FRHIResourceInfo
+{
+	FVRamAllocation VRamAllocation;
 };

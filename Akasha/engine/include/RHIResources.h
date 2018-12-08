@@ -275,6 +275,32 @@ private:
 	uint32 m_Usage;
 };
 
+class FRHIStructuredBuffer : public FRHIResource
+{
+public:
+
+	/** Initialization constructor. */
+	FRHIStructuredBuffer(uint32 InStride, uint32 InSize, uint32 InUsage)
+		: Stride(InStride)
+		, Size(InSize)
+		, Usage(InUsage)
+	{}
+
+	/** @return The stride in bytes of the structured buffer; must be 2 or 4. */
+	uint32 GetStride() const { return Stride; }
+
+	/** @return The number of bytes in the structured buffer. */
+	uint32 GetSize() const { return Size; }
+
+	/** @return The usage flags used to create the structured buffer. */
+	uint32 GetUsage() const { return Usage; }
+
+private:
+	uint32 Stride;
+	uint32 Size;
+	uint32 Usage;
+};
+
 class FRHITexture : public FRHIResource
 {
 public:
@@ -429,7 +455,7 @@ typedef FRHIBlendState*							FBlendStateRHIParamRef;
 typedef std::shared_ptr<FRHIBlendState>			FBlendStateRHIRef;
 
 typedef FRHIVertexDeclaration*					FVertexDeclarationRHIParamRef;
-typedef std::shared_ptr<FRHIVertexDeclaration>	FVertexDeclarationRHIef;
+typedef std::shared_ptr<FRHIVertexDeclaration>	FVertexDeclarationRHIRef;
 
 typedef FRHIBoundShaderState*					FBoundShaderStateRHIParamRef;
 typedef std::shared_ptr<FRHIBoundShaderState>	FBoundShaderStateRHIRef;
@@ -478,6 +504,9 @@ typedef std::shared_ptr<FRHIIndexBuffer>		FIndexBufferRHIRef;
 
 typedef FRHIVertexBuffer*						FVertexBufferRHIParamRef;
 typedef std::shared_ptr<FRHIVertexBuffer>		FVertexBufferRHIRef;
+
+typedef FRHIStructuredBuffer*					FStructuredBufferRHIParamRef;
+typedef std::shared_ptr<FRHIStructuredBuffer>	FStructuredBufferRHIRef;
 
 class FRHIRenderTargetView
 {
