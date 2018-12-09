@@ -41,6 +41,12 @@
     <ClCompile Include="source\CoreGlobas.cpp">
       <Filter>Source\Core\Private</Filter>
     </ClCompile>
+    <ClCompile Include="source\Windows\WindowsDynamicRHI.cpp">
+      <Filter>Source\Renderer\RHI\Private\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ModuleManager.cpp">
+      <Filter>Source\Core\Private\Modules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Shader">
@@ -156,6 +162,15 @@
     </Filter>
     <Filter Include="Source\Engine\RenderCore\Private">
       <UniqueIdentifier>{8cb23aeb-26eb-4f70-a862-9ca607e0ddf3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Renderer\RHI\Private\Windows">
+      <UniqueIdentifier>{98420a26-aaa8-4699-9d92-62afd35409fc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Core\Public\Modules">
+      <UniqueIdentifier>{e5349a79-e669-4e18-9684-d0b06b2d07a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Core\Private\Modules">
+      <UniqueIdentifier>{f24ec8bd-9c33-40ec-90c4-91db0ad9ab4d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -326,6 +341,12 @@
     </ClInclude>
     <ClInclude Include="include\ResourceArray.h">
       <Filter>Source\Core\Public\Containers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ModuleInterface.h">
+      <Filter>Source\Core\Public\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ModuleManager.h">
+      <Filter>Source\Core\Public\Modules</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

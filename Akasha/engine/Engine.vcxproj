@@ -31,10 +31,16 @@
     <ClCompile Include="source\GameInstance.cpp" />
     <ClCompile Include="source\Hash.cpp" />
     <ClCompile Include="source\MathUtility.cpp" />
+    <ClCompile Include="source\ModuleManager.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="source\Object.cpp" />
     <ClCompile Include="source\RenderResource.cpp" />
     <ClCompile Include="source\stdafx.cpp" />
     <ClCompile Include="source\UnrealMath.cpp" />
+    <ClCompile Include="source\Windows\WindowsDynamicRHI.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Actor.h" />
@@ -59,6 +65,8 @@
     <ClInclude Include="include\MathGeometry.h" />
     <ClInclude Include="include\MathUtility.h" />
     <ClInclude Include="include\Matrix.h" />
+    <ClInclude Include="include\ModuleInterface.h" />
+    <ClInclude Include="include\ModuleManager.h" />
     <ClInclude Include="include\NumericLimits.h" />
     <ClInclude Include="include\Object.h" />
     <ClInclude Include="include\OrthoMatrix.h" />

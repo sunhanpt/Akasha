@@ -212,7 +212,7 @@ struct FSamplerStateInitializerRHI
 	ESamplerCompareFunction SamplerComparisonFunction;
 };
 
-struct FRaterizerStateInitializerRHI
+struct FRasterizerStateInitializerRHI
 {
 	ERasterizerFillMode FillMode;
 	ERasterizerCullMode CullMode;

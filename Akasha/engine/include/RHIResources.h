@@ -12,7 +12,7 @@
 #include "AlignmentTemplates.h"
 #include "RHIDefines.h"
 
-class AKADLL_API FRHIResource
+class FRHIResource
 {
 public:
 	FRHIResource(bool InbDoNotDeferDelte = false)

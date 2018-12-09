@@ -3,7 +3,7 @@
 #include <list>
 #include "RHIResources.h"
 
-class AKADLL_API FRenderResource
+class FRenderResource
 {
 public:
 	static std::list<FRenderResource*>& GetResourceList(); // get the resource link.

@@ -1,7 +1,9 @@
 #pragma once
 
 #include "RHIResources.h"
+#include "ModuleInterface.h"
 
+class IRHICommandContext;
 // 相当于d3d中的device
 class FDynamicRHI
 {
@@ -17,13 +19,13 @@ public:
 	virtual const TCHAR* GetName() = 0;
 
 	// Thread Safe
-	virtual FSamplerStateRHIParamRef RHICreateSamplerState(const FSamplerStateInitializerRHI& Initializer) = 0;
+	virtual FSamplerStateRHIRef RHICreateSamplerState(const FSamplerStateInitializerRHI& Initializer) = 0;
 
 	// Thread Safe
-	virtual FRasterizerStateRHIRef RHICreateRaterizeState(const FRaterizerStateInitializerRHI& Initializer) = 0;
+	virtual FRasterizerStateRHIRef RHICreateRaterizeState(const FRasterizerStateInitializerRHI& Initializer) = 0;
 
 	// Thread Safe
-	virtual FDepthStencilStateRHIRef RHICrateDepthStencilState(const FDepthStencilStateInitializerRHI& Initializer) = 0;
+	virtual FDepthStencilStateRHIRef RHICreateDepthStencilState(const FDepthStencilStateInitializerRHI& Initializer) = 0;
 
 	// Thread Safe
 	virtual FBlendStateRHIRef RHICreateBlendState(const FBlendStateInitializerRHI& Initializer) = 0;
@@ -136,5 +138,86 @@ public:
 	// Generally this should be avoided but is useful for third party plugins.
 	virtual void* RHIGetNativeDevice() = 0;
 
-	virtual void* RHIGetDefaultContext() = 0;
+	virtual IRHICommandContext* RHIGetDefaultContext() = 0;
 };
+
+/** A global pointer to the dynamically bound RHI implementation. */
+extern AKADLL_API FDynamicRHI* GDynamicRHI;
+
+// 将DynamicRHI隐藏掉，仅仅提供给外部接口
+FORCEINLINE FSamplerStateRHIRef RHICreateSamplerState(const FSamplerStateInitializerRHI& Initializer)
+{
+	return GDynamicRHI->RHICreateSamplerState(Initializer);
+}
+
+FORCEINLINE FRasterizerStateRHIRef RHICreateRasterizerState(const FRasterizerStateInitializerRHI& Initializer)
+{
+	return GDynamicRHI->RHICreateRaterizeState(Initializer);
+}
+
+FORCEINLINE FDepthStencilStateRHIRef RHICreateDepthStencilState(const FDepthStencilStateInitializerRHI& Initializer)
+{
+	return GDynamicRHI->RHICreateDepthStencilState(Initializer);
+}
+
+FORCEINLINE FBlendStateRHIRef RHICreateBlendState(const FBlendStateInitializerRHI& Initializer)
+{
+	return GDynamicRHI->RHICreateBlendState(Initializer);
+}
+
+FORCEINLINE FBoundShaderStateRHIRef RHICreateBoundShaderState(FVertexDeclarationRHIParamRef VertexDeclaration, FVertexShaderRHIParamRef VertexShader, FHullShaderRHIParamRef HullShader, FDomainShaderRHIParamRef DomainShader, FPixelShaderRHIParamRef PixelShader, FGeometryShaderRHIParamRef GeometryShader)
+{
+	return GDynamicRHI->RHICreateBoundShaderState(VertexDeclaration, VertexShader, HullShader, DomainShader, PixelShader, GeometryShader);
+}
+
+FORCEINLINE FUniformBufferRHIRef RHICreateUniformBuffer(const void* Contents, const FRHIUniformBufferLayout& Layout, EUniformBufferUsage Usage)
+{
+	return GDynamicRHI->RHICreateUniformBuffer(Contents, Layout, Usage);
+}
+
+FORCEINLINE void RHIGetResourceInfo(FTextureRHIParamRef Ref, FRHIResourceInfo& OutInfo)
+{
+	return GDynamicRHI->RHIGetResourceInfo(Ref, OutInfo);
+}
+
+FORCEINLINE FTexture2DRHIRef RHIGetViewportBackBuffer(FViewportRHIParamRef Viewport)
+{
+	return GDynamicRHI->RHIGetViewportBackBuffer(Viewport);
+}
+
+FORCEINLINE FViewportRHIRef RHICreateViewport(void* WindowHandle, uint32 SizeX, uint32 SizeY, bool bIsFullscreen, EPixelFormat PreferredPixelFormat)
+{
+	return GDynamicRHI->RHICreateViewport(WindowHandle, SizeX, SizeY, bIsFullscreen, PreferredPixelFormat);
+}
+
+FORCEINLINE void RHIReisizeViewport(FViewportRHIParamRef Viewport, uint32 SizeX, uint32 SizeY, bool bIsFullScreen)
+{
+	GDynamicRHI->RHIResizeViewport(Viewport, SizeX, SizeY, bIsFullScreen);
+}
+
+FORCEINLINE void RHITick(float DeltaTime)
+{
+	GDynamicRHI->RHITick(DeltaTime);
+}
+
+FORCEINLINE IRHICommandContext* RHIGetDefaultContext()
+{
+	return GDynamicRHI->RHIGetDefaultContext();
+}
+
+/** Defines the interface of a module implementing a dynamic RHI. */
+// 图形语音层面(D3D / Opengl)
+class IDynamicRHIModule : public IModuleInterface
+{
+public:
+	/** Checks whether the RHI is supported by the current system. */
+	virtual bool IsSupported() = 0;
+
+	/** Creates a new instance of the dynamic RHI implemented by the module. */
+	virtual FDynamicRHI* CreateRHI(ERHIFeatureLevel::Type RequestedFeatureLevel = ERHIFeatureLevel::Num) = 0;
+};
+
+
+// Called to create the instance of the dynamic RHI. -- just Windows currently.
+// 系统层面，在特定的设备上运行，算是已知的。
+FDynamicRHI* PlatformCreateDynamicRHI(); 
