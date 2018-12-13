@@ -39,16 +39,6 @@ public:
 	virtual void ShutdownModule() {}
 
 	/**
-	* Override this to set whether your module is allowed to be unloaded on the fly
-	*
-	* @return	Whether the module supports shutdown separate from the rest of the engine.
-	*/
-	virtual bool SupportsDynamicReloading()
-	{
-		return true;
-	}
-
-	/**
 	* Override this to set whether your module would like cleanup on application shutdown
 	*
 	* @return	Whether the module supports shutdown on application exit

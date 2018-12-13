@@ -172,6 +172,9 @@
     <Filter Include="Source\Core\Private\Modules">
       <UniqueIdentifier>{f24ec8bd-9c33-40ec-90c4-91db0ad9ab4d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Renderer\D3D11RHI\Private">
+      <UniqueIdentifier>{8784e933-0c26-47c0-83c6-dba76e2ccae7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\stdafx.h">
@@ -347,6 +350,9 @@
     </ClInclude>
     <ClInclude Include="include\ModuleManager.h">
       <Filter>Source\Core\Public\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Windows\D3D11RHIPrivate.h">
+      <Filter>Source\Renderer\D3D11RHI\Private</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

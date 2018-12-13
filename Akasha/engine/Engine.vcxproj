@@ -39,7 +39,7 @@
     <ClCompile Include="source\stdafx.cpp" />
     <ClCompile Include="source\UnrealMath.cpp" />
     <ClCompile Include="source\Windows\WindowsDynamicRHI.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -104,6 +104,7 @@
     <ClInclude Include="include\Vector4.h" />
     <ClInclude Include="include\World.h" />
     <ClInclude Include="source\stdafx.h" />
+    <ClInclude Include="source\Windows\D3D11RHIPrivate.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{9E0EC6BF-5D25-4767-BFF7-88570C671C21}</ProjectGuid>
@@ -205,7 +206,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>..\..\EngineSDK\lib\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>TaskGraph_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>TaskGraph_d.lib;d3dx11d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">

@@ -1,5 +1,8 @@
-#include "stdafx.h"
+#include "../stdafx.h"
 #include "DynamicRHI.h"
+#include "ModuleManager.h"
+#include "D3D11RHIPrivate.h"
+
 
 FDynamicRHI* PlatformCreateDynamicRHI()
 {
@@ -12,6 +15,13 @@ FDynamicRHI* PlatformCreateDynamicRHI()
 	// load the dynamic RHI Module.
 	IDynamicRHIModule* DynamicRHIModule = nullptr;
 
-	// TODO: 
-	return DynamicRHIModule;
+	std::wstring StrName = _TEXT("D3D11");
+	DynamicRHIModule = (IDynamicRHIModule*)&(FModuleManager::Get().LoadModuleChecked<FD3D11DynamicRHIModule>(StrName));
+
+	if (DynamicRHIModule)
+	{
+		DynamicRHI = DynamicRHIModule->CreateRHI(RequestedFeatureLevel);
+	}
+
+	return DynamicRHI;
 }
