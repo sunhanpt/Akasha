@@ -27,12 +27,14 @@ private:
 	{
 		auto it = ModulesMap.find(InModuleName);
 		if (it != ModulesMap.end())
-			return (IModuleInterface&)*(it->second);
+			return *(TModuleInterface*)(it->second.get());
 		else
 		{
-			IModuleInterface* ModuleInterface = new IModuleInterface;
+			std::wstring tModuleName = InModuleName;
+			IModuleInterface* ModuleInterface = new TModuleInterface;
 			ModuleInterface->StartupModule();
-			ModulesMap.insert(std::make_pair<std::wstring, IModuleInterface>(InModuleName, ModuleInterface));
+			//ModulesMap.insert(std::make_pair<std::wstring, IModuleInterface>(std::move(tModuleName), ModuleInterface));
+			ModulesMap[tModuleName] = std::shared_ptr<IModuleInterface>(ModuleInterface);
 
 			return (TModuleInterface&)(*ModuleInterface);
 		}

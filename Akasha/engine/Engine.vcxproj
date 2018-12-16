@@ -36,10 +36,14 @@
     </ClCompile>
     <ClCompile Include="source\Object.cpp" />
     <ClCompile Include="source\RenderResource.cpp" />
-    <ClCompile Include="source\stdafx.cpp" />
-    <ClCompile Include="source\UnrealMath.cpp" />
-    <ClCompile Include="source\Windows\WindowsDynamicRHI.cpp">
+    <ClCompile Include="source\stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="source\UnrealMath.cpp" />
+    <ClCompile Include="source\Windows\D3D11ConstantBuffer.cpp" />
+    <ClCompile Include="source\Windows\WindowsD3D11Device.cpp" />
+    <ClCompile Include="source\Windows\WindowsDynamicRHI.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -90,6 +94,7 @@
     <ClInclude Include="include\ScaleMatrix.h" />
     <ClInclude Include="include\Hash.h" />
     <ClInclude Include="include\SceneComponent.h" />
+    <ClInclude Include="include\stdafx.h" />
     <ClInclude Include="include\ThreadSafeQueue.h" />
     <ClInclude Include="include\ThreadSafeStack.h" />
     <ClInclude Include="include\TypeDefines.h" />
@@ -103,7 +108,7 @@
     <ClInclude Include="include\Vector2DHalf.h" />
     <ClInclude Include="include\Vector4.h" />
     <ClInclude Include="include\World.h" />
-    <ClInclude Include="source\stdafx.h" />
+    <ClInclude Include="source\Windows\D3D11ConstantBuffer.h" />
     <ClInclude Include="source\Windows\D3D11RHIPrivate.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
@@ -196,7 +201,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <PrecompiledHeader>Create</PrecompiledHeader>
+      <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;_DLL_EXPPORTS;TASKGRAPH_API=__declspec(dllimport);%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -205,8 +210,8 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>..\..\EngineSDK\lib\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>TaskGraph_d.lib;d3dx11d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\..\EngineSDK\lib\;..\..\EngineSDK\3rdSDK\lib\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>TaskGraph_d.lib;d3dx11d.lib;d3d11.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -241,6 +246,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalLibraryDirectories>..\..\EngineSDK\lib\;..\..\EngineSDK\3rdSDK\lib\;</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
