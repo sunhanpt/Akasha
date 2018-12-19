@@ -7,7 +7,7 @@ class IRHICommandContext
 public:
 	virtual ~IRHICommandContext() {}
 
-	virtual void RHIBeginDrawingViewport(FViewportRHIParamRef Viewport, FViewportRHIParamRef RenderTargetRHI) = 0;
+	virtual void RHIBeginDrawingViewport(FViewportRHIParamRef Viewport, FTextureRHIParamRef RenderTargetRHI) = 0;
 	virtual void RHIEndDrawingViewport(FViewportRHIParamRef Viewport, bool bPresent, bool bLockToVsync) = 0;
 
 	virtual void RHIBeginFrame() = 0;
@@ -16,9 +16,10 @@ public:
 	virtual void RHIBeginScene() = 0;
 	virtual void RHIEndScene() = 0;
 
+	virtual void RHISetRasterizerState(FRasterizerStateRHIParamRef NewState) = 0;
 	virtual void RHISetViewport(uint32 MinX, uint32 MinY, float MinZ, uint32 MaxX, uint32 MaxY, float MaxZ) = 0;
 	virtual void RHISetScissorRect(bool bEnable, uint32 MinX, uint32 MinY, uint32 MaxX, uint32 MaxY) = 0;
-
+	virtual void RHISetBoundShaderState(FBoundShaderStateRHIParamRef BoundShaderState) = 0;
 	virtual void RHISetGraphicsPipelineState(FGraphicsPipelineStateRHIParamRef GraphicsState)
 	{
 		// TODO:
@@ -48,11 +49,11 @@ public:
 	virtual void RHISetShaderUniformBuffer(FGeometryShaderRHIParamRef GeometryShader, uint32 BufferIndex, FUniformBufferRHIParamRef Buffer) = 0;
 	virtual void RHISetShaderUniformBuffer(FPixelShaderRHIParamRef PixelShader, uint32 BufferIndex, FUniformBufferRHIParamRef Buffer) = 0;
 
-	virtual void RHISetShaderParamter(FVertexShaderRHIParamRef VertexShader, uint32 BufferIndex, uint32 BaseIndex, uint32 NumByters, const void* NewValue) = 0;
-	virtual void RHISetShaderParamter(FHullShaderRHIParamRef VertexShader, uint32 BufferIndex, uint32 BaseIndex, uint32 NumByters, const void* NewValue) = 0;
-	virtual void RHISetShaderParamter(FDomainShaderRHIParamRef VertexShader, uint32 BufferIndex, uint32 BaseIndex, uint32 NumByters, const void* NewValue) = 0;
-	virtual void RHISetShaderParamter(FGeometryShaderRHIParamRef VertexShader, uint32 BufferIndex, uint32 BaseIndex, uint32 NumByters, const void* NewValue) = 0;
-	virtual void RHISetShaderParamter(FPixelShaderRHIParamRef VertexShader, uint32 BufferIndex, uint32 BaseIndex, uint32 NumByters, const void* NewValue) = 0;
+	virtual void RHISetShaderParameter(FVertexShaderRHIParamRef VertexShader, uint32 BufferIndex, uint32 BaseIndex, uint32 NumByters, const void* NewValue) = 0;
+	virtual void RHISetShaderParameter(FHullShaderRHIParamRef VertexShader, uint32 BufferIndex, uint32 BaseIndex, uint32 NumByters, const void* NewValue) = 0;
+	virtual void RHISetShaderParameter(FDomainShaderRHIParamRef VertexShader, uint32 BufferIndex, uint32 BaseIndex, uint32 NumByters, const void* NewValue) = 0;
+	virtual void RHISetShaderParameter(FGeometryShaderRHIParamRef VertexShader, uint32 BufferIndex, uint32 BaseIndex, uint32 NumByters, const void* NewValue) = 0;
+	virtual void RHISetShaderParameter(FPixelShaderRHIParamRef VertexShader, uint32 BufferIndex, uint32 BaseIndex, uint32 NumByters, const void* NewValue) = 0;
 
 	virtual void RHISetStencilRef(uint32 StencilRef) {}
 	virtual void RHISetBlendFactor(const FLinearColor& BlendFactor) {}

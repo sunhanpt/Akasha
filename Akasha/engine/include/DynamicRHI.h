@@ -22,7 +22,7 @@ public:
 	virtual FSamplerStateRHIRef RHICreateSamplerState(const FSamplerStateInitializerRHI& Initializer) = 0;
 
 	// Thread Safe
-	virtual FRasterizerStateRHIRef RHICreateRaterizeState(const FRasterizerStateInitializerRHI& Initializer) = 0;
+	virtual FRasterizerStateRHIRef RHICreateRasterizerState(const FRasterizerStateInitializerRHI& Initializer) = 0;
 
 	// Thread Safe
 	virtual FDepthStencilStateRHIRef RHICreateDepthStencilState(const FDepthStencilStateInitializerRHI& Initializer) = 0;

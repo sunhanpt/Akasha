@@ -63,7 +63,7 @@ void FD3D11DynamicRHI::InitD3DDevice()
 
 		HRESULT hr = D3D11CreateDevice(
 			nullptr,
-			D3D_DRIVER_TYPE_HARDWARE,
+			D3D_DRIVER_TYPE_UNKNOWN,
 			nullptr,
 			DeviceFlags,
 			&FeatureLevel,
@@ -114,7 +114,7 @@ void FD3D11DynamicRHIModule::StartupModule()
 
 FDynamicRHI* FD3D11DynamicRHIModule::CreateRHI(ERHIFeatureLevel::Type RequestedFeatureLevel /* = ERHIFeatureLevel::Num */)
 {
-	//return new FD3D11DynamicRHI(D3D_FEATURE_LEVEL_11_1);
-	return nullptr;
+	return new FD3D11DynamicRHI(D3D_FEATURE_LEVEL_11_1);
+	//return nullptr;
 }
 
