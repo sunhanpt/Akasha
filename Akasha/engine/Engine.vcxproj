@@ -41,6 +41,8 @@
     </ClCompile>
     <ClCompile Include="source\UnrealMath.cpp" />
     <ClCompile Include="source\Windows\D3D11ConstantBuffer.cpp" />
+    <ClCompile Include="source\Windows\D3D11State.cpp" />
+    <ClCompile Include="source\Windows\D3D11Util.cpp" />
     <ClCompile Include="source\Windows\WindowsD3D11Device.cpp" />
     <ClCompile Include="source\Windows\WindowsDynamicRHI.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
@@ -110,6 +112,8 @@
     <ClInclude Include="include\World.h" />
     <ClInclude Include="source\Windows\D3D11ConstantBuffer.h" />
     <ClInclude Include="source\Windows\D3D11RHIPrivate.h" />
+    <ClInclude Include="source\Windows\D3D11State.h" />
+    <ClInclude Include="source\Windows\D3D11Util.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{9E0EC6BF-5D25-4767-BFF7-88570C671C21}</ProjectGuid>
@@ -204,14 +208,14 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;_DLL_EXPPORTS;TASKGRAPH_API=__declspec(dllimport);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;_DLL_EXPPORTS;TASKGRAPH_API=__declspec(dllimport);GLOG_NO_ABBREVIATED_SEVERITIES;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>include\;../../EngineSDK/include;../../EngineSDK\3rdSDK\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>..\..\EngineSDK\lib\;..\..\EngineSDK\3rdSDK\lib\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>TaskGraph_d.lib;d3dx11d.lib;d3d11.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>TaskGraph_d.lib;d3dx11d.lib;d3d11.lib;glogd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -247,6 +251,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>..\..\EngineSDK\lib\;..\..\EngineSDK\3rdSDK\lib\;</AdditionalLibraryDirectories>
+      <AdditionalDependencies>glog.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

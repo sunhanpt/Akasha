@@ -11,3 +11,6 @@
 
 // local head file
 #include "TypeDefines.h"
+
+// log
+#include "glog/logging.h"

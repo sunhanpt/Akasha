@@ -100,7 +100,8 @@
     </Link>
     <PostBuildEvent>
       <Command>xcopy .\lib\debug\*.* ..\..\..\EngineSDK\3rdSDK\lib\ /y /d /r /s
-xcopy .\include\*.* ..\..\..\EngineSDK\3rdSDK\include\glog\ /y /d /r /s</Command>
+xcopy .\include\*.* ..\..\..\EngineSDK\3rdSDK\include\glog\ /y /d /r /s
+xcopy .\include\glog\*.* ..\..\..\EngineSDK\3rdSDK\include\glog\glog\ /y /d /r /s</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -148,7 +149,8 @@ xcopy .\include\*.* ..\..\..\EngineSDK\3rdSDK\include\glog\ /y /d /r /s</Command
     </Link>
     <PostBuildEvent>
       <Command>xcopy .\lib\release\*.* ..\..\..\EngineSDK\3rdSDK\lib\ /y /d /r /s
-xcopy .\include\*.* ..\..\..\EngineSDK\3rdSDK\include\glog\ /y /d /r /s</Command>
+xcopy .\include\*.* ..\..\..\EngineSDK\3rdSDK\include\glog\ /y /d /r /s
+xcopy .\include\glog\*.* ..\..\..\EngineSDK\3rdSDK\include\glog\glog\ /y /d /r /s</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>

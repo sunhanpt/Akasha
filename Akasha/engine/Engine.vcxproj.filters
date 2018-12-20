@@ -53,6 +53,12 @@
     <ClCompile Include="source\Windows\D3D11ConstantBuffer.cpp">
       <Filter>Source\Renderer\D3D11RHI\Private</Filter>
     </ClCompile>
+    <ClCompile Include="source\Windows\D3D11Util.cpp">
+      <Filter>Source\Renderer\D3D11RHI\Private</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Windows\D3D11State.cpp">
+      <Filter>Source\Renderer\D3D11RHI\Private</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Shader">
@@ -365,6 +371,12 @@
     </ClInclude>
     <ClInclude Include="include\stdafx.h">
       <Filter>Source\Common\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Windows\D3D11Util.h">
+      <Filter>Source\Renderer\D3D11RHI\Private</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Windows\D3D11State.h">
+      <Filter>Source\Renderer\D3D11RHI\Private</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

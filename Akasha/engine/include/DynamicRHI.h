@@ -152,7 +152,7 @@ FORCEINLINE FSamplerStateRHIRef RHICreateSamplerState(const FSamplerStateInitial
 
 FORCEINLINE FRasterizerStateRHIRef RHICreateRasterizerState(const FRasterizerStateInitializerRHI& Initializer)
 {
-	return GDynamicRHI->RHICreateRaterizeState(Initializer);
+	return GDynamicRHI->RHICreateRasterizerState(Initializer);
 }
 
 FORCEINLINE FDepthStencilStateRHIRef RHICreateDepthStencilState(const FDepthStencilStateInitializerRHI& Initializer)
