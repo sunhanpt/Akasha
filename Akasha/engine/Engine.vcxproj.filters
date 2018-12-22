@@ -378,5 +378,8 @@
     <ClInclude Include="source\Windows\D3D11State.h">
       <Filter>Source\Renderer\D3D11RHI\Private</Filter>
     </ClInclude>
+    <ClInclude Include="include\Utility.h">
+      <Filter>Source\Core\Public\Misc</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

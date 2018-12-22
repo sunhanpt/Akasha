@@ -58,7 +58,7 @@ void VerifyD3D11Result(HRESULT Result, const char* Code, const char* Filename, u
 	char logStr[256] = "";
 	sprintf_s(logStr, "%s failed at %s:%u with error %s.\n", Code, Filename, Line, ErrorString.c_str());
 
-	LOG(FATAL) << logStr;
+	//LOG(FATAL) << logStr;
 
 	exit(0);
 }

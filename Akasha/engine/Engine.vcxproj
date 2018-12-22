@@ -105,6 +105,7 @@
     </ClCompile>
     <ClInclude Include="include\UnrealMathSSE.h" />
     <ClInclude Include="include\UnrealMathVectorConstants.h" />
+    <ClInclude Include="include\Utility.h" />
     <ClInclude Include="include\Vector.h" />
     <ClInclude Include="include\Vector2D.h" />
     <ClInclude Include="include\Vector2DHalf.h" />

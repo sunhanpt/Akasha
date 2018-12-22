@@ -116,7 +116,7 @@ void FD3D11DynamicRHIModule::StartupModule()
 
 FDynamicRHI* FD3D11DynamicRHIModule::CreateRHI(ERHIFeatureLevel::Type RequestedFeatureLevel /* = ERHIFeatureLevel::Num */)
 {
-	return new FD3D11DynamicRHI(D3D_FEATURE_LEVEL_11_1);
-	//return nullptr;
+	//return new FD3D11DynamicRHI(D3D_FEATURE_LEVEL_11_1);
+	return nullptr;
 }
 
