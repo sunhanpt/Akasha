@@ -59,6 +59,12 @@
     <ClCompile Include="source\Windows\D3D11State.cpp">
       <Filter>Source\Renderer\D3D11RHI\Private</Filter>
     </ClCompile>
+    <ClCompile Include="source\Windows\D3D11VertexDeclaration.cpp">
+      <Filter>Source\Renderer\D3D11RHI\Private</Filter>
+    </ClCompile>
+    <ClCompile Include="source\CRC32.cpp">
+      <Filter>Source\Core\Private\Misc</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Shader">
@@ -379,6 +385,12 @@
       <Filter>Source\Renderer\D3D11RHI\Private</Filter>
     </ClInclude>
     <ClInclude Include="include\Utility.h">
+      <Filter>Source\Core\Public\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Windows\D3D11Resources.h">
+      <Filter>Source\Renderer\D3D11RHI\Private</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CRC32.h">
       <Filter>Source\Core\Public\Misc</Filter>
     </ClInclude>
   </ItemGroup>

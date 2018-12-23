@@ -1,6 +1,7 @@
 #pragma once
 
 #include "TypeDefines.h"
+#include "CRC32.h"
 
 class AHash
 {
@@ -41,13 +42,7 @@ private:
 
 	__forceinline uint32 StringToHash(const char* str)
 	{
-		unsigned int iSeed = 131;
-		unsigned int iHash = 0;
-
-		while (str && *str)
-		{
-			iHash = iHash * iSeed + (*str++);
-		}
-		return (iHash & 0x7fffffff);
+		uint32 strLength = (uint32)strlen(str);
+		return FCrc::MemCrc(str, strLength);
 	}
 };
