@@ -42,6 +42,7 @@
     </ClCompile>
     <ClCompile Include="source\UnrealMath.cpp" />
     <ClCompile Include="source\Windows\D3D11ConstantBuffer.cpp" />
+    <ClCompile Include="source\Windows\D3D11Shaders.cpp" />
     <ClCompile Include="source\Windows\D3D11State.cpp" />
     <ClCompile Include="source\Windows\D3D11Util.cpp" />
     <ClCompile Include="source\Windows\D3D11VertexDeclaration.cpp" />
@@ -99,6 +100,7 @@
     <ClInclude Include="include\ScaleMatrix.h" />
     <ClInclude Include="include\Hash.h" />
     <ClInclude Include="include\SceneComponent.h" />
+    <ClInclude Include="include\ShaderCore.h" />
     <ClInclude Include="include\stdafx.h" />
     <ClInclude Include="include\ThreadSafeQueue.h" />
     <ClInclude Include="include\ThreadSafeStack.h" />

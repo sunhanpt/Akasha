@@ -65,6 +65,9 @@
     <ClCompile Include="source\CRC32.cpp">
       <Filter>Source\Core\Private\Misc</Filter>
     </ClCompile>
+    <ClCompile Include="source\Windows\D3D11Shaders.cpp">
+      <Filter>Source\Renderer\D3D11RHI\Private</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Shader">
@@ -392,6 +395,9 @@
     </ClInclude>
     <ClInclude Include="include\CRC32.h">
       <Filter>Source\Core\Public\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ShaderCore.h">
+      <Filter>Source\Renderer\ShaderCore</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
