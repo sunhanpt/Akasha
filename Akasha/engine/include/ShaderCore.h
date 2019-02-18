@@ -13,6 +13,9 @@ struct FBaseShaderResourceTable
 	/** Mapping of bound sampler states to their location in resource tables. */
 	std::vector<uint32> SamplerMap;
 
+	/** Mapping of bound UAVs to their location in resource tables. */
+	std::vector<uint32> UnorderedAccessViewMap;
+
 	/** Hash of the layouts of resource tables at compile time, used for runtime validation. */
 	std::vector<uint32> ResourceTableLayoutHashes;
 
@@ -27,6 +30,7 @@ struct FBaseShaderResourceTable
 		bEqual &= (A.ResourceTableBits == B.ResourceTableBits);
 		bEqual &= (A.ShaderResourceViewMap.size() == B.ShaderResourceViewMap.size());
 		bEqual &= (A.SamplerMap.size() == B.SamplerMap.size());
+		bEqual &= (A.UnorderedAccessViewMap.size() == B.UnorderedAccessViewMap.size());
 		bEqual &= (A.ResourceTableLayoutHashes.size() == B.ResourceTableLayoutHashes.size());
 		if (!bEqual)
 		{
@@ -35,6 +39,7 @@ struct FBaseShaderResourceTable
 		
 		bEqual &= (memcmp(A.ShaderResourceViewMap.data(), B.ShaderResourceViewMap.data(), sizeof(uint32) * A.ShaderResourceViewMap.size()) == 0);
 		bEqual &= (memcmp(A.SamplerMap.data(), B.SamplerMap.data(), sizeof(uint32) * A.SamplerMap.size()) == 0);
+		bEqual &= (memcmp(A.UnorderedAccessViewMap.data(), B.UnorderedAccessViewMap.data(), sizeof(uint32) * A.UnorderedAccessViewMap.size()) == 0);
 		bEqual &= (memcmp(A.ResourceTableLayoutHashes.data(), B.ResourceTableLayoutHashes.data(), sizeof(uint32) * A.ResourceTableLayoutHashes.size()) == 0);
 
 		return bEqual;
